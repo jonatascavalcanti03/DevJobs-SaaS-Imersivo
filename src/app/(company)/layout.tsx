@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, Users, PlusCircle, Building2, Star } from "lucide-react";
+import { LayoutDashboard, Users, PlusCircle, Building2, Star, User } from "lucide-react";
 import Sidebar, { type SidebarLink } from "@/components/ui/Sidebar";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -10,6 +10,7 @@ const COMPANY_LINKS: SidebarLink[] = [
   { label: "Minhas Vagas", href: "/empresa/vagas", icon: Building2 },
   { label: "Nova Vaga", href: "/empresa/nova-vaga", icon: PlusCircle },
   { label: "Candidatos", href: "/empresa/candidatos", icon: Users, badge: "Novo" },
+  { label: "Perfil", href: "/empresa/perfil", icon: User },
   { label: "Plano Premium", href: "/empresa/premium", icon: Star },
 ];
 

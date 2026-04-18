@@ -1,7 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Briefcase, Eye, Bookmark, ExternalLink, ArrowRight, Star } from "lucide-react";
+import { Briefcase, Eye, Bookmark, ExternalLink, ArrowRight, Star, Loader2 } from "lucide-react";
 import StatsCard from "@/components/ui/StatsCard";
 import StatusBadge from "@/components/ui/StatusBadge";
 import JobCard from "@/components/ui/JobCard";
@@ -17,14 +18,52 @@ const CANDIDATURAS_RECENTES = [
   { id: "4", vaga: "Mobile Developer React Native", empresa: "iFood", data: "20 Mar 2026", status: "ACCEPTED" },
 ];
 
-const VAGAS_RECOMENDADAS: JobData[] = [
-  { id: "r1", title: "Frontend Developer (Vue.js)", company: "Spotify", location: "Remoto", type: "REMOTE", level: "MID", salaryMin: 14000, salaryMax: 18000, tags: ["Vue.js", "TypeScript", "Tailwind"], isPremium: true, createdAt: new Date().toISOString() },
-  { id: "r2", title: "React Native Engineer", company: "Uber", location: "São Paulo, SP", type: "HYBRID", level: "SENIOR", salaryMin: 18000, salaryMax: 25000, tags: ["React Native", "TypeScript", "GraphQL"], isPremium: false, createdAt: new Date(Date.now() - 86400000).toISOString() },
-];
-
 export default function CandidateDashboard() {
   const { data: session } = useSession();
   const firstName = session?.user?.name?.split(" ")[0] || "Visitante";
+  
+  const [recommendedJobs, setRecommendedJobs] = useState<JobData[]>([]);
+  const [loadingJobs, setLoadingJobs] = useState(true);
+
+  useEffect(() => {
+    async function fetchRecommendedJobs() {
+      try {
+        const res = await fetch("/api/jobs?status=ACTIVE");
+        if (res.ok) {
+          const data = await res.json();
+          // Pega apenas as 2 vagas mais recentes como "Recomendadas"
+          const parsedJobs = data.slice(0, 2).map((job: any) => {
+            let tagsArray = [];
+            try {
+              tagsArray = JSON.parse(job.tags);
+            } catch {
+              tagsArray = [];
+            }
+            return {
+              id: job.id,
+              title: job.title,
+              company: job.company,
+              companyLogo: job.companyLogo,
+              location: job.location,
+              type: job.type,
+              level: job.level,
+              salaryMin: job.salaryMin,
+              salaryMax: job.salaryMax,
+              tags: tagsArray,
+              isPremium: job.isPremium,
+              createdAt: job.createdAt,
+            };
+          });
+          setRecommendedJobs(parsedJobs);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar vagas recomendadas:", error);
+      } finally {
+        setLoadingJobs(false);
+      }
+    }
+    fetchRecommendedJobs();
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -111,9 +150,19 @@ export default function CandidateDashboard() {
             <h2 className="text-xl font-bold text-white">Recomendadas para você</h2>
           </div>
           <div className="space-y-4">
-            {VAGAS_RECOMENDADAS.map((job, index) => (
-              <JobCard key={job.id} job={job} index={index} />
-            ))}
+            {loadingJobs ? (
+              <div className="flex justify-center items-center py-10">
+                <Loader2 className="w-8 h-8 text-[#6366F1] animate-spin" />
+              </div>
+            ) : recommendedJobs.length > 0 ? (
+              recommendedJobs.map((job, index) => (
+                <JobCard key={job.id} job={job} index={index} />
+              ))
+            ) : (
+              <div className="text-center p-6 bg-white/5 rounded-2xl border border-white/10">
+                <p className="text-sm text-[#94A3B8]">Nenhuma vaga disponível no momento.</p>
+              </div>
+            )}
           </div>
 
           {/* Banner Plano PRO */}

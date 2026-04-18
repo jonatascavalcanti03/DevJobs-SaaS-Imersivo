@@ -1,19 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import { Search, MapPin, Filter } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, MapPin, Filter, Loader2 } from "lucide-react";
 import JobCard, { type JobData } from "@/components/ui/JobCard";
 import { motion } from "framer-motion";
 
-const MOCK_VAGAS: JobData[] = [
-  { id: "1", title: "Desenvolvedor(a) Full-Stack", company: "Meta", location: "Remoto", type: "REMOTE", level: "MID", salaryMin: 12000, salaryMax: 18000, tags: ["React", "Node.js", "AWS"], isPremium: true, createdAt: "2026-04-16T10:00:00Z" },
-  { id: "2", title: "Frontend Engineer", company: "Google", location: "São Paulo, SP", type: "HYBRID", level: "SENIOR", salaryMin: 18000, salaryMax: 25000, tags: ["TypeScript", "Next.js", "Tailwind"], isPremium: false, createdAt: "2026-04-15T10:00:00Z" },
-  { id: "3", title: "Estágio em Desenvolvimento", company: "Nubank", location: "Remoto", type: "REMOTE", level: "INTERN", salaryMin: 2000, salaryMax: 3000, tags: ["JavaScript", "React"], isPremium: true, createdAt: "2026-04-16T15:00:00Z" },
-  { id: "4", title: "Backend Developer Python", company: "Spotify", location: "Remoto", type: "REMOTE", level: "MID", salaryMin: 14000, salaryMax: 17000, tags: ["Python", "Django", "PostgreSQL"], isPremium: false, createdAt: "2026-04-14T10:00:00Z" },
-];
-
 export default function SearchJobsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [vagas, setVagas] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchPublicJobs() {
+      try {
+        const res = await fetch("/api/jobs?status=ACTIVE");
+        if (res.ok) {
+          const data = await res.json();
+          setVagas(data);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar vagas públicas:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPublicJobs();
+  }, []);
+
+  const filteredVagas = vagas.filter(vaga => 
+    vaga.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    vaga.company.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-[#050510] pt-24 pb-16 px-4 sm:px-6 lg:px-8">
@@ -74,20 +91,55 @@ export default function SearchJobsPage() {
         <div className="pt-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold text-white">Resultados da busca</h2>
-            <span className="text-[#94A3B8] text-sm">Mostrando {MOCK_VAGAS.length} vagas</span>
+            <span className="text-[#94A3B8] text-sm">Mostrando {filteredVagas.length} vagas</span>
           </div>
 
-          <div className="space-y-4">
-            {MOCK_VAGAS.map((job, index) => (
-              <JobCard key={job.id} job={job} index={index} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-10 h-10 text-[#06B6D4] animate-spin" />
+            </div>
+          ) : filteredVagas.length === 0 ? (
+            <div className="text-center py-20 bg-white/5 rounded-3xl border border-white/10">
+              <h3 className="text-xl font-bold text-white mb-2">Nenhuma vaga encontrada</h3>
+              <p className="text-[#94A3B8]">Tente ajustar os filtros ou os termos da busca.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {filteredVagas.map((job, index) => {
+                let tagsArray = [];
+                try {
+                  tagsArray = JSON.parse(job.tags);
+                } catch {
+                  tagsArray = [];
+                }
+                
+                const jobData: JobData = {
+                  id: job.id,
+                  title: job.title,
+                  company: job.company,
+                  location: job.location,
+                  type: job.type,
+                  level: job.level,
+                  salaryMin: job.salaryMin,
+                  salaryMax: job.salaryMax,
+                  tags: tagsArray,
+                  isPremium: job.isPremium,
+                  createdAt: job.createdAt,
+                  companyLogo: job.companyLogo
+                };
+                
+                return <JobCard key={job.id} job={jobData} index={index} />;
+              })}
+            </div>
+          )}
 
-          <div className="mt-12 flex justify-center">
-            <button className="px-6 py-3 rounded-xl bg-white/5 text-white font-medium hover:bg-white/10 transition-colors">
-              Carregar mais vagas
-            </button>
-          </div>
+          {!loading && filteredVagas.length > 0 && (
+            <div className="mt-12 flex justify-center">
+              <button className="px-6 py-3 rounded-xl bg-white/5 text-white font-medium hover:bg-white/10 transition-colors">
+                Carregar mais vagas
+              </button>
+            </div>
+          )}
         </div>
 
       </div>

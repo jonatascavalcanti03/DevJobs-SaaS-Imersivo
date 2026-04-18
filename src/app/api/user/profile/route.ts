@@ -26,6 +26,11 @@ export async function PUT(req: Request) {
         skills: body.skills ? JSON.stringify(body.skills) : undefined,
         resume: body.resume, // string base64 do pdf
         image: body.image,   // string base64 da foto
+        // Company fields
+        companyName: body.companyName,
+        companySite: body.companySite,
+        companySize: body.companySize,
+        companyAbout: body.companyAbout,
       },
     });
 
@@ -58,6 +63,10 @@ export async function GET() {
         skills: true,
         resume: true,
         image: true,
+        companyName: true,
+        companySite: true,
+        companySize: true,
+        companyAbout: true,
       }
     });
 
