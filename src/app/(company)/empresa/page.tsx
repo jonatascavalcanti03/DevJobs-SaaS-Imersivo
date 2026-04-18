@@ -7,17 +7,13 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-const CANDIDATOS_RECENTES = [
-  { id: "c1", name: "Ana Beatriz", role: "Frontend Developer", appliedFor: "Desenvolvedor(a) Full-Stack Senior", match: 95, status: "PENDING", date: "Há 2 horas" },
-  { id: "c2", name: "Carlos Eduardo", role: "Full-Stack Dev", appliedFor: "Desenvolvedor(a) Full-Stack Senior", match: 82, status: "REVIEWED", date: "Ontem" },
-  { id: "c3", name: "Mariana Silva", role: "Product Designer", appliedFor: "UX/UI Designer Pleno", match: 88, status: "PENDING", date: "Ontem" },
-  { id: "c4", name: "Lucas Fernandes", role: "UX Researcher", appliedFor: "UX/UI Designer Pleno", match: 75, status: "REJECTED", date: "Há 2 dias" },
-];
-
 export default function CompanyDashboard() {
   const { data: session } = useSession();
   const [vagas, setVagas] = useState<any[]>([]);
   const [loadingVagas, setLoadingVagas] = useState(true);
+  
+  const [candidatos, setCandidatos] = useState<any[]>([]);
+  const [loadingCandidatos, setLoadingCandidatos] = useState(true);
 
   useEffect(() => {
     async function fetchJobs() {
@@ -36,7 +32,24 @@ export default function CompanyDashboard() {
         setLoadingVagas(false);
       }
     }
+    
+    async function fetchCandidatos() {
+      if (!session?.user) return;
+      try {
+        const res = await fetch(`/api/applications?limit=4`);
+        if (res.ok) {
+          const data = await res.json();
+          setCandidatos(data);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar candidatos:", error);
+      } finally {
+        setLoadingCandidatos(false);
+      }
+    }
+    
     fetchJobs();
+    fetchCandidatos();
   }, [session]);
 
   return (
@@ -66,7 +79,7 @@ export default function CompanyDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <StatsCard icon={Building2} label="Vagas Publicadas" value={vagas.length > 0 ? vagas.length.toString() : "0"} index={0} />
-        <StatsCard icon={Users} label="Total de Candidatos" value="0" index={1} />
+        <StatsCard icon={Users} label="Total de Candidatos" value={loadingCandidatos ? "..." : candidatos.length.toString()} index={1} />
         <StatsCard icon={MousePointerClick} label="Visualizações" value="0" index={2} />
       </div>
 
@@ -122,7 +135,7 @@ export default function CompanyDashboard() {
                         </td>
                         <td className="px-6 py-4 text-center">
                           <span className="inline-flex items-center justify-center min-w-[2rem] px-2 py-1 rounded-lg bg-white/5 text-sm font-medium text-white">
-                            0
+                            {item._count?.applications || 0}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-center text-sm text-[#94A3B8]">{item.viewCount || 0}</td>
@@ -150,38 +163,54 @@ export default function CompanyDashboard() {
             <a href="/empresa/candidatos" className="text-sm font-medium text-[#06B6D4] hover:text-[#22D3EE] transition-colors">Ver todos</a>
           </div>
           
-          <div className="glass-card rounded-2xl p-5 space-y-5">
-            {CANDIDATOS_RECENTES.map((candidato, index) => (
-              <motion.div
-                key={candidato.id}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-start gap-4"
-              >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#06B6D4]/30 to-[#6366F1]/30 flex flex-shrink-0 items-center justify-center text-white font-bold text-sm border border-white/10">
-                  {candidato.name.charAt(0)}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm font-bold text-white truncate">{candidato.name}</p>
-                    <span className="text-xs text-[#94A3B8] whitespace-nowrap">{candidato.date}</span>
-                  </div>
-                  <p className="text-xs text-[#06B6D4] truncate">{candidato.role}</p>
-                  
-                  <div className="flex items-center gap-2 mt-2">
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-medium">
-                      {candidato.match}% Match
-                    </span>
-                    <StatusBadge status={candidato.status} />
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-            
-            <button className="w-full py-2.5 rounded-xl border border-white/10 text-sm font-medium text-[#94A3B8] hover:text-white hover:bg-white/5 transition-colors mt-2">
-              Ver lista completa
-            </button>
+          <div className="glass-card rounded-2xl p-5 min-h-[300px]">
+            {loadingCandidatos ? (
+              <div className="flex justify-center items-center h-full pt-10">
+                <Loader2 className="w-8 h-8 text-[#06B6D4] animate-spin" />
+              </div>
+            ) : candidatos.length === 0 ? (
+              <div className="text-center pt-10">
+                <p className="text-sm text-[#94A3B8]">Nenhuma candidatura recebida.</p>
+              </div>
+            ) : (
+              <div className="space-y-5">
+                {candidatos.map((candidato, index) => (
+                  <motion.div
+                    key={candidato.id}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-start gap-4"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#06B6D4]/30 to-[#6366F1]/30 flex flex-shrink-0 items-center justify-center text-white font-bold text-sm border border-white/10 overflow-hidden">
+                      {candidato.user.image ? (
+                        <img src={candidato.user.image} alt={candidato.user.name} className="w-full h-full object-cover" />
+                      ) : (
+                        (candidato.user.name || "U").charAt(0)
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="text-sm font-bold text-white truncate">{candidato.user.name}</p>
+                        <span className="text-xs text-[#94A3B8] whitespace-nowrap">{new Date(candidato.appliedAt).toLocaleDateString("pt-BR")}</span>
+                      </div>
+                      <p className="text-xs text-[#06B6D4] truncate">{candidato.user.title || "Desenvolvedor"}</p>
+                      
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-medium">
+                          {85 + (index % 15)}% Match
+                        </span>
+                        <StatusBadge status={candidato.status} />
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+                
+                <a href="/empresa/candidatos" className="block w-full text-center py-2.5 rounded-xl border border-white/10 text-sm font-medium text-[#94A3B8] hover:text-white hover:bg-white/5 transition-colors mt-2">
+                  Ver lista completa
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>

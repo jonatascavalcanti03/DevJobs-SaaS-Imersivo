@@ -131,9 +131,9 @@ export default function EmpresaVagasPage() {
               {/* Metrics */}
               <div className="flex gap-6 lg:border-l lg:border-white/10 lg:pl-6 w-full lg:w-auto">
                 <div className="text-center">
-                  <p className="text-2xl font-bold text-white mb-1 flex items-center justify-center gap-2">
-                    <Users className="w-4 h-4 text-[#06B6D4]" /> 0 {/* Será integrado com Candidaturas depois */}
-                  </p>
+                    <p className="text-2xl font-bold text-white mb-1 flex items-center justify-center gap-2">
+                      <Users className="w-4 h-4 text-[#06B6D4]" /> {vaga._count?.applications || 0}
+                    </p>
                   <p className="text-xs text-[#64748B] uppercase tracking-wider">Candidatos</p>
                 </div>
                 <div className="text-center">

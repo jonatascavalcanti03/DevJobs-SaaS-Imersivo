@@ -2,6 +2,13 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function PUT(req: Request) {
   try {
@@ -14,6 +21,25 @@ export async function PUT(req: Request) {
     const userId = (session.user as any).id;
     const body = await req.json();
 
+    let finalImageUrl = body.image;
+    let finalResumeUrl = body.resume;
+
+    // Se for base64 (começa com data:image ou data:application), fazer upload
+    if (finalImageUrl && finalImageUrl.startsWith("data:")) {
+      const uploadRes = await cloudinary.uploader.upload(finalImageUrl, {
+        folder: "devjobs/profiles",
+      });
+      finalImageUrl = uploadRes.secure_url;
+    }
+
+    if (finalResumeUrl && finalResumeUrl.startsWith("data:")) {
+      const uploadRes = await cloudinary.uploader.upload(finalResumeUrl, {
+        folder: "devjobs/resumes",
+        resource_type: "auto",
+      });
+      finalResumeUrl = uploadRes.secure_url;
+    }
+
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
@@ -24,9 +50,8 @@ export async function PUT(req: Request) {
         github: body.github,
         portfolio: body.portfolio,
         skills: body.skills ? JSON.stringify(body.skills) : undefined,
-        resume: body.resume, // string base64 do pdf
-        image: body.image,   // string base64 da foto
-        // Company fields
+        resume: finalResumeUrl,
+        image: finalImageUrl,
         companyName: body.companyName,
         companySite: body.companySite,
         companySize: body.companySize,

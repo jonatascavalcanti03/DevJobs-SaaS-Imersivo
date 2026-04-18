@@ -88,6 +88,11 @@ export async function GET(req: Request) {
 
     const jobs = await prisma.job.findMany({
       where: whereClause,
+      include: {
+        _count: {
+          select: { applications: true }
+        }
+      },
       orderBy: { createdAt: "desc" },
     });
 

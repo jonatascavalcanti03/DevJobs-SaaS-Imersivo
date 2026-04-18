@@ -59,45 +59,45 @@ model User {
   name          String
   email         String    @unique
   emailVerified DateTime? @map("email_verified")
-  password      String?   // Hashed with bcrypt — null for OAuth-only users
+  password      String? // Hashed with bcrypt — null for OAuth-only users
   image         String?   @db.LongText
   role          Role      @default(CANDIDATE)
 
   // ── Candidate-specific fields ──
-  title         String?
-  bio           String?   @db.Text
-  skills        String?   @db.Text
-  resume        String?   @db.LongText  // Base64 ou URL do PDF
-  linkedin      String?
-  github        String?
-  portfolio     String?
-  phone         String?
-  isPro         Boolean   @default(false) @map("is_pro")
-  proExpiresAt  DateTime? @map("pro_expires_at")
+  title        String?
+  bio          String?   @db.Text
+  skills       String?   @db.Text
+  resume       String?   @db.LongText // Base64 ou URL do PDF
+  linkedin     String?
+  github       String?
+  portfolio    String?
+  phone        String?
+  isPro        Boolean   @default(false) @map("is_pro")
+  proExpiresAt DateTime? @map("pro_expires_at")
 
   // ── Company-specific fields ──
-  companyName   String?   @map("company_name")
-  companyLogo   String?   @db.Text @map("company_logo")
-  companySite   String?   @map("company_site")
-  companySize   String?   @map("company_size")
-  companyAbout  String?   @db.Text @map("company_about")
-  premiumCredits Int      @default(0) @map("premium_credits")
+  companyName    String? @map("company_name")
+  companyLogo    String? @map("company_logo") @db.Text
+  companySite    String? @map("company_site")
+  companySize    String? @map("company_size")
+  companyAbout   String? @map("company_about") @db.Text
+  premiumCredits Int     @default(0) @map("premium_credits")
 
   // ── Stripe ──
   stripeCustomerId     String? @unique @map("stripe_customer_id")
   stripeSubscriptionId String? @unique @map("stripe_subscription_id")
 
   // ── Security & Audit ──
-  lastLoginAt  DateTime? @map("last_login_at")
-  loginCount   Int       @default(0) @map("login_count")
-  isActive     Boolean   @default(true) @map("is_active")
-  isBanned     Boolean   @default(false) @map("is_banned")
+  lastLoginAt DateTime? @map("last_login_at")
+  loginCount  Int       @default(0) @map("login_count")
+  isActive    Boolean   @default(true) @map("is_active")
+  isBanned    Boolean   @default(false) @map("is_banned")
 
   // ── Relations ──
-  jobs          Job[]
-  applications  Application[]
-  accounts      Account[]
-  sessions      Session[]
+  jobs         Job[]
+  applications Application[]
+  accounts     Account[]
+  sessions     Session[]
 
   // ── Timestamps ──
   createdAt DateTime @default(now()) @map("created_at")
@@ -113,48 +113,48 @@ model User {
 // Posted by companies. Premium jobs get highlighted placement.
 
 model Job {
-  id          String    @id @default(cuid())
+  id          String @id @default(cuid())
   title       String
-  slug        String    @unique
-  description String    @db.LongText
-  
+  slug        String @unique
+  description String @db.LongText
+
   // ── Company Info (denormalized for performance) ──
   company     String
-  companyLogo String?   @db.Text @map("company_logo")
-  
+  companyLogo String? @map("company_logo") @db.Text
+
   // ── Job Details ──
-  location    String
-  type        JobType   @default(REMOTE)
-  level       JobLevel  @default(MID)
-  salaryMin   Int?      @map("salary_min")
-  salaryMax   Int?      @map("salary_max")
-  currency    String    @default("BRL")
-  
+  location  String
+  type      JobType  @default(REMOTE)
+  level     JobLevel @default(MID)
+  salaryMin Int?     @map("salary_min")
+  salaryMax Int?     @map("salary_max")
+  currency  String   @default("BRL")
+
   // ── Tags & Benefits ──
-  tags        String    @db.Text  // JSON array stored as text: ["React", "Node.js"]
-  benefits    String?   @db.Text  // JSON array: ["VR", "Home Office"]
-  
+  tags     String  @db.Text // JSON array stored as text: ["React", "Node.js"]
+  benefits String? @db.Text // JSON array: ["VR", "Home Office"]
+
   // ── Status & Visibility ──
-  status      JobStatus @default(DRAFT)
-  isPremium   Boolean   @default(false) @map("is_premium")
-  
+  status    JobStatus @default(DRAFT)
+  isPremium Boolean   @default(false) @map("is_premium")
+
   // ── Premium Payment ──
-  stripePaymentId String? @map("stripe_payment_id")
+  stripePaymentId  String?   @map("stripe_payment_id")
   premiumExpiresAt DateTime? @map("premium_expires_at")
-  
+
   // ── Metrics ──
-  viewCount   Int       @default(0) @map("view_count")
-  clickCount  Int       @default(0) @map("click_count")
-  
+  viewCount  Int @default(0) @map("view_count")
+  clickCount Int @default(0) @map("click_count")
+
   // ── Relations ──
-  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId    String    @map("author_id")
+  author       User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId     String        @map("author_id")
   applications Application[]
-  
+
   // ── Timestamps ──
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  expiresAt   DateTime? @map("expires_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  expiresAt DateTime? @map("expires_at")
 
   @@index([slug])
   @@index([status])
@@ -171,24 +171,24 @@ model Job {
 // PRO candidates appear at the top of the list for recruiters.
 
 model Application {
-  id          String            @id @default(cuid())
-  
-  coverLetter String?           @db.Text @map("cover_letter")
+  id String @id @default(cuid())
+
+  coverLetter String?           @map("cover_letter") @db.Text
   status      ApplicationStatus @default(PENDING)
-  
+
   // ── Notes (recruiter-side) ──
-  recruiterNotes String?        @db.Text @map("recruiter_notes")
-  
+  recruiterNotes String? @map("recruiter_notes") @db.Text
+
   // ── Relations ──
-  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String            @map("user_id")
-  job         Job               @relation(fields: [jobId], references: [id], onDelete: Cascade)
-  jobId       String            @map("job_id")
-  
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @map("user_id")
+  job    Job    @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId  String @map("job_id")
+
   // ── Timestamps ──
-  appliedAt   DateTime          @default(now()) @map("applied_at")
-  reviewedAt  DateTime?         @map("reviewed_at")
-  updatedAt   DateTime          @updatedAt @map("updated_at")
+  appliedAt  DateTime  @default(now()) @map("applied_at")
+  reviewedAt DateTime? @map("reviewed_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
 
   @@unique([userId, jobId]) // Prevent duplicate applications
   @@index([userId])

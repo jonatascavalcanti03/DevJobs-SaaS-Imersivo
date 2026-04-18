@@ -36,8 +36,7 @@ export const authOptions: AuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role,
-          image: user.image
+          role: user.role
         };
       }
     })
@@ -53,8 +52,9 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
-        // Não armazenamos a imagem no token JWT para evitar estourar o limite de tamanho do cookie (4KB)
       }
+      // Forcefully remove image from token so it never gets into the cookie
+      delete token.image;
       return token;
     },
     async session({ session, token }) {

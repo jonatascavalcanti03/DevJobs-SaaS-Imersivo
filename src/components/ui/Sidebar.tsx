@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Code2, ChevronLeft, LogOut, type LucideIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 export interface SidebarLink {
   label: string;
@@ -33,7 +34,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
       >
         {/* Logo */}
         <div className="flex items-center justify-between px-4 h-16 border-b border-white/5">
-          <a href="/" className="flex items-center gap-2">
+          <Link href={userRole === "Empresa" ? "/empresa" : "/candidato"} className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
               <Code2 className="w-5 h-5 text-white" />
             </div>
@@ -44,7 +45,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
                 </motion.span>
               )}
             </AnimatePresence>
-          </a>
+          </Link>
           <button onClick={() => setCollapsed(!collapsed)} className="p-1.5 rounded-lg hover:bg-white/5 text-[#64748B] hover:text-white transition-colors">
             <ChevronLeft className={`w-4 h-4 transition-transform duration-300 ${collapsed ? "rotate-180" : ""}`} />
           </button>
@@ -72,32 +73,32 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
           {links.map((link) => {
             const isActive = activePath === link.href;
             return (
-              <motion.a
-                key={link.href}
-                href={link.href}
-                whileHover={{ x: 2 }}
-                whileTap={{ scale: 0.98 }}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group relative ${
-                  isActive
-                    ? "bg-[#6366F1]/15 text-white border border-[#6366F1]/20"
-                    : "text-[#94A3B8] hover:text-white hover:bg-white/5"
-                } ${collapsed ? "justify-center" : ""}`}
-              >
-                {isActive && (
-                  <motion.div layoutId="activeIndicator" className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-[#6366F1]" />
-                )}
-                <link.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-[#818CF8]" : "group-hover:text-[#818CF8]"} transition-colors`} />
-                <AnimatePresence>
-                  {!collapsed && (
-                    <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="truncate">
-                      {link.label}
-                    </motion.span>
+              <Link href={link.href} key={link.href} passHref legacyBehavior>
+                <motion.a
+                  whileHover={{ x: 2 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group relative ${
+                    isActive
+                      ? "bg-[#6366F1]/15 text-white border border-[#6366F1]/20"
+                      : "text-[#94A3B8] hover:text-white hover:bg-white/5"
+                  } ${collapsed ? "justify-center" : ""}`}
+                >
+                  {isActive && (
+                    <motion.div layoutId="activeIndicator" className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-[#6366F1]" />
                   )}
-                </AnimatePresence>
-                {!collapsed && link.badge && (
-                  <span className="ml-auto px-2 py-0.5 rounded-full text-xs font-bold bg-[#6366F1]/20 text-[#818CF8]">{link.badge}</span>
-                )}
-              </motion.a>
+                  <link.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-[#818CF8]" : "group-hover:text-[#818CF8]"} transition-colors`} />
+                  <AnimatePresence>
+                    {!collapsed && (
+                      <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="truncate">
+                        {link.label}
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                  {!collapsed && link.badge && (
+                    <span className="ml-auto px-2 py-0.5 rounded-full text-xs font-bold bg-[#6366F1]/20 text-[#818CF8]">{link.badge}</span>
+                  )}
+                </motion.a>
+              </Link>
             );
           })}
         </nav>
@@ -116,10 +117,10 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
         {links.slice(0, 5).map((link) => {
           const isActive = activePath === link.href;
           return (
-            <a key={link.href} href={link.href} className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all ${isActive ? "text-[#818CF8]" : "text-[#64748B]"}`}>
+            <Link key={link.href} href={link.href} className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl transition-all ${isActive ? "text-[#818CF8]" : "text-[#64748B]"}`}>
               <link.icon className="w-5 h-5" />
               <span className="text-[10px] font-medium">{link.label}</span>
-            </a>
+            </Link>
           );
         })}
       </nav>
