@@ -213,7 +213,7 @@ export default function EmpresaCandidatosPage() {
                         <div>
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-bold text-white">{candidato.user.name}</p>
-                            {index === 0 && <Star className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" title="Candidato PRO" />}
+                            {index === 0 && <span title="Candidato PRO"><Star className="w-3.5 h-3.5 text-[#FBBF24] fill-[#FBBF24]" /></span>}
                           </div>
                           <p className="text-xs text-[#06B6D4] mt-0.5">{candidato.user.title || "Desenvolvedor"}</p>
                         </div>

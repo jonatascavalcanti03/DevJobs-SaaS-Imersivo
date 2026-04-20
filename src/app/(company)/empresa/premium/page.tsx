@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Check, Star, Zap, Crown, ArrowRight, Building2, Loader2 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
-export default function PlanosPage() {
+function PlanosContent() {
   const [isAnnual, setIsAnnual] = useState(false);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const searchParams = useSearchParams();
@@ -218,5 +218,13 @@ export default function PlanosPage() {
         })}
       </div>
     </div>
+  );
+}
+
+export default function PlanosPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-[#06B6D4]" /></div>}>
+      <PlanosContent />
+    </Suspense>
   );
 }
