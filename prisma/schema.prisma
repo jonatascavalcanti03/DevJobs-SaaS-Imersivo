@@ -10,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -60,14 +60,14 @@ model User {
   email         String    @unique
   emailVerified DateTime? @map("email_verified")
   password      String? // Hashed with bcrypt — null for OAuth-only users
-  image         String?   @db.LongText
+  image         String?   @db.Text
   role          Role      @default(CANDIDATE)
 
   // ── Candidate-specific fields ──
   title        String?
   bio          String?   @db.Text
   skills       String?   @db.Text
-  resume       String?   @db.LongText // Base64 ou URL do PDF
+  resume       String?   @db.Text // Base64 ou URL do PDF
   linkedin     String?
   github       String?
   portfolio    String?
@@ -116,7 +116,7 @@ model Job {
   id          String @id @default(cuid())
   title       String
   slug        String @unique
-  description String @db.LongText
+  description String @db.Text
 
   // ── Company Info (denormalized for performance) ──
   company     String
