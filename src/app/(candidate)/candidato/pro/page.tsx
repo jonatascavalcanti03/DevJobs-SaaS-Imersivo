@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion } from "framer-motion";
 import { Check, Star, Zap, Shield, Crown, ArrowRight, Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
-export default function CandidateProPage() {
+function ProContent() {
   const benefits = [
     {
       title: "Prioridade nas Candidaturas",
@@ -28,20 +29,44 @@ export default function CandidateProPage() {
     },
   ];
 
+  const searchParams = useSearchParams();
+  const successUrl = searchParams.get("success");
+  const canceled = searchParams.get("canceled");
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  useEffect(() => {
+    if (successUrl === "true" && !success) {
+      // Ativar o plano PRO do usuário chamando o método PUT
+      const activatePro = async () => {
+        try {
+          const res = await fetch("/api/checkout/pro", { method: "PUT" });
+          if (res.ok) {
+            setSuccess(true);
+            setTimeout(() => window.location.href = "/candidato", 3000);
+          }
+        } catch (error) {
+          console.error("Erro ao ativar", error);
+        }
+      };
+      activatePro();
+    }
+  }, [successUrl, success]);
 
   const handleSubscribe = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/checkout/pro", { method: "POST" });
-      if (res.ok) {
-        setSuccess(true);
-        setTimeout(() => window.location.href = "/candidato", 3000);
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Erro: " + data.message);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Erro no checkout", error);
-    } finally {
       setLoading(false);
     }
   };
@@ -64,6 +89,12 @@ export default function CandidateProPage() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-12">
+      {canceled && (
+        <div className="bg-red-500/10 border border-red-500 text-red-400 p-4 rounded-xl text-center font-bold">
+          O pagamento foi cancelado. Nenhuma cobrança foi feita.
+        </div>
+      )}
+
       {/* Header */}
       <div className="text-center space-y-4">
         <motion.div
@@ -165,6 +196,14 @@ export default function CandidateProPage() {
         </p>
       </motion.div>
     </div>
+  );
+}
+
+export default function CandidateProPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-20"><Loader2 className="w-10 h-10 animate-spin text-[#06B6D4]" /></div>}>
+      <ProContent />
+    </Suspense>
   );
 }
 
