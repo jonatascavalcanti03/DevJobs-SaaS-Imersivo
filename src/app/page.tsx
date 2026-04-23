@@ -6,6 +6,7 @@ import { Search, SlidersHorizontal, MapPin, Zap, Users, Building2, ArrowRight, S
 import Navbar from "@/components/ui/Navbar";
 import JobCard, { type JobData } from "@/components/ui/JobCard";
 import Footer from "@/components/ui/Footer";
+import { useSession } from "next-auth/react";
 
 // ─── Mock Data (Limpo para produção) ───────────────────────
 const MOCK_JOBS: JobData[] = [];
@@ -21,6 +22,7 @@ const FILTERS = ["Todos", "Remoto", "Híbrido", "Presencial"];
 // ─── Page Component ──────────────────────────────────────────
 
 export default function HomePage() {
+  const { status } = useSession();
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("Todos");
 
@@ -38,7 +40,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Navbar />
+      {status !== "authenticated" && <Navbar />}
 
       {/* ════════════════ HERO SECTION ════════════════ */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">

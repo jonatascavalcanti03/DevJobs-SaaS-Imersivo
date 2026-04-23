@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/providers/AuthProvider";
+import AppShell from "@/components/layout/AppShell";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -43,7 +44,9 @@ export default function RootLayout({
           {/* Noise overlay for texture */}
           <div className="noise-overlay" aria-hidden="true" />
 
-          {children}
+          <AppShell>
+            {children}
+          </AppShell>
         </AuthProvider>
       </body>
     </html>
