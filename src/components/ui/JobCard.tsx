@@ -10,8 +10,13 @@ import {
   Crown,
   ExternalLink,
   Building2,
+  Link2,
+  Bookmark,
+  BookmarkCheck,
 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 // ─── Types ───────────────────────────────────────────────────
 
@@ -28,6 +33,9 @@ export interface JobData {
   tags: string[];
   isPremium: boolean;
   createdAt: string;
+  // Vagas externas (Adzuna)
+  source?: "ADZUNA" | "INTERNAL";
+  externalUrl?: string;
 }
 
 // ─── Helpers ─────────────────────────────────────────────────
@@ -92,72 +100,110 @@ interface JobCardProps {
 }
 
 export default function JobCard({ job, index = 0 }: JobCardProps) {
-  return (
-    <Link href={`/vagas/${job.id}`} className="block w-full">
-      <motion.article
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-50px" }}
-        transition={{
-          type: "spring",
-          stiffness: 100,
-          damping: 15,
-          delay: index * 0.08,
-        }}
-        whileHover={{ y: -4, scale: 1.01 }}
-        className={`group relative rounded-2xl overflow-hidden cursor-pointer ${
-          job.isPremium ? "premium-card" : ""
+  const { data: session } = useSession();
+  const [isSaved, setIsSaved] = useState(false);
+  const [loadingSave, setLoadingSave] = useState(false);
+
+  const isExternal = job.source === "ADZUNA";
+  const isInternal = !isExternal;
+
+  const handleToggleSave = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!session) {
+      if (confirm("Você precisa estar logado para salvar vagas. Ir para login?")) {
+        window.location.href = "/login";
+      }
+      return;
+    }
+
+    try {
+      setLoadingSave(true);
+      const res = await fetch("/api/user/saved-jobs", {
+        method: "POST",
+        body: JSON.stringify({ jobId: job.id, isExternal }),
+        headers: { "Content-Type": "application/json" }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setIsSaved(data.saved);
+      }
+    } catch (err) {
+      console.error("Erro ao salvar vaga:", err);
+    } finally {
+      setLoadingSave(false);
+    }
+  };
+
+  const cardContent = (
+    <motion.article
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        delay: index * 0.06,
+      }}
+      whileHover={{ y: -4, scale: 1.01 }}
+      className={`group relative rounded-2xl overflow-hidden cursor-pointer ${
+        job.isPremium ? "premium-card" : ""
+      } ${isExternal ? "opacity-90 hover:opacity-100" : ""}`}
+    >
+      {/* ── Hover Border Glow ── */}
+      <div
+        className={`absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+          job.isPremium
+            ? "bg-gradient-to-r from-[#F59E0B]/50 via-[#F59E0B]/20 to-[#F59E0B]/50"
+            : isExternal
+            ? "bg-gradient-to-r from-[#64748B]/30 via-[#94A3B8]/10 to-[#64748B]/30"
+            : "bg-gradient-to-r from-[#6366F1]/40 via-[#06B6D4]/20 to-[#8B5CF6]/40"
         }`}
-      >
-        {/* ── Hover Border Glow ── */}
-        <div
-          className={`absolute -inset-[1px] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-            job.isPremium
-              ? "bg-gradient-to-r from-[#F59E0B]/50 via-[#F59E0B]/20 to-[#F59E0B]/50"
-              : "bg-gradient-to-r from-[#6366F1]/40 via-[#06B6D4]/20 to-[#8B5CF6]/40"
-          }`}
-        />
+      />
 
-        {/* ── Card Body ── */}
-        <div className="relative bg-[#0B1121] glass-card rounded-2xl p-5 sm:p-6">
-          {/* ── Header ── */}
-          <div className="flex items-start gap-4">
-            {/* Company Logo */}
-            <motion.div
-              whileHover={{ rotate: [0, -5, 5, 0] }}
-              transition={{ duration: 0.5 }}
-              className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center ${
-                job.isPremium
-                  ? "bg-gradient-to-br from-[#F59E0B]/20 to-[#F59E0B]/5 border border-[#F59E0B]/20"
-                  : "bg-gradient-to-br from-[#6366F1]/20 to-[#6366F1]/5 border border-[#6366F1]/20"
-              }`}
-            >
-              {job.companyLogo ? (
-                <img
-                  src={job.companyLogo}
-                  alt={job.company}
-                  className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-contain"
-                />
-              ) : (
-                <Building2
-                  className={`w-6 h-6 ${
-                    job.isPremium ? "text-[#FBBF24]" : "text-[#818CF8]"
-                  }`}
-                />
-              )}
-            </motion.div>
+      {/* ── Card Body ── */}
+      <div className={`relative glass-card rounded-2xl p-5 sm:p-6 ${isExternal ? "bg-[#080D1A]" : "bg-[#0B1121]"}`}>
+        {/* ── Header ── */}
+        <div className="flex items-start gap-4">
+          {/* Company Logo */}
+          <motion.div
+            whileHover={{ rotate: [0, -5, 5, 0] }}
+            transition={{ duration: 0.5 }}
+            className={`flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center ${
+              job.isPremium
+                ? "bg-gradient-to-br from-[#F59E0B]/20 to-[#F59E0B]/5 border border-[#F59E0B]/20"
+                : isExternal
+                ? "bg-gradient-to-br from-white/5 to-white/2 border border-white/10"
+                : "bg-gradient-to-br from-[#6366F1]/20 to-[#6366F1]/5 border border-[#6366F1]/20"
+            }`}
+          >
+            {job.companyLogo ? (
+              <img
+                src={job.companyLogo}
+                alt={job.company}
+                className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg object-contain"
+              />
+            ) : (
+              <Building2
+                className={`w-6 h-6 ${
+                  job.isPremium ? "text-[#FBBF24]" : isExternal ? "text-[#64748B]" : "text-[#818CF8]"
+                }`}
+              />
+            )}
+          </motion.div>
 
-            {/* Title & Company */}
-            <div className="flex-1 min-w-0">
-              <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#818CF8] transition-colors duration-300 truncate">
-                {job.title}
-              </h3>
-              <p className="text-sm text-[#94A3B8] mt-0.5 truncate">
-                {job.company}
-              </p>
-            </div>
+          {/* Title & Company */}
+          <div className="flex-1 min-w-0">
+            <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#818CF8] transition-colors duration-300 truncate">
+              {job.title}
+            </h3>
+            <p className="text-sm text-[#94A3B8] mt-0.5 truncate">{job.company}</p>
+          </div>
 
-            {/* Premium Badge (in flow, no overlap) */}
+          {/* Badge */}
+          <div className="flex flex-col items-end gap-2">
             {job.isPremium && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -166,49 +212,71 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
               >
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#F59E0B]/20 to-[#F59E0B]/10 border border-[#F59E0B]/30">
                   <Crown className="w-3.5 h-3.5 text-[#FBBF24]" />
-                  <span className="text-xs font-bold text-[#FBBF24] uppercase tracking-wider">
-                    Premium
-                  </span>
+                  <span className="text-xs font-bold text-[#FBBF24] uppercase tracking-wider">Premium</span>
                 </div>
               </motion.div>
             )}
-          </div>
 
-          {/* ── Meta Info ── */}
-          <div className="flex flex-wrap items-center gap-3 mt-4">
-            <span className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
-              <MapPin className="w-3.5 h-3.5 text-[#06B6D4]" />
-              {job.location}
-            </span>
-            <span className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
-              <Briefcase className="w-3.5 h-3.5 text-[#8B5CF6]" />
-              {typeLabels[job.type]}
-            </span>
-            <span
-              className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-gradient-to-r border ${
-                levelColors[job.level]
+            {isExternal && (
+              <div className="flex-shrink-0">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
+                  <Link2 className="w-3 h-3 text-[#64748B]" />
+                  <span className="text-[10px] font-medium text-[#64748B] uppercase tracking-wider">Parceiro</span>
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={handleToggleSave}
+              disabled={loadingSave}
+              className={`p-2 rounded-lg border transition-all ${
+                isSaved 
+                  ? "bg-[#6366F1] border-[#6366F1] text-white" 
+                  : "bg-white/5 border-white/10 text-[#64748B] hover:text-white hover:bg-white/10"
               }`}
+              title={isSaved ? "Remover dos favoritos" : "Salvar vaga"}
             >
-              <TrendingUp className="w-3 h-3" />
-              {levelLabels[job.level]}
+              {isSaved ? <BookmarkCheck className="w-3.5 h-3.5 fill-current" /> : <Bookmark className="w-3.5 h-3.5" />}
+            </button>
+          </div>
+        </div>
+
+        {/* ── Meta Info ── */}
+        <div className="flex flex-wrap items-center gap-3 mt-4">
+          <span className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
+            <MapPin className="w-3.5 h-3.5 text-[#06B6D4]" />
+            {job.location}
+          </span>
+          <span className="flex items-center gap-1.5 text-xs text-[#94A3B8]">
+            <Briefcase className="w-3.5 h-3.5 text-[#8B5CF6]" />
+            {typeLabels[job.type] || job.type}
+          </span>
+          <span
+            className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full bg-gradient-to-r border ${
+              levelColors[job.level] || levelColors["MID"]
+            }`}
+          >
+            <TrendingUp className="w-3 h-3" />
+            {levelLabels[job.level] || job.level}
+          </span>
+        </div>
+
+        {/* ── Salary ── */}
+        {(job.salaryMin || job.salaryMax) && (
+          <div className="flex items-center gap-1.5 mt-3">
+            <DollarSign className="w-4 h-4 text-[#10B981]" />
+            <span className="text-sm font-semibold text-[#10B981]">
+              {job.salaryMin && job.salaryMax
+                ? `${formatSalary(job.salaryMin)} - ${formatSalary(job.salaryMax)}`
+                : job.salaryMin
+                ? `A partir de ${formatSalary(job.salaryMin)}`
+                : `Até ${formatSalary(job.salaryMax!)}`}
             </span>
           </div>
+        )}
 
-          {/* ── Salary ── */}
-          {(job.salaryMin || job.salaryMax) && (
-            <div className="flex items-center gap-1.5 mt-3">
-              <DollarSign className="w-4 h-4 text-[#10B981]" />
-              <span className="text-sm font-semibold text-[#10B981]">
-                {job.salaryMin && job.salaryMax
-                  ? `${formatSalary(job.salaryMin)} - ${formatSalary(job.salaryMax)}`
-                  : job.salaryMin
-                  ? `A partir de ${formatSalary(job.salaryMin)}`
-                  : `Até ${formatSalary(job.salaryMax!)}`}
-              </span>
-            </div>
-          )}
-
-          {/* ── Tags ── */}
+        {/* ── Tags ── */}
+        {job.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-4">
             {job.tags.slice(0, 5).map((tag, i) => (
               <motion.span
@@ -230,24 +298,43 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
               </span>
             )}
           </div>
+        )}
 
-          {/* ── Footer ── */}
-          <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/5">
-            <span className="flex items-center gap-1.5 text-xs text-[#64748B]">
-              <Clock className="w-3.5 h-3.5" />
-              {timeAgo(job.createdAt)}
-            </span>
+        {/* ── Footer ── */}
+        <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/5">
+          <span className="flex items-center gap-1.5 text-xs text-[#64748B]">
+            <Clock className="w-3.5 h-3.5" />
+            {timeAgo(job.createdAt)}
+          </span>
 
-            <motion.span
-              className="flex items-center gap-1.5 text-xs font-medium text-[#818CF8] opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0"
-              whileHover={{ x: 3 }}
-            >
-              Ver vaga
-              <ExternalLink className="w-3.5 h-3.5" />
-            </motion.span>
-          </div>
+          <motion.span
+            className={`flex items-center gap-1.5 text-xs font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 ${
+              isExternal ? "text-[#64748B]" : "text-[#818CF8]"
+            }`}
+            whileHover={{ x: 3 }}
+          >
+            {isExternal ? "Ver no site parceiro" : "Ver vaga"}
+            <ExternalLink className="w-3.5 h-3.5" />
+          </motion.span>
         </div>
-      </motion.article>
+      </div>
+    </motion.article>
+  );
+
+  // Vagas externas abrem na nossa landing page interna primeiro
+  if (isExternal) {
+    return (
+      <Link href={`/vagas/externa/${job.id}`} className="block w-full">
+        {cardContent}
+      </Link>
+    );
+  }
+
+  // Vagas internas abrem na página interna padrão
+  return (
+    <Link href={`/vagas/${job.id}`} className="block w-full">
+      {cardContent}
     </Link>
   );
 }
+

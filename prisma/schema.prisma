@@ -22,6 +22,13 @@ enum Role {
   ADMIN
 }
 
+enum PlanType {
+  FREE
+  PRO          // Candidato PRO
+  ESSENCIAL    // Empresa Essencial
+  CORPORATIVO  // Empresa Corporativo PRO
+}
+
 enum JobType {
   REMOTE
   HYBRID
@@ -75,6 +82,13 @@ model User {
   isPro        Boolean   @default(false) @map("is_pro")
   proExpiresAt DateTime? @map("pro_expires_at")
 
+  // ── Plano Ativo (todos os tipos de usuário) ──
+  activePlan   PlanType  @default(FREE) @map("active_plan")
+  planExpiresAt DateTime? @map("plan_expires_at")
+
+  // ── Empresa Verificada (Corporativo PRO) ──
+  isVerified   Boolean   @default(false) @map("is_verified")
+
   // ── Company-specific fields ──
   companyName    String? @map("company_name")
   companyLogo    String? @map("company_logo") @db.Text
@@ -96,8 +110,12 @@ model User {
   // ── Relations ──
   jobs         Job[]
   applications Application[]
+  jobAlerts    JobAlert[]
+  savedJobs    SavedJob[]
   accounts     Account[]
   sessions     Session[]
+
+
 
   // ── Timestamps ──
   createdAt DateTime @default(now()) @map("created_at")
@@ -246,3 +264,46 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verification_tokens")
 }
+
+// ─── Job Alert ───────────────────────────────────────────────
+// Saved search criteria for candidates to receive notifications.
+
+model JobAlert {
+  id       String  @id @default(cuid())
+  userId   String  @map("user_id")
+  query    String  // Cargo ou tecnologia (ex: "React")
+  location String? // Estado ou Cidade (ex: "SP")
+  active   Boolean @default(true)
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@map("job_alerts")
+}
+
+// ─── Saved Job ───────────────────────────────────────────────
+// Bookmarked jobs for candidates. Supports internal and external.
+
+model SavedJob {
+  id         String   @id @default(cuid())
+  userId     String   @map("user_id")
+  jobId      String   @map("job_id") // ID da vaga (interna ou adzuna_...)
+  isExternal Boolean  @default(false) @map("is_external")
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Timestamps
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, jobId])
+  @@index([userId])
+  @@map("saved_jobs")
+}
+
+

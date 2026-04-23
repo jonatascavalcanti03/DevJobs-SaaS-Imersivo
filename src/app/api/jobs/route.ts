@@ -90,10 +90,11 @@ export async function GET(req: Request) {
       where: whereClause,
       include: {
         _count: {
-          select: { applications: true }
-        }
+          select: { applications: true },
+        },
       },
-      orderBy: { createdAt: "desc" },
+      // Vagas premium sempre no topo, depois por data
+      orderBy: [{ isPremium: "desc" }, { createdAt: "desc" }],
     });
 
     return NextResponse.json(jobs, { status: 200 });
@@ -102,3 +103,4 @@ export async function GET(req: Request) {
     return NextResponse.json({ message: "Erro interno no servidor" }, { status: 500 });
   }
 }
+

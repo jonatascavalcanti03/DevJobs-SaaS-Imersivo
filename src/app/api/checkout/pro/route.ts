@@ -11,23 +11,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Não autorizado" }, { status: 401 });
     }
 
-    const origin = req.headers.get("origin") || "http://localhost:3000";
+    const origin =
+      req.headers.get("origin") ||
+      process.env.NEXTAUTH_URL?.replace(/\/$/, "") ||
+      "http://localhost:3001";
 
     const checkoutSession = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
+      payment_method_types: ["card"],
+      mode: "payment",
       line_items: [
         {
           price_data: {
-            currency: 'brl',
+            currency: "brl",
             product_data: {
-              name: 'Plano DevJobs PRO (Mensal)',
+              name: "Plano DevJobs PRO (Mensal)",
+              description:
+                "Perfil destacado, candidaturas priorizadas e acesso a vagas exclusivas por 30 dias.",
             },
             unit_amount: 2900, // R$ 29,00
           },
           quantity: 1,
         },
       ],
+      metadata: {
+        userId: (session.user as any).id,
+        plan: "PRO",
+      },
       success_url: `${origin}/candidato/pro?success=true`,
       cancel_url: `${origin}/candidato/pro?canceled=true`,
     });
