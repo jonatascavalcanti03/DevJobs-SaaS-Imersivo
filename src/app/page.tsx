@@ -7,31 +7,14 @@ import Navbar from "@/components/ui/Navbar";
 import JobCard, { type JobData } from "@/components/ui/JobCard";
 import Footer from "@/components/ui/Footer";
 
-// ─── Mock Data ───────────────────────────────────────────────
-
-const MOCK_JOBS: JobData[] = [
-  { id: "1", title: "Engenheiro(a) Frontend React", company: "Google Brasil", location: "São Paulo, SP", type: "HYBRID", level: "SENIOR", salaryMin: 18000, salaryMax: 28000, tags: ["React", "TypeScript", "Next.js", "GraphQL", "Tailwind"], isPremium: true, createdAt: new Date().toISOString() },
-  { id: "2", title: "Desenvolvedor(a) Full-Stack", company: "Meta", location: "Remoto", type: "REMOTE", level: "MID", salaryMin: 12000, salaryMax: 20000, tags: ["Node.js", "React", "PostgreSQL", "Docker"], isPremium: true, createdAt: new Date(Date.now() - 86400000).toISOString() },
-  { id: "3", title: "Backend Developer Python", company: "Nubank", location: "São Paulo, SP", type: "REMOTE", level: "SENIOR", salaryMin: 20000, salaryMax: 32000, tags: ["Python", "FastAPI", "AWS", "Kubernetes", "Redis"], isPremium: false, createdAt: new Date(Date.now() - 172800000).toISOString() },
-  { id: "4", title: "Mobile Developer React Native", company: "iFood", location: "Campinas, SP", type: "HYBRID", level: "MID", salaryMin: 10000, salaryMax: 16000, tags: ["React Native", "TypeScript", "Firebase"], isPremium: false, createdAt: new Date(Date.now() - 259200000).toISOString() },
-  { id: "5", title: "DevOps Engineer", company: "Mercado Livre", location: "Remoto", type: "REMOTE", level: "SENIOR", salaryMin: 22000, salaryMax: 35000, tags: ["AWS", "Terraform", "Docker", "CI/CD", "Linux"], isPremium: true, createdAt: new Date(Date.now() - 345600000).toISOString() },
-  { id: "6", title: "Desenvolvedor(a) Java", company: "PagSeguro", location: "São Paulo, SP", type: "ONSITE", level: "JUNIOR", salaryMin: 5000, salaryMax: 8000, tags: ["Java", "Spring Boot", "MySQL"], isPremium: false, createdAt: new Date(Date.now() - 432000000).toISOString() },
-];
-
-const MOCK_INTERNSHIPS: JobData[] = [
-  { id: "i1", title: "Estágio em Desenvolvimento Web", company: "TOTVS", location: "São Paulo, SP", type: "HYBRID", level: "INTERN", salaryMin: 1800, salaryMax: 2500, tags: ["HTML", "CSS", "JavaScript", "React"], isPremium: false, createdAt: new Date().toISOString() },
-  { id: "i2", title: "Estágio em Data Science", company: "Itaú", location: "São Paulo, SP", type: "ONSITE", level: "INTERN", salaryMin: 2000, salaryMax: 3000, tags: ["Python", "SQL", "Pandas", "Machine Learning"], isPremium: true, createdAt: new Date(Date.now() - 86400000).toISOString() },
-  { id: "i3", title: "Estágio Backend Java", company: "Bradesco", location: "Osasco, SP", type: "HYBRID", level: "INTERN", salaryMin: 1600, salaryMax: 2200, tags: ["Java", "Spring", "SQL", "Git"], isPremium: false, createdAt: new Date(Date.now() - 172800000).toISOString() },
-  { id: "i4", title: "Estágio em DevOps", company: "Globo", location: "Remoto", type: "REMOTE", level: "INTERN", salaryMin: 2000, salaryMax: 2800, tags: ["Linux", "Docker", "AWS", "CI/CD"], isPremium: false, createdAt: new Date(Date.now() - 259200000).toISOString() },
-];
+// ─── Mock Data (Limpo para produção) ───────────────────────
+const MOCK_JOBS: JobData[] = [];
+const MOCK_INTERNSHIPS: JobData[] = [];
 
 const LOGO_COMPANIES = ["Google", "Meta", "Nubank", "iFood", "Mercado Livre", "PagSeguro", "Spotify", "Amazon", "Microsoft", "Apple", "Netflix", "Uber"];
 
-const STATS = [
-  { icon: Zap, value: "2.500+", label: "Vagas Ativas" },
-  { icon: Users, value: "45.000+", label: "Desenvolvedores" },
-  { icon: Building2, value: "800+", label: "Empresas" },
-];
+// STATS removidos (dados fictícios)
+const STATS: any[] = [];
 
 const FILTERS = ["Todos", "Remoto", "Híbrido", "Presencial"];
 
@@ -72,10 +55,8 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center pt-32 pb-20">
           {/* Badge */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-[#6366F1]/20 mb-8">
-            <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75" /><span className="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]" /></span>
-            <span className="text-sm text-[#94A3B8]">+120 novas vagas esta semana</span>
-          </motion.div>
+          {/* Badge removido conforme solicitação */}
+
 
           {/* Headline */}
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight mb-6">
@@ -123,15 +104,8 @@ export default function HomePage() {
           </motion.div>
 
           {/* Stats */}
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.5 }} className="grid grid-cols-3 gap-4 max-w-lg mx-auto">
-            {STATS.map((stat, i) => (
-              <motion.div key={i} whileHover={{ y: -4, scale: 1.05 }} className="glass rounded-xl p-4 text-center group cursor-default">
-                <stat.icon className="w-5 h-5 mx-auto mb-2 text-[#6366F1] group-hover:text-[#06B6D4] transition-colors duration-300" />
-                <div className="text-xl sm:text-2xl font-bold text-white">{stat.value}</div>
-                <div className="text-xs text-[#64748B] mt-0.5">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
+          {/* Stats removidos conforme solicitação */}
+
         </div>
 
         {/* Scroll Indicator */}
@@ -211,23 +185,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ════════════════ LOGO CAROUSEL ════════════════ */}
-      <section className="relative py-16 border-y border-white/5 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 text-center">
-          <p className="text-sm text-[#64748B] uppercase tracking-widest font-medium">Empresas que confiam no DevJobs.br</p>
-        </div>
-        <div className="relative">
-          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#050510] to-transparent z-10" />
-          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#050510] to-transparent z-10" />
-          <div className="logo-carousel">
-            {[...LOGO_COMPANIES, ...LOGO_COMPANIES].map((name, i) => (
-              <div key={`${name}-${i}`} className="flex-shrink-0 mx-8 sm:mx-12 flex items-center justify-center h-12 opacity-40 hover:opacity-80 transition-opacity duration-500 cursor-pointer">
-                <span className="text-lg sm:text-xl font-bold text-[#94A3B8] whitespace-nowrap tracking-wide">{name}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Seção de logos removida (dados fictícios) */}
+
 
       {/* ════════════════ PRO SECTION ════════════════ */}
       <section id="pro" className="relative py-20 sm:py-28">
