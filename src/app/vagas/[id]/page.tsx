@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import JobDetailsClient from "./JobDetailsClient";
 
 interface Props {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function JobDetailsPage({ params }: Props) {

@@ -112,6 +112,17 @@ Foi implementado um uso intensivo de **Bordas Brilhantes (Glow Borders)** em CSS
 
 ---
 
+## 👥 Equipe do Projeto
+
+Este projeto foi construído e idealizado com dedicação pela seguinte equipe técnica:
+
+* **Desenvolvedor Full Stack / Engenheiro de Software:**
+  * Jônatas Cavalcanti ([@jonatascavalcanti03](https://github.com/jonatascavalcanti03))
+* **Analista de Requisitos / Product Owner:**
+  * Pedro Henrique Santos ([@pedruhen](https://github.com/pedruhen) | ✉️ pedrohensantos03@gmail.com)
+
+---
+
 <div align="center">
-  Desenvolvido com 💙 e muita dedicação.
+  Desenvolvido com 💙 e muita dedicação por esta equipe.
 </div>

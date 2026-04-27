@@ -198,7 +198,7 @@ export default function CompanyDashboard() {
                       
                       <div className="flex items-center gap-2 mt-2">
                         <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-medium">
-                          {85 + (index % 15)}% Match
+                          {candidato.matchScore || 0}% Match
                         </span>
                         <StatusBadge status={candidato.status} />
                       </div>

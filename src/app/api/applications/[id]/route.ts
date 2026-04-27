@@ -22,7 +22,7 @@ export async function PATCH(req: Request, context: { params: Promise<{ id: strin
 
     const { status } = await req.json();
 
-    if (!["PENDING", "ACCEPTED", "REJECTED"].includes(status)) {
+    if (!["PENDING", "REVIEWED", "ACCEPTED", "REJECTED"].includes(status)) {
       return NextResponse.json({ message: "Status inválido." }, { status: 400 });
     }
 

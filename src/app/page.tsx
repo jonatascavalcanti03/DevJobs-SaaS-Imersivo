@@ -1,16 +1,12 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Search, SlidersHorizontal, MapPin, Zap, Users, Building2, ArrowRight, Shield, Star, ChevronRight, GraduationCap, Rocket } from "lucide-react";
+import { Search, SlidersHorizontal, MapPin, Zap, Users, Building2, ArrowRight, Shield, Star, ChevronRight, GraduationCap, Rocket, Loader2 } from "lucide-react";
 import Navbar from "@/components/ui/Navbar";
 import JobCard, { type JobData } from "@/components/ui/JobCard";
 import Footer from "@/components/ui/Footer";
 import { useSession } from "next-auth/react";
-
-// ─── Mock Data (Limpo para produção) ───────────────────────
-const MOCK_JOBS: JobData[] = [];
-const MOCK_INTERNSHIPS: JobData[] = [];
 
 const LOGO_COMPANIES = ["Google", "Meta", "Nubank", "iFood", "Mercado Livre", "PagSeguro", "Spotify", "Amazon", "Microsoft", "Apple", "Netflix", "Uber"];
 
@@ -18,6 +14,8 @@ const LOGO_COMPANIES = ["Google", "Meta", "Nubank", "iFood", "Mercado Livre", "P
 const STATS: any[] = [];
 
 const FILTERS = ["Todos", "Remoto", "Híbrido", "Presencial"];
+const LEVEL_FILTERS = ["Qualquer Nível", "Estágio", "Júnior", "Pleno", "Sênior", "Lead"];
+const TECH_FILTERS = ["Todas Techs", "React", "Node", "Python", "Java", "Mobile"];
 
 // ─── Page Component ──────────────────────────────────────────
 
@@ -25,18 +23,75 @@ export default function HomePage() {
   const { status } = useSession();
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("Todos");
+  const [activeLevelFilter, setActiveLevelFilter] = useState("Qualquer Nível");
+  const [activeTechFilter, setActiveTechFilter] = useState("Todas Techs");
+  const [jobs, setJobs] = useState<JobData[]>([]);
+  const [internships, setInternships] = useState<JobData[]>([]);
+  const [loadingJobs, setLoadingJobs] = useState(true);
+
+  useEffect(() => {
+    async function fetchJobs() {
+      try {
+        const res = await fetch("/api/jobs?status=ACTIVE");
+        if (res.ok) {
+          const data = await res.json();
+          const parsedJobs = data.map((job: any) => {
+            let tagsArray = [];
+            try { tagsArray = JSON.parse(job.tags); } catch { tagsArray = []; }
+            return {
+              id: job.id,
+              title: job.title,
+              company: job.company,
+              companyLogo: job.companyLogo,
+              location: job.location,
+              type: job.type,
+              level: job.level,
+              salaryMin: job.salaryMin,
+              salaryMax: job.salaryMax,
+              tags: tagsArray,
+              isPremium: job.isPremium,
+              createdAt: job.createdAt,
+            };
+          });
+          
+          setJobs(parsedJobs.filter((j: any) => j.level !== "INTERN").slice(0, 6));
+          setInternships(parsedJobs.filter((j: any) => j.level === "INTERN").slice(0, 4));
+        }
+      } catch (error) {
+        console.error("Erro ao buscar vagas:", error);
+      } finally {
+        setLoadingJobs(false);
+      }
+    }
+    fetchJobs();
+  }, []);
 
   const filteredJobs = useMemo(() => {
-    return MOCK_JOBS.filter((job) => {
+    return jobs.filter((job) => {
+      // Busca textual
       const matchesSearch = search === "" ||
         job.title.toLowerCase().includes(search.toLowerCase()) ||
         job.company.toLowerCase().includes(search.toLowerCase()) ||
         job.tags.some((t) => t.toLowerCase().includes(search.toLowerCase()));
+        
+      // Filtro de Localidade / Tipo
       const filterMap: Record<string, string | undefined> = { Remoto: "REMOTE", Híbrido: "HYBRID", Presencial: "ONSITE" };
       const matchesFilter = activeFilter === "Todos" || job.type === filterMap[activeFilter];
-      return matchesSearch && matchesFilter;
+      
+      // Filtro de Nível
+      const levelMap: Record<string, string | undefined> = { 
+        "Estágio": "INTERN", "Júnior": "JUNIOR", "Pleno": "MID", "Sênior": "SENIOR", "Lead": "LEAD" 
+      };
+      const matchesLevel = activeLevelFilter === "Qualquer Nível" || job.level === levelMap[activeLevelFilter];
+      
+      // Filtro de Tecnologia
+      const matchesTech = activeTechFilter === "Todas Techs" || 
+        job.tags.some(t => t.toLowerCase().includes(activeTechFilter.toLowerCase())) ||
+        job.title.toLowerCase().includes(activeTechFilter.toLowerCase());
+
+      return matchesSearch && matchesFilter && matchesLevel && matchesTech;
     });
-  }, [search, activeFilter]);
+  }, [jobs, search, activeFilter, activeLevelFilter, activeTechFilter]);
 
   return (
     <>
@@ -97,12 +152,28 @@ export default function HomePage() {
           </motion.div>
 
           {/* Quick Filters */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="flex items-center justify-center gap-2 flex-wrap mb-16">
-            {FILTERS.map((filter) => (
-              <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${activeFilter === filter ? "bg-[#6366F1] text-white shadow-lg shadow-[#6366F1]/25" : "glass text-[#94A3B8] hover:text-white hover:bg-white/10"}`}>
-                {filter}
-              </button>
-            ))}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="flex flex-col items-center justify-center gap-3 mb-16">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {FILTERS.map((filter) => (
+                <button key={filter} onClick={() => setActiveFilter(filter)} className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-all duration-300 ${activeFilter === filter ? "bg-[#6366F1] text-white shadow-lg shadow-[#6366F1]/25" : "glass text-[#94A3B8] hover:text-white hover:bg-white/10"}`}>
+                  {filter}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {LEVEL_FILTERS.map((filter) => (
+                <button key={filter} onClick={() => setActiveLevelFilter(filter)} className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-all duration-300 ${activeLevelFilter === filter ? "bg-[#06B6D4] text-white shadow-lg shadow-[#06B6D4]/25" : "glass text-[#94A3B8] hover:text-white hover:bg-white/10"}`}>
+                  {filter}
+                </button>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              {TECH_FILTERS.map((filter) => (
+                <button key={filter} onClick={() => setActiveTechFilter(filter)} className={`px-4 py-1.5 rounded-xl text-sm font-medium transition-all duration-300 ${activeTechFilter === filter ? "bg-[#8B5CF6] text-white shadow-lg shadow-[#8B5CF6]/25" : "glass text-[#94A3B8] hover:text-white hover:bg-white/10"}`}>
+                  {filter}
+                </button>
+              ))}
+            </div>
           </motion.div>
 
           {/* Stats */}
@@ -129,7 +200,11 @@ export default function HomePage() {
             <p className="text-[#94A3B8] max-w-xl mx-auto">As melhores oportunidades das empresas mais inovadoras do mercado tech brasileiro</p>
           </motion.div>
 
-          {filteredJobs.length > 0 ? (
+          {loadingJobs ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-10 h-10 text-[#6366F1] animate-spin" />
+            </div>
+          ) : filteredJobs.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredJobs.map((job, i) => (
                 <JobCard key={job.id} job={job} index={i} />
@@ -139,7 +214,7 @@ export default function HomePage() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
               <Search className="w-12 h-12 text-[#64748B] mx-auto mb-4" />
               <p className="text-[#94A3B8] text-lg">Nenhuma vaga encontrada para sua busca.</p>
-              <button onClick={() => { setSearch(""); setActiveFilter("Todos"); }} className="mt-4 text-[#6366F1] hover:text-[#818CF8] text-sm font-medium transition-colors">Limpar filtros</button>
+              <button onClick={() => { setSearch(""); setActiveFilter("Todos"); setActiveLevelFilter("Qualquer Nível"); setActiveTechFilter("Todas Techs"); }} className="mt-4 text-[#6366F1] hover:text-[#818CF8] text-sm font-medium transition-colors">Limpar filtros</button>
             </motion.div>
           )}
 
@@ -166,11 +241,21 @@ export default function HomePage() {
             <p className="text-[#94A3B8] max-w-xl mx-auto">Oportunidades exclusivas para quem está começando. Grandes empresas buscando novos talentos para formar.</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {MOCK_INTERNSHIPS.map((job, i) => (
-              <JobCard key={job.id} job={job} index={i} />
-            ))}
-          </div>
+          {loadingJobs ? (
+            <div className="flex justify-center items-center py-10">
+              <Loader2 className="w-8 h-8 text-[#06B6D4] animate-spin" />
+            </div>
+          ) : internships.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {internships.map((job, i) => (
+                <JobCard key={job.id} job={job} index={i} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-10 glass-card rounded-2xl border border-white/5">
+              <p className="text-[#94A3B8]">Nenhuma vaga de estágio disponível no momento.</p>
+            </div>
+          )}
 
           <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mt-10 rounded-2xl glass border border-[#06B6D4]/10 p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6">
             <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-[#06B6D4]/20 to-[#06B6D4]/5 border border-[#06B6D4]/20 flex items-center justify-center">
@@ -242,6 +327,20 @@ export default function HomePage() {
               </motion.a>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ════════════════ TECH STACK (Para o Professor) ════════════════ */}
+      <section className="relative py-16 border-t border-white/5 bg-[#050510]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-sm font-semibold text-[#64748B] uppercase tracking-wider mb-8">Arquitetura & Tecnologias Utilizadas</p>
+          <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-12 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+            <div className="flex items-center gap-2 text-white font-bold text-xl"><div className="w-8 h-8 bg-white text-black rounded-full flex items-center justify-center font-black">N</div> Next.js 16</div>
+            <div className="flex items-center gap-2 text-[#3178C6] font-bold text-xl"><div className="w-8 h-8 bg-[#3178C6] text-white rounded flex items-center justify-center font-black text-sm">TS</div> TypeScript</div>
+            <div className="flex items-center gap-2 text-[#38BDF8] font-bold text-xl"><div className="w-8 h-8 flex items-center justify-center font-black text-2xl">〰️</div> Tailwind</div>
+            <div className="flex items-center gap-2 text-white font-bold text-xl"><div className="w-8 h-8 border border-white rounded-full flex items-center justify-center font-black text-sm">▲</div> Prisma</div>
+            <div className="flex items-center gap-2 text-[#336791] font-bold text-xl"><div className="w-8 h-8 bg-[#336791] text-white rounded-full flex items-center justify-center font-black text-sm">🐘</div> PostgreSQL</div>
+          </div>
         </div>
       </section>
 

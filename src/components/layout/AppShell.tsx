@@ -17,7 +17,7 @@ import {
 const CANDIDATE_LINKS: SidebarLink[] = [
   { label: "Dashboard", href: "/candidato", icon: LayoutDashboard },
   { label: "Buscar Vagas", href: "/vagas", icon: Search },
-  { label: "Candidaturas", href: "/candidato/candidaturas", icon: Briefcase, badge: "3" },
+  { label: "Candidaturas", href: "/candidato/candidaturas", icon: Briefcase },
   { label: "Meu Perfil", href: "/candidato/perfil", icon: User },
   { label: "Plano PRO", href: "/candidato/pro", icon: Star },
 ];
@@ -26,7 +26,7 @@ const COMPANY_LINKS: SidebarLink[] = [
   { label: "Dashboard", href: "/empresa", icon: LayoutDashboard },
   { label: "Minhas Vagas", href: "/empresa/vagas", icon: Building2 },
   { label: "Nova Vaga", href: "/empresa/nova-vaga", icon: PlusCircle },
-  { label: "Candidatos", href: "/empresa/candidatos", icon: Users, badge: "Novo" },
+  { label: "Candidatos", href: "/empresa/candidatos", icon: Users },
   { label: "Perfil", href: "/empresa/perfil", icon: User },
   { label: "Plano Premium", href: "/empresa/premium", icon: Star },
 ];

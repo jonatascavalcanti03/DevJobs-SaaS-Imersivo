@@ -1,19 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { LayoutDashboard, Users, PlusCircle, Building2, Star, User } from "lucide-react";
-import Sidebar, { type SidebarLink } from "@/components/ui/Sidebar";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-
-const COMPANY_LINKS: SidebarLink[] = [
-  { label: "Dashboard", href: "/empresa", icon: LayoutDashboard },
-  { label: "Minhas Vagas", href: "/empresa/vagas", icon: Building2 },
-  { label: "Nova Vaga", href: "/empresa/nova-vaga", icon: PlusCircle },
-  { label: "Candidatos", href: "/empresa/candidatos", icon: Users, badge: "Novo" },
-  { label: "Perfil", href: "/empresa/perfil", icon: User },
-  { label: "Plano Premium", href: "/empresa/premium", icon: Star },
-];
 
 export default function CompanyLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || "/empresa";

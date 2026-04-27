@@ -1,7 +1,5 @@
 import { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import LinkedInProvider from "next-auth/providers/linkedin";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "./prisma";
 import bcrypt from "bcryptjs";
@@ -9,38 +7,6 @@ import bcrypt from "bcryptjs";
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma) as any,
   providers: [
-    // ── Google OAuth ──────────────────────────────────────────
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          prompt: "consent",
-          access_type: "offline",
-          response_type: "code",
-        },
-      },
-    }),
-
-    // ── LinkedIn OAuth ────────────────────────────────────────
-    LinkedInProvider({
-      clientId: process.env.LINKEDIN_CLIENT_ID!,
-      clientSecret: process.env.LINKEDIN_CLIENT_SECRET!,
-      authorization: {
-        params: { scope: "openid profile email" },
-      },
-      issuer: "https://www.linkedin.com",
-      jwks_endpoint: "https://www.linkedin.com/oauth/openid/jwks",
-      profile(profile) {
-        return {
-          id: profile.sub,
-          name: profile.name,
-          email: profile.email,
-          image: profile.picture,
-        };
-      },
-    }),
-
     // ── Email + Senha ─────────────────────────────────────────
     CredentialsProvider({
       name: "Credentials",
@@ -100,26 +66,7 @@ export const authOptions: AuthOptions = {
   },
 
   callbacks: {
-    // Quando um usuário faz login via OAuth (Google/LinkedIn),
-    // garantimos que ele tenha um role atribuído no banco.
-    async signIn({ user, account }) {
-      if (account?.provider === "google" || account?.provider === "linkedin") {
-        try {
-          const dbUser = await prisma.user.findUnique({
-            where: { email: user.email! },
-          });
-
-          // Se é o primeiro login social, atribui role CANDIDATE por padrão
-          if (dbUser && !dbUser.role) {
-            await prisma.user.update({
-              where: { id: dbUser.id },
-              data: { role: "CANDIDATE" },
-            });
-          }
-        } catch (err) {
-          console.error("Erro ao verificar usuário OAuth:", err);
-        }
-      }
+    async signIn() {
       return true;
     },
 

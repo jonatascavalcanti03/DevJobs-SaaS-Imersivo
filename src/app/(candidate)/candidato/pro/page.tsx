@@ -170,7 +170,7 @@ function ProContent() {
           transition={{ delay: 0.1 }}
           className="text-3xl sm:text-4xl md:text-5xl font-bold text-white"
         >
-          Destaque-se com o <span className="text-[#FBBF24]">DevJobs PRO</span>
+          Destaque-se com o <span className="text-[#FBBF24]">Match.js PRO</span>
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}

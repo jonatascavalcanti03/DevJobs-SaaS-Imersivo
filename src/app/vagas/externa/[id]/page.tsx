@@ -246,8 +246,7 @@ export default function ExternalJobDetailsPage() {
               </h2>
               
               <div className="prose prose-invert max-w-none text-[#94A3B8] leading-relaxed space-y-4">
-                {/* A Adzuna envia um snippet HTML ou texto plano */}
-                <div dangerouslySetInnerHTML={{ __html: job.description }} />
+                <p>{(job.description || "").replace(/<[^>]*>/g, "")}</p>
               </div>
 
               <div className="mt-10 p-6 rounded-2xl bg-[#6366F1]/5 border border-[#6366F1]/10 flex flex-col sm:flex-row items-center gap-6">
@@ -318,10 +317,10 @@ export default function ExternalJobDetailsPage() {
               </div>
             </div>
 
-            {/* Why DevJobs Badge */}
+            {/* Why Match.js Badge */}
             <div className="p-6 rounded-3xl bg-gradient-to-br from-[#6366F1]/10 to-transparent border border-[#6366F1]/20">
               <h4 className="font-bold text-[#818CF8] mb-2 flex items-center gap-2">
-                <Zap className="w-4 h-4" /> DevJobs.br PRO
+                <Zap className="w-4 h-4" /> Match.js PRO
               </h4>
               <p className="text-xs text-[#94A3B8]">
                 Seja um candidato PRO para ter prioridade e match de skills em vagas verificadas.

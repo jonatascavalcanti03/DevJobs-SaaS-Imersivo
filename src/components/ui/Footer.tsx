@@ -86,7 +86,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#64748B]">
-            © {new Date().getFullYear()} DevJobs.br — Todos os direitos
+            © {new Date().getFullYear()} Match.js — Todos os direitos
             reservados.
           </p>
           <p className="text-xs text-[#64748B] flex items-center gap-1">

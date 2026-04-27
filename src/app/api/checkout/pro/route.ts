@@ -24,7 +24,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "brl",
             product_data: {
-              name: "Plano DevJobs PRO (Mensal)",
+              name: "Plano Match.js PRO (Mensal)",
               description:
                 "Perfil destacado, candidaturas priorizadas e acesso a vagas exclusivas por 30 dias.",
             },
@@ -57,11 +57,22 @@ export async function PUT(req: Request) {
 
     const userId = (session.user as any).id;
 
+    // Verifica se o usuário já é PRO ativo (para renovação, sempre permite)
+    const currentUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { isPro: true, proExpiresAt: true }
+    });
+
+    const now = new Date();
+    const isCurrentlyPro = currentUser?.isPro && currentUser?.proExpiresAt && new Date(currentUser.proExpiresAt) > now;
+
+    // Ativa o plano PRO
     await prisma.user.update({
       where: { id: userId },
       data: { 
         isPro: true, 
-        proExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // +30 dias
+        proExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // +30 dias
+        activePlan: "PRO",
       },
     });
 

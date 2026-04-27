@@ -146,10 +146,9 @@ export default function JobDetailsClient({ job }: { job: any }) {
           <div className="lg:col-span-2 space-y-8">
             <div className="glass-card rounded-3xl p-8">
               <h2 className="text-xl font-bold text-white mb-6">Descrição da Vaga</h2>
-              <div 
-                className="text-[#94A3B8] leading-relaxed whitespace-pre-wrap"
-                dangerouslySetInnerHTML={{ __html: job.description }}
-              />
+              <div className="text-[#94A3B8] leading-relaxed whitespace-pre-wrap">
+                {(job.description || "").replace(/<[^>]*>/g, "")}
+              </div>
               
               <div className="mt-8 pt-8 border-t border-white/10">
                 <h3 className="text-lg font-bold text-white mb-4">Tecnologias e Requisitos</h3>

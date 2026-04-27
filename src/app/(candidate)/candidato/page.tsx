@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Briefcase, Eye, Bookmark, ExternalLink, ArrowRight, Star, Loader2 } from "lucide-react";
+import { Briefcase, Eye, Bookmark, ExternalLink, ArrowRight, Star, Loader2, Bell } from "lucide-react";
 import StatsCard from "@/components/ui/StatsCard";
 import StatusBadge from "@/components/ui/StatusBadge";
 import JobCard from "@/components/ui/JobCard";
@@ -21,6 +21,9 @@ export default function CandidateDashboard() {
   const [candidaturas, setCandidaturas] = useState<any[]>([]);
   const [totalApps, setTotalApps] = useState(0);
   const [loadingApps, setLoadingApps] = useState(true);
+  
+  const [savedJobsCount, setSavedJobsCount] = useState(0);
+  const [alertsCount, setAlertsCount] = useState(0);
 
   useEffect(() => {
     async function fetchRecommendedJobs() {
@@ -76,8 +79,29 @@ export default function CandidateDashboard() {
         setLoadingApps(false);
       }
     }
+    
+    async function fetchAdditionalStats() {
+      try {
+        const [savedRes, alertsRes] = await Promise.all([
+          fetch("/api/user/saved-jobs", { cache: "no-store" }),
+          fetch("/api/user/alerts", { cache: "no-store" })
+        ]);
+        if (savedRes.ok) {
+          const data = await savedRes.json();
+          setSavedJobsCount(data.length || 0);
+        }
+        if (alertsRes.ok) {
+           const data = await alertsRes.json();
+           setAlertsCount(data.length || 0);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar stats adicionais:", error);
+      }
+    }
+
     if (session?.user) {
       fetchRecentApps();
+      fetchAdditionalStats();
     }
   }, [session]);
 
@@ -107,8 +131,8 @@ export default function CandidateDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <StatsCard icon={Briefcase} label="Candidaturas Ativas" value={loadingApps ? "..." : totalApps.toString()} trend={{ value: 15, positive: true }} index={0} />
-        <StatsCard icon={Eye} label="Visualizações do Perfil" value="48" trend={{ value: 8, positive: true }} index={1} />
-        <StatsCard icon={Bookmark} label="Vagas Salvas" value="5" index={2} />
+        <StatsCard icon={Bookmark} label="Vagas Salvas" value={savedJobsCount.toString()} index={1} />
+        <StatsCard icon={Bell} label="Alertas Ativos" value={alertsCount.toString()} index={2} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -42,11 +42,12 @@ export async function POST(req: Request) {
     const companyLogo = companyUser?.image || null;
 
     // Gerar um slug único para a vaga
-    let slug = slugify(`${body.title} ${companyName}`);
-    // Verificar se já existe (simplificado, idealmente um loop)
-    const existingJob = await prisma.job.findUnique({ where: { slug } });
-    if (existingJob) {
-      slug = `${slug}-${Math.floor(Math.random() * 1000)}`;
+    let baseSlug = slugify(`${body.title} ${companyName}`);
+    let slug = baseSlug;
+    let suffix = 0;
+    while (await prisma.job.findUnique({ where: { slug } })) {
+      suffix++;
+      slug = `${baseSlug}-${suffix}`;
     }
 
     // Criar a vaga no banco de dados
@@ -60,8 +61,8 @@ export async function POST(req: Request) {
         location: body.location || "Remoto",
         type: body.type,
         level: body.level,
-        salaryMin: body.salaryMin ? parseInt(body.salaryMin.replace(/\D/g, "")) : null,
-        salaryMax: body.salaryMax ? parseInt(body.salaryMax.replace(/\D/g, "")) : null,
+        salaryMin: body.salaryMin ? parseInt(String(body.salaryMin).replace(/\D/g, "")) : null,
+        salaryMax: body.salaryMax ? parseInt(String(body.salaryMax).replace(/\D/g, "")) : null,
         tags: body.tags || "[]",
         status: "ACTIVE", // Por padrão criamos como ativa, ou DRAFT
         isPremium: body.isPremium || false,

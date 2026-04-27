@@ -13,6 +13,7 @@ import {
   Link2,
   Bookmark,
   BookmarkCheck,
+  ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -213,6 +214,22 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#F59E0B]/20 to-[#F59E0B]/10 border border-[#F59E0B]/30">
                   <Crown className="w-3.5 h-3.5 text-[#FBBF24]" />
                   <span className="text-xs font-bold text-[#FBBF24] uppercase tracking-wider">Premium</span>
+                </div>
+              </motion.div>
+            )}
+
+            {job.level === "INTERN" && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex-shrink-0"
+              >
+                <div 
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-emerald-500/20 to-emerald-500/10 border border-emerald-500/30"
+                  title="Esta vaga passou pelo crivo da IA e não exige experiência prévia absurda. O foco é aprendizado."
+                >
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Estágio de Verdade</span>
                 </div>
               </motion.div>
             )}

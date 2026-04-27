@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DevJobs.br — Vagas de Programação no Brasil",
+  title: "Match.js — Vagas de Programação no Brasil",
   description:
     "Encontre as melhores vagas de programação no Brasil. Conectamos desenvolvedores talentosos às melhores empresas de tecnologia. Vagas remotas, híbridas e presenciais.",
   keywords: [
@@ -23,12 +23,12 @@ export const metadata: Metadata = {
     "vagas TI",
   ],
   openGraph: {
-    title: "DevJobs.br — Vagas de Programação no Brasil",
+    title: "Match.js — Vagas de Programação no Brasil",
     description:
       "Encontre as melhores vagas de programação no Brasil. Conectamos desenvolvedores talentosos às melhores empresas de tecnologia.",
     type: "website",
     locale: "pt_BR",
-    siteName: "DevJobs.br",
+    siteName: "Match.js",
   },
 };
 

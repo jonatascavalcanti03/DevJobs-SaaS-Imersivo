@@ -49,9 +49,8 @@ export default function Navbar() {
               <div className="absolute -inset-1 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#06B6D4] opacity-0 group-hover:opacity-30 blur-lg transition-opacity duration-500" />
             </div>
             <span className="text-xl font-bold">
-              <span className="text-gradient">Dev</span>
-              <span className="text-[#F1F5F9]">Jobs</span>
-              <span className="text-[#06B6D4]">.br</span>
+              <span className="text-gradient">Match</span>
+              <span className="text-[#06B6D4]">.js</span>
             </span>
           </motion.a>
 

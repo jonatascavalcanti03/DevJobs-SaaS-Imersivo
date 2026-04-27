@@ -1,18 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { LayoutDashboard, Search, Briefcase, User, Star } from "lucide-react";
-import Sidebar, { type SidebarLink } from "@/components/ui/Sidebar";
 import { usePathname, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-
-const CANDIDATE_LINKS: SidebarLink[] = [
-  { label: "Dashboard", href: "/candidato", icon: LayoutDashboard },
-  { label: "Buscar Vagas", href: "/vagas", icon: Search },
-  { label: "Candidaturas", href: "/candidato/candidaturas", icon: Briefcase, badge: "3" },
-  { label: "Meu Perfil", href: "/candidato/perfil", icon: User },
-  { label: "Plano PRO", href: "/candidato/pro", icon: Star },
-];
 
 export default function CandidateLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() || "/candidato";

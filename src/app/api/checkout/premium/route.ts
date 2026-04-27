@@ -37,7 +37,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "brl",
             product_data: {
-              name: "Vaga Destaque Premium — DevJobs.br",
+              name: "Vaga Destaque Premium — Match.js",
               description:
                 "Sua vaga aparece no topo dos resultados por 30 dias com badge especial.",
             },
