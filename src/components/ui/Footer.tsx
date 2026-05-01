@@ -34,7 +34,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <a href="/" className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4 invisible">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6366F1] to-[#06B6D4] flex items-center justify-center">
                 <Code2 className="w-4 h-4 text-white" />
               </div>
@@ -43,7 +43,7 @@ export default function Footer() {
                 <span className="text-white">Jobs</span>
                 <span className="text-[#06B6D4]">.br</span>
               </span>
-            </a>
+            </div>
             <p className="text-sm text-[#64748B] leading-relaxed mb-4">
               Conectando os melhores desenvolvedores às melhores empresas de
               tecnologia do Brasil.
@@ -86,7 +86,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#64748B]">
-            © {new Date().getFullYear()} Match.js — Todos os direitos
+            © {new Date().getFullYear()} — Todos os direitos
             reservados.
           </p>
           <p className="text-xs text-[#64748B] flex items-center gap-1">

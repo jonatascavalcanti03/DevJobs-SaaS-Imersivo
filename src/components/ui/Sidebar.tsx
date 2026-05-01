@@ -34,7 +34,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
       >
         {/* Logo */}
         <div className="flex items-center justify-between px-4 h-16 border-b border-white/5">
-          <Link href={userRole === "Empresa" ? "/empresa" : "/candidato"} className="flex items-center gap-2">
+          <div className="flex items-center gap-2 invisible">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
               <Code2 className="w-5 h-5 text-white" />
             </div>
@@ -45,7 +45,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
                 </motion.span>
               )}
             </AnimatePresence>
-          </Link>
+          </div>
           <button onClick={() => setCollapsed(!collapsed)} className="p-1.5 rounded-lg hover:bg-white/5 text-[#64748B] hover:text-white transition-colors">
             <ChevronLeft className={`w-4 h-4 transition-transform duration-300 ${collapsed ? "rotate-180" : ""}`} />
           </button>
@@ -73,8 +73,8 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
           {links.map((link) => {
             const isActive = activePath === link.href;
             return (
-              <Link href={link.href} key={link.href} passHref legacyBehavior>
-                <motion.a
+              <Link href={link.href} key={link.href}>
+                <motion.div
                   whileHover={{ x: 2 }}
                   whileTap={{ scale: 0.98 }}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group relative ${
@@ -97,7 +97,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
                   {!collapsed && link.badge && (
                     <span className="ml-auto px-2 py-0.5 rounded-full text-xs font-bold bg-[#6366F1]/20 text-[#818CF8]">{link.badge}</span>
                   )}
-                </motion.a>
+                </motion.div>
               </Link>
             );
           })}

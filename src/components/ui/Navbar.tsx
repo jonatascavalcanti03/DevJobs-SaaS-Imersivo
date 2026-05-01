@@ -36,12 +36,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <motion.a
-            href="/"
-            className="flex items-center gap-2 group"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
+          <div className="flex items-center gap-2 group invisible">
             <div className="relative">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#6366F1]/25">
                 <Code2 className="w-5 h-5 text-white" />
@@ -52,7 +47,7 @@ export default function Navbar() {
               <span className="text-gradient">Match</span>
               <span className="text-[#06B6D4]">.js</span>
             </span>
-          </motion.a>
+          </div>
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-1">
