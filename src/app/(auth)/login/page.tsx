@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { signIn } from "next-auth/react";
+import { toast } from "sonner";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -37,6 +38,7 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       setError(err.message);
+      toast.error(err.message || "Erro ao fazer login");
     } finally {
       setLoading(false);
     }

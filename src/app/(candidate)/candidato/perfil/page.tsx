@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { User, Mail, Link as LinkIcon, Code, Globe, Briefcase, FileText, CheckCircle2, Loader2 } from "lucide-react";
 
 import { useSession } from "next-auth/react";
+import { toast } from "sonner";
 
 export default function CandidateProfilePage() {
   const { update } = useSession();
@@ -76,14 +77,17 @@ export default function CandidateProfilePage() {
       if (res.ok) {
         await update(); // Atualiza a sessão no frontend para refletir a foto e nome novos na Sidebar instantaneamente
         setSaveSuccess(true);
+        toast.success("Perfil atualizado com sucesso!");
         setTimeout(() => setSaveSuccess(false), 3000);
       } else {
         const errorData = await res.json();
         setSaveError(errorData.message || "Erro ao salvar perfil.");
+        toast.error(errorData.message || "Erro ao salvar perfil");
       }
     } catch (error) {
       console.error("Erro ao salvar", error);
       setSaveError("Erro de conexão ao tentar salvar.");
+      toast.error("Erro de conexão ao tentar salvar");
     } finally {
       setSaving(false);
     }

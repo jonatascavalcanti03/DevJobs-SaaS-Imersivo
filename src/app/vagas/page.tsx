@@ -28,6 +28,15 @@ const TECH_SHORTCUTS = [
   "React", "Node.js", "Python", "TypeScript", "Java", "DevOps", "AWS", "Flutter", "Vue", "Angular",
 ];
 
+const SYNONYM_MAP: Record<string, string[]> = {
+  "frontend": ["react", "vue", "angular", "nextjs", "typescript", "javascript", "tailwind"],
+  "backend": ["node", "python", "java", "golang", "c#", "php", "ruby", "sql", "postgres"],
+  "mobile": ["flutter", "react native", "swift", "kotlin", "ios", "android"],
+  "fullstack": ["node", "react", "typescript", "nextjs", "javascript"],
+  "devops": ["aws", "docker", "kubernetes", "ci/cd", "terraform", "azure"],
+  "dados": ["python", "sql", "pandas", "spark", "machine learning", "ia"],
+};
+
 const BR_STATES = [
   { value: "", label: "Brasil (Todo)" },
   { value: "AC", label: "Acre" }, { value: "AL", label: "Alagoas" }, { value: "AP", label: "Amapá" },
@@ -46,12 +55,12 @@ const BR_STATES = [
 function SectionDivider({ icon: Icon, label }: { icon: any; label: string }) {
   return (
     <div className="flex items-center gap-4 py-2">
-      <div className="flex-1 h-px bg-white/5" />
-      <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-border text-xs text-[#64748B] font-medium">
+      <div className="flex-1 h-px bg-border/30" />
+      <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border border-border text-xs text-text-secondary font-medium">
         <Icon className="w-3.5 h-3.5" />
         {label}
       </div>
-      <div className="flex-1 h-px bg-white/5" />
+      <div className="flex-1 h-px bg-border/30" />
     </div>
   );
 }
@@ -146,11 +155,20 @@ export default function SearchJobsPage() {
 
   // ── Aplica filtros client-side nas vagas internas ──────────
   const filteredInternal = internalJobs.filter((job) => {
+    const searchLower = searchTerm.toLowerCase();
+    
+    // Expansão Semântica
+    const synonyms = SYNONYM_MAP[searchLower] || [];
+    const searchPatterns = [searchLower, ...synonyms];
+
     const matchText =
       !searchTerm ||
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.tags.some((t) => t.toLowerCase().includes(searchTerm.toLowerCase()));
+      searchPatterns.some(pattern => 
+        job.title.toLowerCase().includes(pattern) ||
+        job.company.toLowerCase().includes(pattern) ||
+        job.tags.some((t) => t.toLowerCase().includes(pattern))
+      );
+
     const matchLocation =
       !locationTerm ||
       job.location.toLowerCase().includes(locationTerm.toLowerCase());

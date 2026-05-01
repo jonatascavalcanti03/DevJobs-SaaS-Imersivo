@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Building2, MapPin, Briefcase, TrendingUp, DollarSign, ArrowLeft, Send, CheckCircle2, Loader2, Crown } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import Navbar from "@/components/ui/Navbar";
 
 function formatSalary(value: number): string {
@@ -67,8 +68,10 @@ export default function JobDetailsClient({ job }: { job: any }) {
       }
 
       setApplySuccess(true);
+      toast.success("Candidatura enviada com sucesso!");
     } catch (err: any) {
       setError(err.message);
+      toast.error(err.message || "Erro ao enviar candidatura");
     } finally {
       setIsApplying(false);
     }

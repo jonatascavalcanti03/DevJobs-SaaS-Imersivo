@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const job = await prisma.job.findUnique({
     where: { id },
-    select: { title: true, company: true, location: true }
+    select: { title: true, company: true, location: true, salaryMin: true, type: true }
   });
 
   if (!job) return { title: "Vaga não encontrada" };
@@ -22,7 +22,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${job.title} - ${job.company}`,
       description: `Vaga de programador em ${job.location}. Confira os detalhes e envie seu currículo!`,
-      images: [`/api/og?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}`],
+      images: [
+        {
+          url: `/api/og/job?title=${encodeURIComponent(job.title)}&company=${encodeURIComponent(job.company)}&location=${encodeURIComponent(job.location)}&salary=${encodeURIComponent(job.salaryMin ? `R$ ${job.salaryMin}` : 'A combinar')}&type=${encodeURIComponent(job.type)}`,
+          width: 1200,
+          height: 630,
+          alt: job.title,
+        },
+      ],
     },
   };
 }
