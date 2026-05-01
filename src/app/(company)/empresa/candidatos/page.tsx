@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Search, Filter, Download, Star, Loader2, X, FileText, Globe, Code2, ExternalLink, BadgeCheck, Zap } from "lucide-react";
+import { Search, Filter, Download, Star, Loader2, X, FileText, Globe, Code2, ExternalLink, BadgeCheck, Zap, Sparkles } from "lucide-react";
 import StatusBadge from "@/components/ui/StatusBadge";
 import { AnimatePresence } from "framer-motion";
+import { expandSearchTerm } from "@/lib/semanticSearch";
+import { toast } from "sonner";
 
 // Componente visual do medidor de match
 function MatchMeter({ score }: { score: number }) {
@@ -55,17 +57,30 @@ export default function EmpresaCandidatosPage() {
         setCandidatos((prev) =>
           prev.map((c) => (c.id === id ? { ...c, status: newStatus } : c))
         );
+        const labels: Record<string, string> = { ACCEPTED: "Candidato aprovado!", REJECTED: "Candidato rejeitado.", PENDING: "Status restaurado." };
+        toast.success(labels[newStatus] || "Status atualizado.");
       }
     } catch (error) {
       console.error("Erro ao atualizar status:", error);
+      toast.error("Erro ao atualizar status do candidato.");
     }
   };
 
-  const filteredCandidatos = candidatos.filter((c) =>
-    c.user?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.user?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    c.job?.title?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCandidatos = candidatos.filter((c) => {
+    const patterns = expandSearchTerm(searchTerm);
+    if (patterns.length === 0) return true;
+    
+    const name = (c.user?.name || "").toLowerCase();
+    const title = (c.user?.title || "").toLowerCase();
+    const jobTitle = (c.job?.title || "").toLowerCase();
+    let skills: string[] = [];
+    try { skills = JSON.parse(c.user?.skills || "[]"); } catch { skills = []; }
+    const skillsLower = skills.map((s: string) => s.toLowerCase());
+    
+    return patterns.some(p => 
+      name.includes(p) || title.includes(p) || jobTitle.includes(p) || skillsLower.some(s => s.includes(p))
+    );
+  });
 
   const proCount = filteredCandidatos.filter((c) => c.user?.isPro).length;
 
@@ -205,14 +220,20 @@ export default function EmpresaCandidatosPage() {
       {/* Filters & Search */}
       <div className="glass-card rounded-2xl p-4 flex flex-col sm:flex-row gap-4 justify-between items-center">
         <div className="relative w-full sm:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-secondary" />
           <input
             type="text"
-            placeholder="Buscar candidato por nome ou vaga..."
+            placeholder="Buscar por nome, vaga ou habilidade..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-surface border border-border rounded-lg text-text-primary placeholder-[#64748B] pl-10 pr-4 py-2 text-sm focus:bg-white/10 focus:border-[#06B6D4]/50 transition-all outline-none"
+            className="w-full bg-surface border border-border rounded-lg text-text-primary placeholder-text-muted pl-10 pr-10 py-2 text-sm focus:bg-surface-hover focus:border-[#06B6D4]/50 transition-all outline-none"
           />
+          {searchTerm && expandSearchTerm(searchTerm).length > 1 && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[10px] font-bold text-[#6366F1] bg-[#6366F1]/10 px-1.5 py-0.5 rounded-md animate-pulse">
+              <Sparkles className="w-3 h-3" />
+              IA
+            </div>
+          )}
         </div>
         <div className="flex gap-2 w-full sm:w-auto">
           <button className="flex items-center gap-2 bg-surface hover:bg-white/10 border border-border rounded-lg text-text-primary px-4 py-2 text-sm transition-colors w-full sm:w-auto justify-center">
@@ -230,7 +251,7 @@ export default function EmpresaCandidatosPage() {
         ) : filteredCandidatos.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full min-h-[300px] text-center p-6">
             <p className="text-text-secondary mb-2">Nenhum candidato encontrado.</p>
-            <p className="text-sm text-[#64748B]">Suas vagas ainda não receberam candidaturas ou os filtros não retornaram resultados.</p>
+            <p className="text-sm text-text-secondary">Suas vagas ainda não receberam candidaturas ou os filtros não retornaram resultados.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -284,7 +305,7 @@ export default function EmpresaCandidatosPage() {
                     </td>
                     <td className="px-6 py-5">
                       <p className="text-sm text-text-primary truncate max-w-[200px]">{candidato.job.title}</p>
-                      <p className="text-xs text-[#64748B] mt-0.5">{new Date(candidato.appliedAt).toLocaleDateString("pt-BR")}</p>
+                      <p className="text-xs text-text-secondary mt-0.5">{new Date(candidato.appliedAt).toLocaleDateString("pt-BR")}</p>
                     </td>
                     <td className="px-6 py-5 text-center">
                       <MatchMeter score={candidato.matchScore ?? 50} />

@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Search, MapPin, Filter, Loader2, Zap, Building2, Globe, X, ChevronDown } from "lucide-react";
+import { Search, MapPin, Filter, Loader2, Zap, Building2, Globe, X, ChevronDown, Sparkles } from "lucide-react";
 import JobCard, { type JobData } from "@/components/ui/JobCard";
 import { motion, AnimatePresence } from "framer-motion";
 import { JobCardSkeleton } from "@/components/ui/Skeleton";
 import { toast } from "sonner";
+import { expandSearchTerm, checkJobMatch } from "@/lib/semanticSearch";
 
 // ─── Filtros de nível e tipo ─────────────────────────────────
 const LEVEL_OPTIONS = [
@@ -27,15 +28,6 @@ const TYPE_OPTIONS = [
 const TECH_SHORTCUTS = [
   "React", "Node.js", "Python", "TypeScript", "Java", "DevOps", "AWS", "Flutter", "Vue", "Angular",
 ];
-
-const SYNONYM_MAP: Record<string, string[]> = {
-  "frontend": ["react", "vue", "angular", "nextjs", "typescript", "javascript", "tailwind"],
-  "backend": ["node", "python", "java", "golang", "c#", "php", "ruby", "sql", "postgres"],
-  "mobile": ["flutter", "react native", "swift", "kotlin", "ios", "android"],
-  "fullstack": ["node", "react", "typescript", "nextjs", "javascript"],
-  "devops": ["aws", "docker", "kubernetes", "ci/cd", "terraform", "azure"],
-  "dados": ["python", "sql", "pandas", "spark", "machine learning", "ia"],
-};
 
 const BR_STATES = [
   { value: "", label: "Brasil (Todo)" },
@@ -155,19 +147,8 @@ export default function SearchJobsPage() {
 
   // ── Aplica filtros client-side nas vagas internas ──────────
   const filteredInternal = internalJobs.filter((job) => {
-    const searchLower = searchTerm.toLowerCase();
-    
-    // Expansão Semântica
-    const synonyms = SYNONYM_MAP[searchLower] || [];
-    const searchPatterns = [searchLower, ...synonyms];
-
-    const matchText =
-      !searchTerm ||
-      searchPatterns.some(pattern => 
-        job.title.toLowerCase().includes(pattern) ||
-        job.company.toLowerCase().includes(pattern) ||
-        job.tags.some((t) => t.toLowerCase().includes(pattern))
-      );
+    const patterns = expandSearchTerm(searchTerm);
+    const matchText = checkJobMatch(job, patterns);
 
     const matchLocation =
       !locationTerm ||
@@ -221,24 +202,30 @@ export default function SearchJobsPage() {
             className="glass-strong p-2 rounded-2xl flex flex-col sm:flex-row gap-2 max-w-3xl mx-auto border border-border"
           >
             <div className="relative flex-1 flex items-center">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Cargo, tecnologia ou empresa..."
-                className="w-full bg-transparent text-text-primary placeholder-[#64748B] pl-12 pr-4 py-3 outline-none"
+                className="w-full bg-transparent text-text-primary placeholder-text-muted pl-12 pr-10 py-3 outline-none"
               />
+              {searchTerm && expandSearchTerm(searchTerm).length > 1 && (
+                <div className="absolute right-10 top-1/2 -translate-y-1/2 flex items-center gap-1 text-[10px] font-bold text-[#6366F1] bg-[#6366F1]/10 px-1.5 py-0.5 rounded-md animate-pulse">
+                  <Sparkles className="w-3 h-3" />
+                  IA
+                </div>
+              )}
               {searchTerm && (
-                <button onClick={() => { setSearchTerm(""); fetchExternalJobs("desenvolvedor", locationTerm); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-text-primary transition-colors">
+                <button onClick={() => { setSearchTerm(""); fetchExternalJobs("desenvolvedor", locationTerm); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-primary transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               )}
             </div>
-            <div className="w-px h-8 bg-white/10 hidden sm:block self-center" />
+            <div className="w-px h-8 bg-border/50 hidden sm:block self-center" />
             <div className="relative flex-1 flex items-center">
-              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
+              <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
               <select
                 value={locationTerm}
                 onChange={(e) => {
@@ -246,7 +233,7 @@ export default function SearchJobsPage() {
                   setLocationTerm(val);
                   fetchExternalJobs(searchTerm, val);
                 }}
-                className="w-full bg-transparent text-text-primary placeholder-[#64748B] pl-12 pr-10 py-3 outline-none appearance-none cursor-pointer"
+                className="w-full bg-transparent text-text-primary placeholder-text-muted pl-12 pr-10 py-3 outline-none appearance-none cursor-pointer"
               >
                 {BR_STATES.map((state) => (
                   <option key={state.value} value={state.value} className="bg-bg-secondary text-text-primary">
@@ -254,7 +241,7 @@ export default function SearchJobsPage() {
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748B] pointer-events-none" />
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" />
             </div>
 
 
@@ -385,7 +372,7 @@ export default function SearchJobsPage() {
           </div>
 
           {/* Contador */}
-          <span className="text-[#64748B] text-sm">
+          <span className="text-text-secondary text-sm">
             {loadingInternal && loadingExternal ? (
               <span className="flex items-center gap-1.5"><Loader2 className="w-3.5 h-3.5 animate-spin" /> Buscando...</span>
             ) : (
@@ -449,9 +436,9 @@ export default function SearchJobsPage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-20 bg-white/5 rounded-3xl border border-border"
+              className="text-center py-20 bg-surface rounded-3xl border border-border"
             >
-              <Zap className="w-12 h-12 text-[#64748B] mx-auto mb-4" />
+              <Zap className="w-12 h-12 text-text-muted mx-auto mb-4" />
               <h3 className="text-xl font-bold text-text-primary mb-2">Nenhuma vaga encontrada</h3>
               <p className="text-text-secondary mb-4">Tente ajustar os filtros ou buscar por outra tecnologia.</p>
               <button

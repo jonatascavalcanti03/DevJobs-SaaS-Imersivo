@@ -21,15 +21,15 @@ export default function ActivityChart() {
   const maxVal = Math.max(...MOCK_DATA.map((d) => d.value));
 
   return (
-    <div className="glass-card p-6 rounded-2xl border border-white/5 h-full flex flex-col">
+    <div className="glass-card p-6 rounded-2xl border border-border/30 h-full flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <div>
           <h3 className="text-sm font-semibold text-text-primary">Atividade Semanal</h3>
-          <p className="text-xs text-[#64748B]">Visualizações de perfil</p>
+          <p className="text-xs text-text-secondary">Visualizações de perfil</p>
         </div>
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#6366F1]" />
-          <span className="text-[10px] text-[#94A3B8]">Últimos 7 dias</span>
+          <span className="text-[10px] text-text-secondary">Últimos 7 dias</span>
         </div>
       </div>
 
@@ -41,7 +41,7 @@ export default function ActivityChart() {
               <motion.div 
                 initial={{ opacity: 0, y: 0 }}
                 whileHover={{ opacity: 1, y: -5 }}
-                className="absolute -top-8 bg-[#1E293B] text-white text-[10px] px-2 py-1 rounded border border-white/10 pointer-events-none"
+                className="absolute -top-8 bg-surface text-text-primary text-[10px] px-2 py-1 rounded border border-border shadow-xl pointer-events-none"
               >
                 {data.value}
               </motion.div>
@@ -55,7 +55,7 @@ export default function ActivityChart() {
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg" />
               </motion.div>
             </div>
-            <span className="text-[10px] text-[#64748B] font-medium">{data.day}</span>
+            <span className="text-[10px] text-text-secondary font-medium">{data.day}</span>
           </div>
         ))}
       </div>

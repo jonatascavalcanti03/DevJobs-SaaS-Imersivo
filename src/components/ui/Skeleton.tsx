@@ -20,7 +20,7 @@ export default function Skeleton({ className, ...props }: SkeletonProps) {
 
 export function JobCardSkeleton() {
   return (
-    <div className="glass-card p-6 border border-white/5 relative overflow-hidden group">
+    <div className="glass-card p-6 border border-border/30 relative overflow-hidden group">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <Skeleton className="w-14 h-14 rounded-2xl shrink-0" />
@@ -38,7 +38,7 @@ export function JobCardSkeleton() {
         <Skeleton className="h-6 w-16 rounded-full" />
       </div>
 
-      <div className="mt-6 flex items-center justify-between pt-6 border-t border-white/5">
+      <div className="mt-6 flex items-center justify-between pt-6 border-t border-border/30">
         <Skeleton className="h-4 w-32" />
         <Skeleton className="h-9 w-24 rounded-xl" />
       </div>

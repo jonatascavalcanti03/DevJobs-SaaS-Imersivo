@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Briefcase, MapPin, DollarSign, Tag, AlignLeft, CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 export default function NewJobPage() {
   const [isPremium, setIsPremium] = useState(false);
@@ -46,16 +47,19 @@ export default function NewJobPage() {
 
       if (res.ok) {
         setSuccess(true);
+        toast.success("Vaga publicada com sucesso!");
         setTimeout(() => {
           window.location.href = "/empresa/vagas";
         }, 1500);
       } else {
         const data = await res.json();
         setError(data.message || "Erro ao criar vaga.");
+        toast.error(data.message || "Erro ao criar vaga.");
       }
     } catch (err) {
       console.error(err);
       setError("Erro de conexão ao salvar vaga.");
+      toast.error("Erro de conexão ao salvar vaga.");
     } finally {
       setSaving(false);
     }
