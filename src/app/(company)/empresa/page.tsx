@@ -57,10 +57,10 @@ export default function CompanyDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-2xl sm:text-3xl font-bold text-white mb-1">
+          <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-2xl sm:text-3xl font-bold text-text-primary mb-1">
             Painel da Empresa
           </motion.h1>
-          <motion.p initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="text-[#94A3B8]">
+          <motion.p initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="text-text-secondary">
             Gerencie suas vagas e avalie candidatos.
           </motion.p>
         </div>
@@ -69,7 +69,7 @@ export default function CompanyDashboard() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
           href="/empresa/nova-vaga"
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#06B6D4] to-[#6366F1] text-white text-sm font-semibold shadow-lg shadow-[#06B6D4]/25 hover:shadow-[#06B6D4]/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#06B6D4] to-[#6366F1] text-text-primary text-sm font-semibold shadow-lg shadow-[#06B6D4]/25 hover:shadow-[#06B6D4]/40 transition-all hover:scale-[1.02] active:scale-[0.98]"
         >
           <PlusCircle className="w-4 h-4" />
           Publicar Vaga
@@ -87,7 +87,7 @@ export default function CompanyDashboard() {
         {/* Vagas Recentes */}
         <div className="xl:col-span-2 space-y-4">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-xl font-bold text-white">Vagas Recentes</h2>
+            <h2 className="text-xl font-bold text-text-primary">Vagas Recentes</h2>
             <a href="/empresa/vagas" className="text-sm font-medium text-[#06B6D4] hover:text-[#22D3EE] transition-colors">Ver todas</a>
           </div>
           
@@ -98,7 +98,7 @@ export default function CompanyDashboard() {
               </div>
             ) : vagas.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full min-h-[200px] text-center p-6">
-                <p className="text-[#94A3B8] mb-4">Nenhuma vaga publicada ainda.</p>
+                <p className="text-text-secondary mb-4">Nenhuma vaga publicada ainda.</p>
                 <a href="/empresa/nova-vaga" className="text-sm font-semibold text-[#06B6D4] hover:underline">
                   Publicar minha primeira vaga
                 </a>
@@ -107,12 +107,12 @@ export default function CompanyDashboard() {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-white/5 bg-white/5">
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Vaga</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider text-center">Candidatos</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider text-center">Visualizações</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider text-right"></th>
+                    <tr className="border-b border-border/50 bg-surface">
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">Vaga</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider text-center">Candidatos</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider text-center">Visualizações</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider text-right"></th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5">
@@ -122,28 +122,28 @@ export default function CompanyDashboard() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="hover:bg-white/5 transition-colors group"
+                        className="hover:bg-surface transition-colors group"
                       >
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-semibold text-white group-hover:text-[#22D3EE] transition-colors truncate max-w-[200px] sm:max-w-xs">{item.title}</p>
+                            <p className="text-sm font-semibold text-text-primary group-hover:text-[#22D3EE] transition-colors truncate max-w-[200px] sm:max-w-xs">{item.title}</p>
                             {item.isPremium && (
                               <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#F59E0B]/20 text-[#FBBF24]">PRO</span>
                             )}
                           </div>
-                          <p className="text-xs text-[#64748B] mt-0.5">Criada em {new Date(item.createdAt).toLocaleDateString("pt-BR")}</p>
+                          <p className="text-xs text-text-secondary mt-0.5">Criada em {new Date(item.createdAt).toLocaleDateString("pt-BR")}</p>
                         </td>
                         <td className="px-6 py-4 text-center">
-                          <span className="inline-flex items-center justify-center min-w-[2rem] px-2 py-1 rounded-lg bg-white/5 text-sm font-medium text-white">
+                          <span className="inline-flex items-center justify-center min-w-[2rem] px-2 py-1 rounded-lg bg-surface text-sm font-medium text-text-primary">
                             {item._count?.applications || 0}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-center text-sm text-[#94A3B8]">{item.viewCount || 0}</td>
+                        <td className="px-6 py-4 text-center text-sm text-text-secondary">{item.viewCount || 0}</td>
                         <td className="px-6 py-4">
                           <StatusBadge status={item.status} />
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <button className="p-2 rounded-lg hover:bg-white/10 text-[#64748B] hover:text-white transition-colors">
+                          <button className="p-2 rounded-lg hover:bg-surface-hover text-text-secondary hover:text-text-primary transition-colors">
                             <MoreHorizontal className="w-4 h-4" />
                           </button>
                         </td>
@@ -159,7 +159,7 @@ export default function CompanyDashboard() {
         {/* Candidatos Recentes */}
         <div className="space-y-4">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-xl font-bold text-white">Últimos Candidatos</h2>
+            <h2 className="text-xl font-bold text-text-primary">Últimos Candidatos</h2>
             <a href="/empresa/candidatos" className="text-sm font-medium text-[#06B6D4] hover:text-[#22D3EE] transition-colors">Ver todos</a>
           </div>
           
@@ -170,7 +170,7 @@ export default function CompanyDashboard() {
               </div>
             ) : candidatos.length === 0 ? (
               <div className="text-center pt-10">
-                <p className="text-sm text-[#94A3B8]">Nenhuma candidatura recebida.</p>
+                <p className="text-sm text-text-secondary">Nenhuma candidatura recebida.</p>
               </div>
             ) : (
               <div className="space-y-5">
@@ -182,7 +182,7 @@ export default function CompanyDashboard() {
                     transition={{ delay: index * 0.1 }}
                     className="flex items-start gap-4"
                   >
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#06B6D4]/30 to-[#6366F1]/30 flex flex-shrink-0 items-center justify-center text-white font-bold text-sm border border-white/10 overflow-hidden">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#06B6D4]/30 to-[#6366F1]/30 flex flex-shrink-0 items-center justify-center text-text-primary font-bold text-sm border border-border overflow-hidden">
                       {candidato.user.image ? (
                         <img src={candidato.user.image} alt={candidato.user.name} className="w-full h-full object-cover" />
                       ) : (
@@ -191,8 +191,8 @@ export default function CompanyDashboard() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <p className="text-sm font-bold text-white truncate">{candidato.user.name}</p>
-                        <span className="text-xs text-[#94A3B8] whitespace-nowrap">{new Date(candidato.appliedAt).toLocaleDateString("pt-BR")}</span>
+                        <p className="text-sm font-bold text-text-primary truncate">{candidato.user.name}</p>
+                        <span className="text-xs text-text-secondary whitespace-nowrap">{new Date(candidato.appliedAt).toLocaleDateString("pt-BR")}</span>
                       </div>
                       <p className="text-xs text-[#06B6D4] truncate">{candidato.user.title || "Desenvolvedor"}</p>
                       
@@ -206,7 +206,7 @@ export default function CompanyDashboard() {
                   </motion.div>
                 ))}
                 
-                <a href="/empresa/candidatos" className="block w-full text-center py-2.5 rounded-xl border border-white/10 text-sm font-medium text-[#94A3B8] hover:text-white hover:bg-white/5 transition-colors mt-2">
+                <a href="/empresa/candidatos" className="block w-full text-center py-2.5 rounded-xl border border-border text-sm font-medium text-text-secondary hover:text-text-primary hover:bg-surface transition-colors mt-2">
                   Ver lista completa
                 </a>
               </div>

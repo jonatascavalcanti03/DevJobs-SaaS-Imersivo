@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 /* ============================================================
-   DevJobs.br — Design System
+   Match.js — Design System
    Theme: Dark Mode + Glassmorphism + Immersive Motion
    ============================================================ */
 
 @theme inline {
-  /* ── Core Colors ── */
+  /* ── Core Colors (Shared) ── */
   --color-primary: #6366F1;
   --color-primary-light: #818CF8;
   --color-primary-dark: #4F46E5;
@@ -15,41 +15,66 @@
   --color-premium: #F59E0B;
   --color-premium-light: #FBBF24;
   
-  /* ── Backgrounds ── */
-  --color-bg: #050510;
-  --color-bg-secondary: #0A0A1E;
-  --color-bg-tertiary: #111133;
+  /* ── Dynamic Colors (Theme Dependent) ── */
+  --color-bg: var(--bg);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-tertiary: var(--bg-tertiary);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-border: var(--border);
+  --color-border-hover: var(--border-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
   
-  /* ── Surfaces (Glassmorphism) ── */
-  --color-surface: rgba(255, 255, 255, 0.04);
-  --color-surface-hover: rgba(255, 255, 255, 0.08);
-  --color-surface-active: rgba(255, 255, 255, 0.12);
-  
-  /* ── Borders ── */
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.15);
-  --color-border-accent: rgba(99, 102, 241, 0.4);
-  
-  /* ── Text ── */
-  --color-text-primary: #F1F5F9;
-  --color-text-secondary: #94A3B8;
-  --color-text-muted: #64748B;
-  
-  /* ── Success / Error / Warning ── */
   --color-success: #10B981;
   --color-error: #EF4444;
   --color-warning: #F59E0B;
   
-  /* ── Font ── */
   --font-sans: var(--font-inter);
   
-  /* ── Animations ── */
   --animate-float: float 6s ease-in-out infinite;
   --animate-glow: glow 2s ease-in-out infinite alternate;
   --animate-shimmer: shimmer 2s linear infinite;
   --animate-gradient: gradient-shift 8s ease infinite;
   --animate-scroll: scroll 30s linear infinite;
   --animate-pulse-border: pulse-border 2s ease-in-out infinite;
+}
+
+:root {
+  --bg: #ffffff;
+  --surface: #f8fafc;
+  --surface-hover: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --accent: #6366f1;
+  --grid-pattern: linear-gradient(rgba(99, 102, 241, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(99, 102, 241, 0.03) 1px, transparent 1px);
+}
+
+.dark {
+  --bg: #050510;
+  --surface: rgba(255, 255, 255, 0.05);
+  --surface-hover: rgba(255, 255, 255, 0.1);
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #6366f1;
+  --grid-pattern: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+@keyframes mesh-move {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(5%, 5%) scale(1.1); }
+  66% { transform: translate(-5%, 2%) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.animate-mesh {
+  animation: mesh-move 20s ease-in-out infinite alternate;
 }
 
 /* ── Custom Animations ── */
@@ -151,8 +176,8 @@ html {
 }
 
 body {
-  background-color: #050510;
-  color: #F1F5F9;
+  background-color: var(--bg);
+  color: var(--text-primary);
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
@@ -165,30 +190,26 @@ body {
 /* ── Glassmorphism Utilities ── */
 
 .glass {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  @apply backdrop-blur-md;
+  background: var(--surface);
+  border: 1px solid var(--border);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(40px);
-  -webkit-backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  @apply backdrop-blur-xl;
+  background: var(--surface-active);
+  border: 1px solid var(--border-hover);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  @apply backdrop-blur-lg transition-all duration-300;
+  background: var(--surface);
+  border: 1px solid var(--border);
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(99, 102, 241, 0.3);
+  background: var(--surface-hover);
+  border-color: var(--color-primary-light);
   box-shadow: 0 8px 32px rgba(99, 102, 241, 0.1),
               0 0 0 1px rgba(99, 102, 241, 0.1);
 }

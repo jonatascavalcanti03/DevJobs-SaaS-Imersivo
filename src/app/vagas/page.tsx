@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Search, MapPin, Filter, Loader2, Zap, Building2, Globe, X, ChevronDown } from "lucide-react";
 import JobCard, { type JobData } from "@/components/ui/JobCard";
 import { motion, AnimatePresence } from "framer-motion";
+import { JobCardSkeleton } from "@/components/ui/Skeleton";
+import { toast } from "sonner";
 
 // ─── Filtros de nível e tipo ─────────────────────────────────
 const LEVEL_OPTIONS = [
@@ -45,7 +47,7 @@ function SectionDivider({ icon: Icon, label }: { icon: any; label: string }) {
   return (
     <div className="flex items-center gap-4 py-2">
       <div className="flex-1 h-px bg-white/5" />
-      <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-[#64748B] font-medium">
+      <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-border text-xs text-[#64748B] font-medium">
         <Icon className="w-3.5 h-3.5" />
         {label}
       </div>
@@ -169,7 +171,7 @@ export default function SearchJobsPage() {
   const totalResults = filteredInternal.length + filteredExternal.length;
 
   return (
-    <div className="min-h-screen bg-[#050510] pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-bg pt-24 pb-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto space-y-8">
 
         {/* ── Hero Search ── */}
@@ -177,7 +179,7 @@ export default function SearchJobsPage() {
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-white"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary"
           >
             Encontre sua próxima{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6366F1] to-[#06B6D4]">
@@ -188,7 +190,7 @@ export default function SearchJobsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="text-[#94A3B8] text-base max-w-xl mx-auto"
+            className="text-text-secondary text-base max-w-xl mx-auto"
           >
             Vagas verificadas da plataforma + vagas parceiras do Brasil — tudo em um só lugar.
           </motion.p>
@@ -198,7 +200,7 @@ export default function SearchJobsPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="glass-strong p-2 rounded-2xl flex flex-col sm:flex-row gap-2 max-w-3xl mx-auto border border-white/10"
+            className="glass-strong p-2 rounded-2xl flex flex-col sm:flex-row gap-2 max-w-3xl mx-auto border border-border"
           >
             <div className="relative flex-1 flex items-center">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#64748B]" />
@@ -208,10 +210,10 @@ export default function SearchJobsPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 placeholder="Cargo, tecnologia ou empresa..."
-                className="w-full bg-transparent text-white placeholder-[#64748B] pl-12 pr-4 py-3 outline-none"
+                className="w-full bg-transparent text-text-primary placeholder-[#64748B] pl-12 pr-4 py-3 outline-none"
               />
               {searchTerm && (
-                <button onClick={() => { setSearchTerm(""); fetchExternalJobs("desenvolvedor", locationTerm); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-white transition-colors">
+                <button onClick={() => { setSearchTerm(""); fetchExternalJobs("desenvolvedor", locationTerm); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#64748B] hover:text-text-primary transition-colors">
                   <X className="w-4 h-4" />
                 </button>
               )}
@@ -226,10 +228,10 @@ export default function SearchJobsPage() {
                   setLocationTerm(val);
                   fetchExternalJobs(searchTerm, val);
                 }}
-                className="w-full bg-transparent text-white placeholder-[#64748B] pl-12 pr-10 py-3 outline-none appearance-none cursor-pointer"
+                className="w-full bg-transparent text-text-primary placeholder-[#64748B] pl-12 pr-10 py-3 outline-none appearance-none cursor-pointer"
               >
                 {BR_STATES.map((state) => (
-                  <option key={state.value} value={state.value} className="bg-[#0F172A] text-white">
+                  <option key={state.value} value={state.value} className="bg-bg-secondary text-text-primary">
                     {state.label}
                   </option>
                 ))}
@@ -240,7 +242,7 @@ export default function SearchJobsPage() {
 
             <button
               onClick={handleSearch}
-              className="bg-gradient-to-r from-[#6366F1] to-[#06B6D4] hover:opacity-90 text-white px-8 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 justify-center"
+              className="bg-gradient-to-r from-[#6366F1] to-[#06B6D4] hover:opacity-90 text-text-primary px-8 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 justify-center"
             >
               <Search className="w-4 h-4" /> Buscar
             </button>
@@ -260,7 +262,7 @@ export default function SearchJobsPage() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                   searchTerm === tech
                     ? "bg-[#6366F1]/20 text-[#818CF8] border-[#6366F1]/40"
-                    : "bg-white/5 text-[#94A3B8] border-white/10 hover:bg-white/10 hover:text-white"
+                    : "bg-white/5 text-text-secondary border-border hover:bg-white/10 hover:text-text-primary"
                 }`}
               >
                 {tech}
@@ -285,18 +287,18 @@ export default function SearchJobsPage() {
                   });
                   const data = await res.json();
                   if (res.ok) {
-                    alert("✅ " + data.message);
+                    toast.success(data.message);
                   } else {
                     if (data.requiresUpgrade) {
                       if (confirm("👑 Esta é uma função PRO. Deseja conhecer o plano Candidato PRO?")) {
                         window.location.href = "/candidato/pro";
                       }
                     } else {
-                      alert("❌ " + (data.error || "Erro ao criar alerta"));
+                      toast.error(data.error || "Erro ao criar alerta");
                     }
                   }
                 } catch (err) {
-                  alert("❌ Erro ao conectar com o servidor.");
+                  toast.error("Erro ao conectar com o servidor.");
                 }
               }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#10B981]/10 text-[#34D399] border border-[#10B981]/20 text-xs font-bold hover:bg-[#10B981]/20 transition-all cursor-pointer"
@@ -320,7 +322,7 @@ export default function SearchJobsPage() {
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
                   activeType === option.value
                     ? "bg-[#06B6D4]/20 text-[#22D3EE] border-[#06B6D4]/40"
-                    : "bg-white/5 text-[#94A3B8] border-white/10 hover:bg-white/10 hover:text-white"
+                    : "bg-white/5 text-text-secondary border-border hover:bg-white/10 hover:text-text-primary"
                 }`}
               >
                 {option.label}
@@ -331,7 +333,7 @@ export default function SearchJobsPage() {
             <div className="relative">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border bg-white/5 text-[#94A3B8] border-white/10 hover:bg-white/10 hover:text-white transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border border-border bg-surface text-text-secondary hover:bg-surface/80 hover:text-text-primary transition-all"
               >
                 <Filter className="w-3.5 h-3.5" />
                 {activeLevel === "ALL" ? "Nível" : LEVEL_OPTIONS.find((l) => l.value === activeLevel)?.label}
@@ -343,7 +345,7 @@ export default function SearchJobsPage() {
                     initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 5 }}
-                    className="absolute top-full mt-1 left-0 z-20 bg-[#0F172A] border border-white/10 rounded-xl shadow-xl overflow-hidden"
+                    className="absolute top-full mt-1 left-0 z-20 bg-[#0F172A] border border-border rounded-xl shadow-xl overflow-hidden"
                   >
                     {LEVEL_OPTIONS.map((opt) => (
                       <button
@@ -352,7 +354,7 @@ export default function SearchJobsPage() {
                         className={`block w-full text-left px-4 py-2 text-sm transition-colors ${
                           activeLevel === opt.value
                             ? "text-[#818CF8] bg-[#6366F1]/10"
-                            : "text-[#94A3B8] hover:bg-white/5 hover:text-white"
+                            : "text-text-secondary hover:bg-white/5 hover:text-text-primary"
                         }`}
                       >
                         {opt.label}
@@ -369,7 +371,7 @@ export default function SearchJobsPage() {
             {loadingInternal && loadingExternal ? (
               <span className="flex items-center gap-1.5"><Loader2 className="w-3.5 h-3.5 animate-spin" /> Buscando...</span>
             ) : (
-              <span><strong className="text-white">{totalResults}</strong> vagas encontradas</span>
+              <span><strong className="text-text-primary">{totalResults}</strong> vagas encontradas</span>
             )}
           </span>
         </div>
@@ -388,8 +390,10 @@ export default function SearchJobsPage() {
 
           {/* Vagas Internas Normais */}
           {loadingInternal ? (
-            <div className="flex justify-center items-center py-10">
-              <Loader2 className="w-8 h-8 text-[#6366F1] animate-spin" />
+            <div className="space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <JobCardSkeleton key={i} />
+              ))}
             </div>
           ) : normalJobs.length > 0 ? (
             <div className="space-y-3">
@@ -409,9 +413,10 @@ export default function SearchJobsPage() {
 
           {/* Vagas Adzuna */}
           {loadingExternal ? (
-            <div className="flex items-center justify-center gap-3 py-10">
-              <Loader2 className="w-6 h-6 text-[#06B6D4] animate-spin" />
-              <span className="text-[#64748B] text-sm">Buscando vagas parceiras...</span>
+            <div className="space-y-3">
+              {[...Array(3)].map((_, i) => (
+                <JobCardSkeleton key={i} />
+              ))}
             </div>
           ) : filteredExternal.length > 0 ? (
             <div className="space-y-3">
@@ -426,11 +431,11 @@ export default function SearchJobsPage() {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-center py-20 bg-white/5 rounded-3xl border border-white/10"
+              className="text-center py-20 bg-white/5 rounded-3xl border border-border"
             >
               <Zap className="w-12 h-12 text-[#64748B] mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">Nenhuma vaga encontrada</h3>
-              <p className="text-[#94A3B8] mb-4">Tente ajustar os filtros ou buscar por outra tecnologia.</p>
+              <h3 className="text-xl font-bold text-text-primary mb-2">Nenhuma vaga encontrada</h3>
+              <p className="text-text-secondary mb-4">Tente ajustar os filtros ou buscar por outra tecnologia.</p>
               <button
                 onClick={() => { setSearchTerm(""); setActiveLevel("ALL"); setActiveType("ALL"); fetchExternalJobs("desenvolvedor", ""); }}
                 className="px-5 py-2.5 rounded-xl bg-[#6366F1]/20 text-[#818CF8] border border-[#6366F1]/30 text-sm font-medium hover:bg-[#6366F1]/30 transition-colors"

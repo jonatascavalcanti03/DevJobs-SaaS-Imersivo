@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Code2, Sparkles } from "lucide-react";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 const navLinks = [
   { label: "Vagas", href: "#vagas" },
@@ -36,7 +37,7 @@ export default function Navbar() {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <div className="flex items-center gap-2 group invisible">
+          <div className="flex items-center gap-2 group">
             <div className="relative">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#06B6D4] flex items-center justify-center shadow-lg shadow-[#6366F1]/25">
                 <Code2 className="w-5 h-5 text-white" />
@@ -61,7 +62,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10">{link.label}</span>
                 <motion.div
-                  className="absolute inset-0 rounded-lg bg-white/5"
+                  className="absolute inset-0 rounded-lg bg-surface"
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 1 }}
                   transition={{ duration: 0.2 }}
@@ -72,6 +73,7 @@ export default function Navbar() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             <motion.a
               href="/login"
               className="px-4 py-2 text-sm font-medium text-[#94A3B8] hover:text-white transition-colors duration-300"
@@ -115,7 +117,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden glass-strong border-t border-white/5 overflow-hidden"
+            className="md:hidden glass-strong border-t border-border overflow-hidden"
           >
             <div className="px-4 py-6 space-y-3">
               {navLinks.map((link, i) => (
@@ -125,13 +127,13 @@ export default function Navbar() {
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: i * 0.1 }}
-                  className="block px-4 py-3 text-[#94A3B8] hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300"
+                  className="block px-4 py-3 text-[#94A3B8] hover:text-white hover:bg-surface rounded-xl transition-all duration-300"
                   onClick={() => setIsMobileOpen(false)}
                 >
                   {link.label}
                 </motion.a>
               ))}
-              <div className="pt-3 border-t border-white/5 space-y-2">
+              <div className="pt-3 border-t border-border space-y-2">
                 <a
                   href="/login"
                   className="block px-4 py-3 text-center text-[#94A3B8] hover:text-white rounded-xl transition-colors"

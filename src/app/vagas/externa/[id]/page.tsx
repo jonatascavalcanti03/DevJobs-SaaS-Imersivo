@@ -22,6 +22,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Footer from "@/components/ui/Footer";
 import { useSession } from "next-auth/react";
+import Navbar from "@/components/ui/Navbar";
 
 
 // ─── Helpers ─────────────────────────────────────────────────
@@ -117,19 +118,19 @@ export default function ExternalJobDetailsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#050510] flex flex-col items-center justify-center gap-4">
+      <div className="min-h-screen bg-bg flex flex-col items-center justify-center gap-4">
         <Loader2 className="w-10 h-10 text-[#6366F1] animate-spin" />
-        <p className="text-[#94A3B8] animate-pulse">Carregando detalhes da vaga...</p>
+        <p className="text-text-secondary animate-pulse">Carregando detalhes da vaga...</p>
       </div>
     );
   }
 
   if (error || !job) {
     return (
-      <div className="min-h-screen bg-[#050510] flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-bg flex flex-col items-center justify-center p-6 text-center">
         <AlertCircle className="w-16 h-16 text-red-500/50 mb-4" />
         <h1 className="text-2xl font-bold text-white mb-2">Vaga não encontrada</h1>
-        <p className="text-[#94A3B8] mb-8 max-w-md">
+        <p className="text-text-secondary mb-8 max-w-md">
           Não conseguimos localizar os detalhes desta vaga externa. Ela pode ter sido removida ou expirado no site parceiro.
         </p>
         <button 
@@ -143,7 +144,8 @@ export default function ExternalJobDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050510] text-white">
+    <div className="min-h-screen bg-bg text-text-primary">
+      <Navbar />
       {/* ── Navbar Spacer ── */}
       <div className="h-20" />
 
@@ -152,7 +154,7 @@ export default function ExternalJobDetailsPage() {
         {/* Back Button */}
         <button 
           onClick={() => router.back()}
-          className="flex items-center gap-2 text-[#94A3B8] hover:text-white mb-8 group transition-colors"
+          className="flex items-center gap-2 text-text-secondary hover:text-text-primary mb-8 group transition-colors"
         >
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
           Voltar para as vagas
@@ -185,10 +187,10 @@ export default function ExternalJobDetailsPage() {
                 </div>
 
                 <div className="flex-1 space-y-2">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-white leading-tight">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-text-primary leading-tight">
                     {job.title}
                   </h1>
-                  <div className="flex flex-wrap items-center gap-4 text-[#94A3B8]">
+                  <div className="flex flex-wrap items-center gap-4 text-text-secondary">
                     <span className="flex items-center gap-1.5">
                       <Building2 className="w-4 h-4 text-[#6366F1]" />
                       {job.company}
@@ -240,12 +242,12 @@ export default function ExternalJobDetailsPage() {
               transition={{ delay: 0.1 }}
               className="glass-card p-6 sm:p-8 rounded-3xl border border-white/5"
             >
-              <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <h2 className="text-xl font-bold text-text-primary mb-6 flex items-center gap-2">
                 <Briefcase className="w-5 h-5 text-[#6366F1]" />
                 Descrição da Vaga
               </h2>
               
-              <div className="prose prose-invert max-w-none text-[#94A3B8] leading-relaxed space-y-4">
+              <div className="prose max-w-none text-text-secondary leading-relaxed space-y-4">
                 <p>{(job.description || "").replace(/<[^>]*>/g, "")}</p>
               </div>
 
@@ -254,8 +256,8 @@ export default function ExternalJobDetailsPage() {
                   <ShieldCheck className="w-8 h-8 text-[#6366F1]" />
                 </div>
                 <div className="flex-1 text-center sm:text-left">
-                  <h4 className="font-bold text-white mb-1">Candidatura Segura</h4>
-                  <p className="text-sm text-[#94A3B8]">
+                  <h4 className="font-bold text-text-primary mb-1">Candidatura Segura</h4>
+                  <p className="text-sm text-text-secondary">
                     Esta vaga é gerenciada pelo nosso parceiro. Ao clicar em "Candidatar-se", você será redirecionado para o site oficial da vaga.
                   </p>
                 </div>
@@ -275,8 +277,8 @@ export default function ExternalJobDetailsPage() {
           <div className="space-y-6">
             {/* Quick Apply Card */}
             <div className="glass-card p-6 rounded-3xl border border-white/5 sticky top-24">
-              <h3 className="font-bold text-white mb-4">Interessado?</h3>
-              <p className="text-sm text-[#94A3B8] mb-6">
+              <h3 className="font-bold text-text-primary mb-4">Interessado?</h3>
+              <p className="text-sm text-text-secondary mb-6">
                 Esta vaga está aberta no momento. Recomendamos que você se candidate o quanto antes.
               </p>
               
@@ -295,7 +297,7 @@ export default function ExternalJobDetailsPage() {
                 className={`w-full px-6 py-4 rounded-xl border font-bold flex items-center justify-center gap-2 mb-4 transition-all ${
                   isSaved 
                     ? "bg-[#6366F1]/20 border-[#6366F1]/30 text-[#818CF8]" 
-                    : "bg-white/5 border-white/10 text-white hover:bg-white/10"
+                    : "bg-white/5 border-white/10 text-text-primary hover:bg-white/10"
                 }`}
               >
                 {isSaved ? (
@@ -322,10 +324,10 @@ export default function ExternalJobDetailsPage() {
               <h4 className="font-bold text-[#818CF8] mb-2 flex items-center gap-2">
                 <Zap className="w-4 h-4" /> Match.js PRO
               </h4>
-              <p className="text-xs text-[#94A3B8]">
+              <p className="text-xs text-text-secondary">
                 Seja um candidato PRO para ter prioridade e match de skills em vagas verificadas.
               </p>
-              <Link href="/candidato/pro" className="inline-block mt-4 text-xs font-bold text-white hover:underline">
+              <Link href="/candidato/pro" className="inline-block mt-4 text-xs font-bold text-text-primary hover:underline">
                 Saiba mais →
               </Link>
             </div>

@@ -165,7 +165,7 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
       />
 
       {/* ── Card Body ── */}
-      <div className={`relative glass-card rounded-2xl p-5 sm:p-6 ${isExternal ? "bg-[#080D1A]" : "bg-[#0B1121]"}`}>
+      <div className={`relative glass-card rounded-2xl p-5 sm:p-6`}>
         {/* ── Header ── */}
         <div className="flex items-start gap-4">
           {/* Company Logo */}
@@ -176,7 +176,7 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
               job.isPremium
                 ? "bg-gradient-to-br from-[#F59E0B]/20 to-[#F59E0B]/5 border border-[#F59E0B]/20"
                 : isExternal
-                ? "bg-gradient-to-br from-white/5 to-white/2 border border-white/10"
+                ? "bg-gradient-to-br from-white/5 to-white/2 border border-border"
                 : "bg-gradient-to-br from-[#6366F1]/20 to-[#6366F1]/5 border border-[#6366F1]/20"
             }`}
           >
@@ -197,7 +197,7 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
 
           {/* Title & Company */}
           <div className="flex-1 min-w-0">
-            <h3 className="text-base sm:text-lg font-bold text-white group-hover:text-[#818CF8] transition-colors duration-300 truncate">
+            <h3 className="text-base sm:text-lg font-bold text-text-primary group-hover:text-[#818CF8] transition-colors duration-300 truncate">
               {job.title}
             </h3>
             <p className="text-sm text-[#94A3B8] mt-0.5 truncate">{job.company}</p>
@@ -236,7 +236,7 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
 
             {isExternal && (
               <div className="flex-shrink-0">
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/10">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface border border-border">
                   <Link2 className="w-3 h-3 text-[#64748B]" />
                   <span className="text-[10px] font-medium text-[#64748B] uppercase tracking-wider">Parceiro</span>
                 </div>
@@ -249,7 +249,7 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
               className={`p-2 rounded-lg border transition-all ${
                 isSaved 
                   ? "bg-[#6366F1] border-[#6366F1] text-white" 
-                  : "bg-white/5 border-white/10 text-[#64748B] hover:text-white hover:bg-white/10"
+                  : "bg-surface border-border text-[#64748B] hover:text-text-primary hover:bg-white/10"
               }`}
               title={isSaved ? "Remover dos favoritos" : "Salvar vaga"}
             >
@@ -310,7 +310,7 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
               </motion.span>
             ))}
             {job.tags.length > 5 && (
-              <span className="px-2.5 py-1 text-xs text-[#64748B] bg-white/5 rounded-lg border border-white/5">
+              <span className="px-2.5 py-1 text-xs text-[#64748B] bg-surface rounded-lg border border-border/50">
                 +{job.tags.length - 5}
               </span>
             )}
@@ -318,7 +318,7 @@ export default function JobCard({ job, index = 0 }: JobCardProps) {
         )}
 
         {/* ── Footer ── */}
-        <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/5">
+        <div className="flex items-center justify-between mt-5 pt-4 border-t border-border/50">
           <span className="flex items-center gap-1.5 text-xs text-[#64748B]">
             <Clock className="w-3.5 h-3.5" />
             {timeAgo(job.createdAt)}

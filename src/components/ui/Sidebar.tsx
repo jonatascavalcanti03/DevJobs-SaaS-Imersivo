@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Code2, ChevronLeft, LogOut, type LucideIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export interface SidebarLink {
   label: string;
@@ -30,11 +31,11 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
       <motion.aside
         animate={{ width: collapsed ? 72 : 260 }}
         transition={{ type: "spring", stiffness: 200, damping: 25 }}
-        className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 z-40 glass-strong border-r border-white/5"
+        className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 z-40 glass-strong border-r border-border"
       >
         {/* Logo */}
-        <div className="flex items-center justify-between px-4 h-16 border-b border-white/5">
-          <div className="flex items-center gap-2 invisible">
+        <div className="flex items-center justify-between px-4 h-16 border-b border-border">
+          <div className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#06B6D4] flex items-center justify-center flex-shrink-0">
               <Code2 className="w-5 h-5 text-white" />
             </div>
@@ -46,21 +47,24 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
               )}
             </AnimatePresence>
           </div>
-          <button onClick={() => setCollapsed(!collapsed)} className="p-1.5 rounded-lg hover:bg-white/5 text-[#64748B] hover:text-white transition-colors">
-            <ChevronLeft className={`w-4 h-4 transition-transform duration-300 ${collapsed ? "rotate-180" : ""}`} />
-          </button>
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <button onClick={() => setCollapsed(!collapsed)} className="p-1.5 rounded-lg hover:bg-surface text-[#64748B] hover:text-text-primary transition-colors">
+              <ChevronLeft className={`w-4 h-4 transition-transform duration-300 ${collapsed ? "rotate-180" : ""}`} />
+            </button>
+          </div>
         </div>
 
         {/* User Info */}
-        <div className={`px-4 py-4 border-b border-white/5 ${collapsed ? "flex justify-center" : ""}`}>
+        <div className={`px-4 py-4 border-b border-border ${collapsed ? "flex justify-center" : ""}`}>
           <div className={`flex items-center gap-3 ${collapsed ? "justify-center" : ""}`}>
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6366F1]/30 to-[#06B6D4]/30 border border-white/10 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6366F1]/30 to-[#06B6D4]/30 border border-border flex items-center justify-center text-text-primary font-bold text-sm flex-shrink-0">
               {userImage ? <img src={userImage} alt="" className="w-full h-full rounded-xl object-cover" /> : userName.charAt(0).toUpperCase()}
             </div>
             <AnimatePresence>
               {!collapsed && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="min-w-0">
-                  <p className="text-sm font-semibold text-white truncate">{userName}</p>
+                  <p className="text-sm font-semibold text-text-primary truncate">{userName}</p>
                   <p className="text-xs text-[#64748B] truncate">{userRole}</p>
                 </motion.div>
               )}
@@ -79,8 +83,8 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
                   whileTap={{ scale: 0.98 }}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 group relative ${
                     isActive
-                      ? "bg-[#6366F1]/15 text-white border border-[#6366F1]/20"
-                      : "text-[#94A3B8] hover:text-white hover:bg-white/5"
+                      ? "bg-[#6366F1]/15 text-text-primary border border-[#6366F1]/20"
+                      : "text-text-secondary hover:text-text-primary hover:bg-surface"
                   } ${collapsed ? "justify-center" : ""}`}
                 >
                   {isActive && (
@@ -104,7 +108,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
         </nav>
 
         {/* Logout */}
-        <div className="px-3 py-4 border-t border-white/5">
+        <div className="px-3 py-4 border-t border-border">
           <button onClick={() => signOut({ callbackUrl: '/' })} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#64748B] hover:text-red-400 hover:bg-red-500/5 transition-all ${collapsed ? "justify-center" : ""}`}>
             <LogOut className="w-5 h-5 flex-shrink-0" />
             {!collapsed && <span>Sair</span>}
@@ -113,7 +117,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
       </motion.aside>
 
       {/* Mobile Bottom Nav */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-white/5 px-2 py-2 flex items-center justify-around">
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-border px-2 py-2 flex items-center justify-around">
         {links.slice(0, 5).map((link) => {
           const isActive = activePath === link.href;
           return (

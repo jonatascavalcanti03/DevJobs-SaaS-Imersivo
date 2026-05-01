@@ -8,6 +8,7 @@ import StatusBadge from "@/components/ui/StatusBadge";
 import JobCard from "@/components/ui/JobCard";
 import { type JobData } from "@/components/ui/JobCard";
 import Link from "next/link";
+import ActivityChart from "@/components/ui/ActivityChart";
 
 import { useSession } from "next-auth/react";
 
@@ -110,10 +111,10 @@ export default function CandidateDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-2xl sm:text-3xl font-bold text-white mb-1">
+          <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-2xl sm:text-3xl font-bold text-text-primary mb-1">
             Olá, {firstName}! 👋
           </motion.h1>
-          <motion.p initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="text-[#94A3B8]">
+          <motion.p initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="text-text-secondary">
             Aqui está o resumo da sua carreira hoje.
           </motion.p>
         </div>
@@ -122,24 +123,27 @@ export default function CandidateDashboard() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
           href="/vagas"
-          className="px-5 py-2.5 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] text-white text-sm font-semibold shadow-lg shadow-[#6366F1]/25 transition-colors"
+          className="px-5 py-2.5 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] text-text-primary text-sm font-semibold shadow-lg shadow-[#6366F1]/25 transition-colors"
         >
           Encontrar Vagas
         </motion.a>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <StatsCard icon={Briefcase} label="Candidaturas Ativas" value={loadingApps ? "..." : totalApps.toString()} trend={{ value: 15, positive: true }} index={0} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <StatsCard icon={Briefcase} label="Candidaturas" value={loadingApps ? "..." : totalApps.toString()} trend={{ value: 15, positive: true }} index={0} />
         <StatsCard icon={Bookmark} label="Vagas Salvas" value={savedJobsCount.toString()} index={1} />
-        <StatsCard icon={Bell} label="Alertas Ativos" value={alertsCount.toString()} index={2} />
+        <StatsCard icon={Bell} label="Alertas" value={alertsCount.toString()} index={2} />
+        <div className="lg:col-span-1">
+           <ActivityChart />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Minhas Candidaturas */}
         <div className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-xl font-bold text-white">Candidaturas Recentes</h2>
+            <h2 className="text-xl font-bold text-text-primary">Candidaturas Recentes</h2>
             <Link href="/candidato/candidaturas" className="text-sm font-medium text-[#6366F1] hover:text-[#818CF8] transition-colors">Ver todas</Link>
           </div>
           
@@ -149,21 +153,30 @@ export default function CandidateDashboard() {
                 <Loader2 className="w-8 h-8 text-[#6366F1] animate-spin" />
               </div>
             ) : candidaturas.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full min-h-[200px] text-center p-6">
-                <p className="text-[#94A3B8] mb-4">Você ainda não realizou nenhuma candidatura.</p>
-                <Link href="/vagas" className="text-[#6366F1] hover:underline font-medium">
-                  Explorar vagas
+              <div className="flex flex-col items-center justify-center h-full min-h-[260px] text-center p-8">
+                <div className="w-16 h-16 rounded-2xl bg-surface flex items-center justify-center mb-4 border border-border">
+                  <Briefcase className="w-8 h-8 text-[#64748B]" />
+                </div>
+                <h3 className="text-lg font-bold text-text-primary mb-2">Sem candidaturas recentes</h3>
+                <p className="text-text-secondary text-sm max-w-[280px] mb-6">
+                  Você ainda não se candidatou a nenhuma vaga. Comece a explorar oportunidades agora!
+                </p>
+                <Link 
+                  href="/vagas" 
+                  className="px-6 py-2.5 rounded-xl bg-[#6366F1]/10 text-[#818CF8] border border-[#6366F1]/20 font-semibold hover:bg-[#6366F1]/20 transition-all"
+                >
+                  Explorar Vagas
                 </Link>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-white/5 bg-white/5">
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Vaga</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Data</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-4 text-xs font-semibold text-[#94A3B8] uppercase tracking-wider text-right">Ação</th>
+                    <tr className="border-b border-border bg-surface">
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">Vaga</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">Data</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-4 text-xs font-semibold text-text-secondary uppercase tracking-wider text-right">Ação</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5">
@@ -173,13 +186,13 @@ export default function CandidateDashboard() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="hover:bg-white/5 transition-colors group"
+                        className="hover:bg-surface transition-colors group"
                       >
                         <td className="px-6 py-4">
-                          <p className="text-sm font-semibold text-white group-hover:text-[#818CF8] transition-colors">{item.job.title}</p>
+                          <p className="text-sm font-semibold text-text-primary group-hover:text-[#818CF8] transition-colors">{item.job.title}</p>
                           <p className="text-xs text-[#64748B] mt-0.5">{item.job.company}</p>
                         </td>
-                        <td className="px-6 py-4 text-sm text-[#94A3B8]">
+                        <td className="px-6 py-4 text-sm text-text-secondary">
                           {new Date(item.appliedAt).toLocaleDateString("pt-BR")}
                         </td>
                         <td className="px-6 py-4">
@@ -187,7 +200,7 @@ export default function CandidateDashboard() {
                         </td>
                         <td className="px-6 py-4 text-right">
                           <Link href={`/vagas/${item.jobId}`}>
-                            <button className="p-2 rounded-lg hover:bg-white/10 text-[#64748B] hover:text-white transition-colors">
+                            <button className="p-2 rounded-lg hover:bg-white/10 text-[#64748B] hover:text-text-primary transition-colors">
                               <ExternalLink className="w-4 h-4" />
                             </button>
                           </Link>
@@ -204,7 +217,7 @@ export default function CandidateDashboard() {
         {/* Vagas Recomendadas */}
         <div className="space-y-4">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-xl font-bold text-white">Recomendadas para você</h2>
+            <h2 className="text-xl font-bold text-text-primary">Recomendadas para você</h2>
           </div>
           <div className="space-y-4">
             {loadingJobs ? (
@@ -216,8 +229,8 @@ export default function CandidateDashboard() {
                 <JobCard key={job.id} job={job} index={index} />
               ))
             ) : (
-              <div className="text-center p-6 bg-white/5 rounded-2xl border border-white/10">
-                <p className="text-sm text-[#94A3B8]">Nenhuma vaga disponível no momento.</p>
+              <div className="text-center p-6 bg-surface rounded-2xl border border-border">
+                <p className="text-sm text-text-secondary">Nenhuma vaga disponível no momento.</p>
               </div>
             )}
           </div>
@@ -233,10 +246,10 @@ export default function CandidateDashboard() {
               <div className="absolute inset-0 bg-gradient-to-br from-[#F59E0B]/20 to-[#F59E0B]/5 border border-[#F59E0B]/20 rounded-2xl group-hover:border-[#F59E0B]/40 transition-colors" />
               <div className="relative z-10">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#F59E0B] to-[#F97316] flex items-center justify-center mb-4 shadow-lg shadow-[#F59E0B]/25">
-                  <Star className="w-5 h-5 text-white" />
+                  <Star className="w-5 h-5 text-text-primary" />
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">Destaque seu perfil</h3>
-                <p className="text-sm text-[#94A3B8] mb-4">Assine o plano PRO e apareça no topo das buscas dos recrutadores.</p>
+                <p className="text-sm text-text-secondary mb-4">Assine o plano PRO e apareça no topo das buscas dos recrutadores.</p>
                 <span className="text-sm font-bold text-[#FBBF24] flex items-center gap-1 group-hover:gap-2 transition-all">
                   Conhecer benefícios <ArrowRight className="w-4 h-4" />
                 </span>

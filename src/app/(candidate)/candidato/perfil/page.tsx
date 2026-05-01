@@ -155,10 +155,10 @@ export default function CandidateProfilePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-2xl sm:text-3xl font-bold text-white mb-2">
+          <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-2xl sm:text-3xl font-bold text-text-primary mb-2">
             Meu Perfil
           </motion.h1>
-          <motion.p initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="text-[#94A3B8]">
+          <motion.p initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="text-text-secondary">
             Mantenha seu perfil atualizado para atrair melhores oportunidades.
           </motion.p>
         </div>
@@ -190,11 +190,11 @@ export default function CandidateProfilePage() {
         <div className="lg:col-span-2 space-y-6">
           {/* Basic Info */}
           <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-6">
-            <h2 className="text-xl font-bold text-white border-b border-white/10 pb-4">Informações Básicas</h2>
+            <h2 className="text-xl font-bold text-text-primary border-b border-border pb-4">Informações Básicas</h2>
             
             <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
               <div 
-                className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#6366F1]/30 to-[#06B6D4]/30 border-2 border-white/10 flex items-center justify-center text-white font-bold text-2xl flex-shrink-0 cursor-pointer hover:border-[#6366F1]/50 transition-colors overflow-hidden"
+                className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#6366F1]/30 to-[#06B6D4]/30 border-2 border-border flex items-center justify-center text-text-primary font-bold text-2xl flex-shrink-0 cursor-pointer hover:border-[#6366F1]/50 transition-colors overflow-hidden"
                 onClick={() => imageInputRef.current?.click()}
               >
                 {image ? (
@@ -206,7 +206,7 @@ export default function CandidateProfilePage() {
               <div className="flex-1 space-y-2 w-full">
                 <button 
                   onClick={() => imageInputRef.current?.click()}
-                  className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-sm text-white font-medium transition-colors"
+                  className="px-4 py-2 bg-surface hover:bg-white/10 border border-border rounded-lg text-sm text-text-primary font-medium transition-colors"
                 >
                   Alterar Foto
                 </button>
@@ -223,7 +223,7 @@ export default function CandidateProfilePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-4">
               <div>
-                <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">Nome Completo</label>
+                <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">Nome Completo</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <User className="h-5 w-5 text-[#64748B] group-focus-within:text-[#6366F1] transition-colors" />
@@ -232,12 +232,12 @@ export default function CandidateProfilePage() {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                    className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">Email</label>
+                <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">Email</label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                     <Mail className="h-5 w-5 text-[#64748B] group-focus-within:text-[#6366F1] transition-colors" />
@@ -246,14 +246,14 @@ export default function CandidateProfilePage() {
                     type="email"
                     disabled
                     value={email}
-                    className="block w-full pl-11 pr-4 py-3 bg-white/5 opacity-70 border border-white/10 rounded-xl text-[#94A3B8] cursor-not-allowed outline-none"
+                    className="block w-full pl-11 pr-4 py-3 bg-surface opacity-70 border border-border rounded-xl text-text-secondary cursor-not-allowed outline-none"
                   />
                 </div>
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">Cargo Atual / Titulo Profissional</label>
+              <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">Cargo Atual / Titulo Profissional</label>
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                   <Briefcase className="h-5 w-5 text-[#64748B] group-focus-within:text-[#6366F1] transition-colors" />
@@ -263,26 +263,26 @@ export default function CandidateProfilePage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Ex: Desenvolvedor Frontend React"
-                  className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                  className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">Biografia (Bio)</label>
+              <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">Biografia (Bio)</label>
               <textarea
                 rows={4}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
                 placeholder="Fale um pouco sobre você..."
-                className="block w-full p-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none resize-none"
+                className="block w-full p-4 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none resize-none"
               />
             </div>
           </div>
 
           {/* Social Links */}
           <div className="glass-card rounded-3xl p-6 sm:p-8 space-y-6">
-            <h2 className="text-xl font-bold text-white border-b border-white/10 pb-4">Links Profissionais</h2>
+            <h2 className="text-xl font-bold text-text-primary border-b border-border pb-4">Links Profissionais</h2>
             
             <div className="space-y-4">
               <div className="relative group">
@@ -294,20 +294,20 @@ export default function CandidateProfilePage() {
                   value={linkedin}
                   onChange={(e) => setLinkedin(e.target.value)}
                   placeholder="Link do seu LinkedIn"
-                  className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#0A66C2]/50 focus:ring-1 focus:ring-[#0A66C2]/50 transition-all outline-none"
+                  className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#0A66C2]/50 focus:ring-1 focus:ring-[#0A66C2]/50 transition-all outline-none"
                 />
               </div>
               
               <div className="relative group">
                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Code className="h-5 w-5 text-[#64748B] group-focus-within:text-white transition-colors" />
+                  <Code className="h-5 w-5 text-[#64748B] group-focus-within:text-text-primary transition-colors" />
                 </div>
                 <input
                   type="url"
                   value={github}
                   onChange={(e) => setGithub(e.target.value)}
                   placeholder="Link do seu GitHub"
-                  className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all outline-none"
+                  className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-white/50 focus:ring-1 focus:ring-white/50 transition-all outline-none"
                 />
               </div>
 
@@ -320,7 +320,7 @@ export default function CandidateProfilePage() {
                   value={portfolio}
                   onChange={(e) => setPortfolio(e.target.value)}
                   placeholder="Link do seu Portfólio (Opcional)"
-                  className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                  className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                 />
               </div>
             </div>
@@ -334,10 +334,10 @@ export default function CandidateProfilePage() {
             <div className="w-12 h-12 rounded-full bg-[#6366F1]/20 flex items-center justify-center mx-auto mb-4">
               <FileText className="w-6 h-6 text-[#818CF8]" />
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">Currículo (PDF)</h3>
-            <p className="text-xs text-[#94A3B8] mb-4">Faça upload do seu CV para facilitar a aplicação nas vagas.</p>
+            <h3 className="text-lg font-bold text-text-primary mb-2">Currículo (PDF)</h3>
+            <p className="text-xs text-text-secondary mb-4">Faça upload do seu CV para facilitar a aplicação nas vagas.</p>
             <div 
-              className="border-2 border-dashed border-white/10 rounded-xl p-4 hover:bg-white/5 hover:border-[#6366F1]/30 transition-all cursor-pointer"
+              className="border-2 border-dashed border-border rounded-xl p-4 hover:bg-surface hover:border-[#6366F1]/30 transition-all cursor-pointer"
               onClick={() => fileInputRef.current?.click()}
             >
               <span className="text-sm font-medium text-[#818CF8]">
@@ -355,10 +355,10 @@ export default function CandidateProfilePage() {
 
           {/* Skills */}
           <div className="glass-card rounded-3xl p-6">
-            <h3 className="text-lg font-bold text-white mb-4">Principais Habilidades</h3>
+            <h3 className="text-lg font-bold text-text-primary mb-4">Principais Habilidades</h3>
             <div className="flex flex-wrap gap-2 mb-4">
               {skills.map((skill) => (
-                <span key={skill} className="px-3 py-1 bg-white/10 border border-white/10 rounded-lg text-sm text-white flex items-center gap-2">
+                <span key={skill} className="px-3 py-1 bg-white/10 border border-border rounded-lg text-sm text-text-primary flex items-center gap-2">
                   {skill}
                   <button onClick={() => handleRemoveSkill(skill)} className="text-[#64748B] hover:text-red-400 transition-colors">&times;</button>
                 </span>
@@ -372,7 +372,7 @@ export default function CandidateProfilePage() {
                 onChange={(e) => setNewSkill(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAddSkill()}
                 placeholder="Ex: Node.js"
-                className="block w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:outline-none transition-all"
+                className="block w-full px-3 py-2 bg-surface border border-border rounded-lg text-sm text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:outline-none transition-all"
               />
               <button onClick={handleAddSkill} className="px-3 py-2 bg-[#6366F1] text-white rounded-lg text-sm font-medium hover:bg-[#4F46E5] transition-colors">
                 Add

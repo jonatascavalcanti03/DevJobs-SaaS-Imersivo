@@ -131,7 +131,7 @@ function PlanosContent() {
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-3xl md:text-5xl font-bold text-white tracking-tight"
+          className="text-3xl md:text-5xl font-bold text-text-primary tracking-tight"
         >
           Acelere suas contratações com{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#06B6D4] to-[#6366F1]">planos exclusivos</span>
@@ -140,7 +140,7 @@ function PlanosContent() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-[#94A3B8] text-lg max-w-2xl mx-auto"
+          className="text-text-secondary text-lg max-w-2xl mx-auto"
         >
           Candidatos PRO aparecem no topo. Match de habilidades real. Vagas em destaque que convertem.
         </motion.p>
@@ -154,10 +154,10 @@ function PlanosContent() {
         className="flex flex-col items-center gap-3"
       >
         <div className="flex items-center gap-4">
-          <span className={`text-sm font-medium transition-colors ${!isAnnual ? "text-white" : "text-[#64748B]"}`}>Mensal</span>
+          <span className={`text-sm font-medium transition-colors ${!isAnnual ? "text-text-primary" : "text-text-secondary"}`}>Mensal</span>
           <button
             onClick={() => setIsAnnual(!isAnnual)}
-            className="relative inline-flex h-7 w-14 items-center rounded-full bg-white/10 transition-colors focus:outline-none"
+            className="relative inline-flex h-7 w-14 items-center rounded-full bg-surface border border-border transition-colors focus:outline-none"
           >
             <span
               className={`inline-block h-5 w-5 transform rounded-full transition-transform ${
@@ -165,7 +165,7 @@ function PlanosContent() {
               }`}
             />
           </button>
-          <span className={`text-sm font-medium transition-colors flex items-center gap-2 ${isAnnual ? "text-white" : "text-[#64748B]"}`}>
+          <span className={`text-sm font-medium transition-colors ${isAnnual ? "text-text-primary" : "text-text-secondary"}`}>
             Anual
             <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold">Economize 20%</span>
           </span>
@@ -195,10 +195,10 @@ function PlanosContent() {
                 <div className="absolute inset-0 bg-gradient-to-br from-[#06B6D4] via-[#6366F1] to-[#8B5CF6] opacity-100 rounded-3xl" />
               )}
               {!plan.highlight && (
-                <div className="absolute inset-0 bg-white/10 rounded-3xl" />
+                <div className="absolute inset-0 bg-border/20 rounded-3xl" />
               )}
 
-              <div className={`relative h-full rounded-[23px] flex flex-col p-8 ${plan.highlight ? "bg-[#0B1121]/95 backdrop-blur-xl" : "bg-[#0F172A]"}`}>
+              <div className={`relative h-full rounded-[23px] flex flex-col p-8 ${plan.highlight ? "bg-surface/95 backdrop-blur-xl border border-[#6366F1]/30 shadow-2xl shadow-[#6366F1]/10" : "bg-surface border border-border shadow-lg"}`}>
                 {plan.highlight && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                     <span className="bg-gradient-to-r from-[#06B6D4] to-[#6366F1] text-white text-[10px] md:text-xs font-bold uppercase tracking-wider py-1.5 px-4 rounded-full flex items-center gap-1.5 shadow-lg whitespace-nowrap">
@@ -212,17 +212,17 @@ function PlanosContent() {
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${plan.highlight ? "bg-gradient-to-br from-[#06B6D4]/20 to-[#6366F1]/20 text-[#22D3EE]" : "bg-white/5 text-[#94A3B8]"}`}>
                     <Icon className="w-6 h-6" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                  <p className="text-sm text-[#94A3B8]">{plan.description}</p>
+                  <h3 className="text-2xl font-bold text-text-primary mb-2">{plan.name}</h3>
+                  <p className="text-sm text-text-secondary">{plan.description}</p>
                 </div>
 
                 {/* Preço */}
                 <div className="mb-6">
                   <div className="flex items-end gap-1">
-                    <span className="text-4xl font-extrabold text-white">
+                    <span className="text-4xl font-extrabold text-text-primary">
                       R$ {isAnnual ? plan.priceAnnual : plan.priceMonthly}
                     </span>
-                    <span className="text-[#64748B] mb-1">/ mês</span>
+                    <span className="text-text-secondary mb-1">/ mês</span>
                   </div>
                   {isAnnual && (
                     <p className="text-xs text-emerald-400 mt-1.5 font-medium">
@@ -235,10 +235,10 @@ function PlanosContent() {
                 <div className="flex-1 space-y-3 mb-5">
                   {plan.monthlyFeatures.map((feature, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className={`mt-0.5 rounded-full p-0.5 flex-shrink-0 ${plan.highlight ? "bg-emerald-500/20 text-emerald-400" : "bg-white/10 text-white"}`}>
+                      <div className={`mt-0.5 rounded-full p-0.5 flex-shrink-0 ${plan.highlight ? "bg-emerald-500/20 text-emerald-400" : "bg-surface-hover text-text-primary"}`}>
                         <Check className="w-3.5 h-3.5" />
                       </div>
-                      <span className="text-sm text-[#E2E8F0]">{feature}</span>
+                      <span className="text-sm text-text-primary">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -269,7 +269,7 @@ function PlanosContent() {
                   className={`w-full py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all duration-300 ${
                     plan.highlight
                       ? "bg-gradient-to-r from-[#06B6D4] to-[#6366F1] text-white hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] hover:scale-[1.02]"
-                      : "bg-white/5 text-white hover:bg-white/10 border border-white/10"
+                      : "bg-surface text-text-primary hover:bg-surface/80 border border-border"
                   } ${loadingPlan === plan.name ? "opacity-70 cursor-not-allowed" : ""}`}
                 >
                   {loadingPlan === plan.name ? (
@@ -293,28 +293,28 @@ function PlanosContent() {
         transition={{ delay: 0.6 }}
         className="max-w-3xl mx-auto glass-card rounded-3xl p-8"
       >
-        <h3 className="text-xl font-bold text-white mb-6 text-center">Por que o Corporativo PRO vale mais?</h3>
+        <h3 className="text-xl font-bold text-text-primary mb-6 text-center">Por que o Corporativo PRO vale mais?</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
           <div className="space-y-2">
             <div className="w-12 h-12 rounded-xl bg-[#06B6D4]/10 border border-[#06B6D4]/20 flex items-center justify-center mx-auto">
               <BadgeCheck className="w-6 h-6 text-[#06B6D4]" />
             </div>
-            <h4 className="text-white font-bold text-sm">Empresa Verificada</h4>
-            <p className="text-[#94A3B8] text-xs">Selo azul de verificação nas suas vagas — mais credibilidade para candidatos</p>
+            <h4 className="text-text-primary font-bold text-sm">Empresa Verificada</h4>
+            <p className="text-text-secondary text-xs">Selo azul de verificação nas suas vagas — mais credibilidade para candidatos</p>
           </div>
           <div className="space-y-2">
             <div className="w-12 h-12 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 flex items-center justify-center mx-auto">
               <Star className="w-6 h-6 text-[#8B5CF6]" />
             </div>
-            <h4 className="text-white font-bold text-sm">Candidatos PRO Primeiro</h4>
-            <p className="text-[#94A3B8] text-xs">Perfis PRO são priorizados no topo da fila — acesse os melhores talentos antes</p>
+            <h4 className="text-text-primary font-bold text-sm">Candidatos PRO Primeiro</h4>
+            <p className="text-text-secondary text-xs">Perfis PRO são priorizados no topo da fila — acesse os melhores talentos antes</p>
           </div>
           <div className="space-y-2">
             <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto">
               <Zap className="w-6 h-6 text-emerald-400" />
             </div>
-            <h4 className="text-white font-bold text-sm">Vagas Ilimitadas</h4>
-            <p className="text-[#94A3B8] text-xs">Sem limite de vagas em destaque — publique o quanto precisar</p>
+            <h4 className="text-text-primary font-bold text-sm">Vagas Ilimitadas</h4>
+            <p className="text-text-secondary text-xs">Sem limite de vagas em destaque — publique o quanto precisar</p>
           </div>
         </div>
       </motion.div>

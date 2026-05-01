@@ -26,7 +26,7 @@ const footerLinks = {
 
 export default function Footer() {
   return (
-    <footer className="relative mt-auto border-t border-white/5">
+    <footer className="relative mt-auto border-t border-border/50">
       {/* Background Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#6366F1]/5 rounded-full blur-[120px] pointer-events-none" />
 
@@ -34,14 +34,13 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4 invisible">
+            <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#6366F1] to-[#06B6D4] flex items-center justify-center">
                 <Code2 className="w-4 h-4 text-white" />
               </div>
               <span className="text-lg font-bold">
-                <span className="text-gradient">Dev</span>
-                <span className="text-white">Jobs</span>
-                <span className="text-[#06B6D4]">.br</span>
+                <span className="text-gradient">Match</span>
+                <span className="text-text-primary">.js</span>
               </span>
             </div>
             <p className="text-sm text-[#64748B] leading-relaxed mb-4">
@@ -55,7 +54,7 @@ export default function Footer() {
                   href="#"
                   whileHover={{ scale: 1.15, y: -2 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-9 h-9 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-[#64748B] hover:text-white hover:border-[#6366F1]/30 hover:bg-[#6366F1]/10 transition-all duration-300"
+                  className="w-9 h-9 rounded-lg bg-surface border border-border/50 flex items-center justify-center text-[#64748B] hover:text-text-primary hover:border-[#6366F1]/30 hover:bg-[#6366F1]/10 transition-all duration-300"
                 >
                   <Icon className="w-4 h-4" />
                 </motion.a>
@@ -66,7 +65,7 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([title, links]) => (
             <div key={title}>
-              <h4 className="text-sm font-semibold text-white mb-4">{title}</h4>
+              <h4 className="text-sm font-semibold text-text-primary mb-4">{title}</h4>
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
@@ -84,7 +83,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-12 pt-8 border-t border-border/50 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#64748B]">
             © {new Date().getFullYear()} — Todos os direitos
             reservados.

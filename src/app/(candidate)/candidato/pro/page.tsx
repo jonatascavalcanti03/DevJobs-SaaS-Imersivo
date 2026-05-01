@@ -114,10 +114,10 @@ function ProContent() {
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center border border-emerald-500/30">
           <Check className="w-12 h-12 text-emerald-400" />
         </motion.div>
-        <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-3xl md:text-4xl font-bold text-white">
+        <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-3xl md:text-4xl font-bold text-text-primary">
           Pagamento Aprovado! 🎉
         </motion.h2>
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[#94A3B8]">
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-text-secondary">
           Seu perfil agora é PRO. Redirecionando para o Dashboard...
         </motion.p>
       </div>
@@ -146,7 +146,7 @@ function ProContent() {
               {expiringSoon ? `⚠️ Seu PRO expira em ${daysLeft} dia${daysLeft > 1 ? "s" : ""}!` : "✅ Você já é PRO!"}
             </p>
             {expiresAt && (
-              <p className="text-sm text-[#94A3B8] mt-0.5 flex items-center gap-1.5">
+              <p className="text-sm text-text-secondary mt-0.5 flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5" />
                 {expiringSoon ? "Renove agora para não perder sua prioridade." : `Plano ativo até ${expiresAt.toLocaleDateString("pt-BR")}`}
               </p>
@@ -168,7 +168,7 @@ function ProContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-bold text-white"
+          className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary"
         >
           Destaque-se com o <span className="text-[#FBBF24]">Match.js PRO</span>
         </motion.h1>
@@ -176,9 +176,9 @@ function ProContent() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-lg text-[#94A3B8] max-w-2xl mx-auto"
+          className="text-lg text-text-secondary max-w-2xl mx-auto"
         >
-          Candidatos PRO aparecem <strong className="text-white">no topo da lista</strong> de todas as empresas — sua candidatura é vista primeiro, sempre.
+          Candidatos PRO aparecem <strong className="text-text-primary">no topo da lista</strong> de todas as empresas — sua candidatura é vista primeiro, sempre.
         </motion.p>
       </div>
 
@@ -191,24 +191,24 @@ function ProContent() {
           className="relative rounded-3xl overflow-hidden group"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#F59E0B]/30 via-[#6366F1]/10 to-[#F59E0B]/30" style={{ animation: "gradient-shift 8s ease infinite", backgroundSize: "200% 200%" }} />
-          <div className="absolute inset-0 bg-[#050510]/80 backdrop-blur-xl" />
-          <div className="absolute inset-[1px] rounded-[23px] bg-gradient-to-br from-white/10 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-surface/90 backdrop-blur-xl border border-border" />
+          <div className="absolute inset-[1px] rounded-[23px] bg-gradient-to-br from-border to-transparent pointer-events-none" />
 
           <div className="relative p-8 sm:p-10 z-10 text-center">
-            <h3 className="text-xl font-bold text-white mb-2">Assinatura Mensal</h3>
-            <p className="text-[#94A3B8] text-sm mb-6">Cancele quando quiser, sem fidelidade.</p>
+            <h3 className="text-xl font-bold text-text-primary mb-2">Assinatura Mensal</h3>
+            <p className="text-text-secondary text-sm mb-6">Cancele quando quiser, sem fidelidade.</p>
 
             <div className="flex items-end justify-center gap-1 mb-3">
               <span className="text-2xl font-semibold text-[#FBBF24]">R$</span>
-              <span className="text-6xl font-extrabold text-white leading-none">29</span>
-              <span className="text-lg text-[#94A3B8] mb-1">/mês</span>
+              <span className="text-6xl font-extrabold text-text-primary leading-none">29</span>
+              <span className="text-lg text-text-secondary mb-1">/mês</span>
             </div>
-            <p className="text-xs text-[#64748B] mb-8">Equivale a menos de R$ 1/dia</p>
+            <p className="text-xs text-text-secondary mb-8">Equivale a menos de R$ 1/dia</p>
 
             {/* O que está incluso */}
             <div className="text-left space-y-2.5 mb-8">
               {["Perfil PRO no topo por 30 dias", "Badge dourado ⭐ visível nas candidaturas", "Prioridade em todas as vagas", "Cancelamento a qualquer momento"].map((item, i) => (
-                <div key={i} className="flex items-center gap-2.5 text-sm text-[#E2E8F0]">
+                <div key={i} className="flex items-center gap-2.5 text-sm text-text-primary">
                   <div className="w-5 h-5 rounded-full bg-[#F59E0B]/20 flex items-center justify-center flex-shrink-0">
                     <Check className="w-3 h-3 text-[#FBBF24]" />
                   </div>
@@ -222,14 +222,14 @@ function ProContent() {
               disabled={loading}
               className={`w-full py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 ${
                 loading
-                  ? "bg-white/10 text-[#64748B] cursor-not-allowed"
+                  ? "bg-surface text-text-secondary cursor-not-allowed"
                   : "bg-gradient-to-r from-[#F59E0B] to-[#F97316] text-black shadow-xl shadow-[#F59E0B]/25 hover:shadow-[#F59E0B]/40 hover:scale-[1.02] active:scale-[0.98]"
               }`}
             >
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <>{isActive ? "Renovar PRO" : "Assinar Agora"} <ArrowRight className="w-5 h-5" /></>}
             </button>
 
-            <p className="mt-4 text-xs text-[#64748B] flex items-center justify-center gap-1.5">
+            <p className="mt-4 text-xs text-text-secondary flex items-center justify-center gap-1.5">
               <Lock className="w-3.5 h-3.5" /> Pagamento 100% seguro via Stripe
             </p>
           </div>
@@ -243,13 +243,13 @@ function ProContent() {
           className="space-y-5"
         >
           {BENEFITS.map((benefit, i) => (
-            <div key={i} className="flex items-start gap-4 p-5 rounded-2xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/5">
+            <div key={i} className="flex items-start gap-4 p-5 rounded-2xl hover:bg-surface transition-colors border border-transparent hover:border-border/50">
               <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#F59E0B]/20 to-[#F59E0B]/5 border border-[#F59E0B]/20 flex items-center justify-center flex-shrink-0">
                 <benefit.icon className="w-6 h-6 text-[#FBBF24]" />
               </div>
               <div>
-                <h4 className="text-base font-bold text-white mb-1">{benefit.title}</h4>
-                <p className="text-sm text-[#94A3B8] leading-relaxed">{benefit.description}</p>
+                <h4 className="text-base font-bold text-text-primary mb-1">{benefit.title}</h4>
+                <p className="text-sm text-text-secondary leading-relaxed">{benefit.description}</p>
               </div>
             </div>
           ))}
@@ -263,8 +263,8 @@ function ProContent() {
         transition={{ delay: 0.5 }}
         className="text-center p-8 rounded-2xl glass-card border border-[#F59E0B]/10 max-w-3xl mx-auto"
       >
-        <h4 className="text-xl font-bold text-white mb-2">Garantia de 7 dias</h4>
-        <p className="text-[#94A3B8] text-sm">
+        <h4 className="text-xl font-bold text-text-primary mb-2">Garantia de 7 dias</h4>
+        <p className="text-text-secondary text-sm">
           Se você não gostar dos benefícios ou não receber mais atenção dos recrutadores, devolvemos 100% do seu dinheiro nos primeiros 7 dias. Sem perguntas.
         </p>
       </motion.div>

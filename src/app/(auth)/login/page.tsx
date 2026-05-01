@@ -52,10 +52,10 @@ export default function LoginPage() {
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#6366F1] via-[#06B6D4] to-[#8B5CF6]" />
 
       <div className="text-center mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+        <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-2">
           Bem-vindo de volta
         </h1>
-        <p className="text-[#94A3B8] text-sm">
+        <p className="text-text-secondary text-sm">
           Faça login para acessar seu painel
         </p>
       </div>
@@ -68,7 +68,7 @@ export default function LoginPage() {
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">
+          <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">
             Email
           </label>
           <div className="relative group">
@@ -80,7 +80,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+              className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
               placeholder="seu@email.com"
             />
           </div>
@@ -88,7 +88,7 @@ export default function LoginPage() {
 
         <div>
           <div className="flex items-center justify-between mb-1.5 ml-1 pr-1">
-            <label className="block text-sm font-medium text-[#94A3B8]">
+            <label className="block text-sm font-medium text-text-secondary">
               Senha
             </label>
             <a
@@ -107,7 +107,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+              className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
               placeholder="••••••••"
             />
           </div>
@@ -119,8 +119,8 @@ export default function LoginPage() {
           disabled={loading}
           className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold shadow-lg transition-all mt-6 ${
             !loading
-              ? "bg-gradient-to-r from-[#6366F1] to-[#06B6D4] text-white shadow-[#6366F1]/25 hover:shadow-[#6366F1]/40 hover:scale-[1.02] active:scale-[0.98]"
-              : "bg-white/5 text-[#64748B] cursor-not-allowed"
+              ? "bg-gradient-to-r from-[#6366F1] to-[#06B6D4] text-text-primary shadow-[#6366F1]/25 hover:shadow-[#6366F1]/40 hover:scale-[1.02] active:scale-[0.98]"
+              : "bg-surface text-[#64748B] cursor-not-allowed"
           }`}
         >
           {loading ? (
@@ -133,11 +133,11 @@ export default function LoginPage() {
         </button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-[#94A3B8]">
+      <p className="mt-8 text-center text-sm text-text-secondary">
         Ainda não tem uma conta?{" "}
         <a
           href="/cadastro"
-          className="text-white font-medium hover:text-[#06B6D4] transition-colors"
+          className="text-text-primary font-medium hover:text-[#06B6D4] transition-colors"
         >
           Cadastre-se grátis
         </a>

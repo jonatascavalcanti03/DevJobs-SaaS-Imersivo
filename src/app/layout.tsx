@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AuthProvider from "@/components/providers/AuthProvider";
+import Providers from "@/components/providers/Providers";
 import AppShell from "@/components/layout/AppShell";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -11,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Vagas de Programação no Brasil",
+  title: "Match.js | Vagas de Programação no Brasil",
   description:
     "Encontre as melhores vagas de programação no Brasil. Conectamos desenvolvedores talentosos às melhores empresas de tecnologia. Vagas remotas, híbridas e presenciais.",
   keywords: [
@@ -19,16 +20,16 @@ export const metadata: Metadata = {
     "emprego desenvolvedor",
     "vagas tech Brasil",
     "trabalho remoto programação",
-    "devjobs",
+    "matchjs",
     "vagas TI",
   ],
   openGraph: {
-    title: "Vagas de Programação no Brasil",
+    title: "Match.js | Vagas de Programação no Brasil",
     description:
       "Encontre as melhores vagas de programação no Brasil. Conectamos desenvolvedores talentosos às melhores empresas de tecnologia.",
     type: "website",
     locale: "pt_BR",
-    siteName: "Plataforma de Vagas Tech",
+    siteName: "Match.js",
   },
 };
 
@@ -38,16 +39,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[#050510] text-[#F1F5F9]">
-        <AuthProvider>
+    <html lang="pt-BR" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-bg text-text-primary transition-colors duration-300">
+        <Providers>
+          {/* Global Animated Background */}
+          <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[#6366F1]/5 dark:bg-[#6366F1]/10 blur-[120px] animate-mesh" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[#06B6D4]/5 dark:bg-[#06B6D4]/10 blur-[120px] animate-mesh" style={{ animationDelay: "-5s" }} />
+          </div>
+
           {/* Noise overlay for texture */}
           <div className="noise-overlay" aria-hidden="true" />
+          <Toaster richColors position="top-right" />
 
           <AppShell>
             {children}
           </AppShell>
-        </AuthProvider>
+        </Providers>
       </body>
     </html>
   );

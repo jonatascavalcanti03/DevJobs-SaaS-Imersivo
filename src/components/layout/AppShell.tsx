@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import Sidebar, { type SidebarLink } from "@/components/ui/Sidebar";
 import { 
   LayoutDashboard, 
@@ -49,7 +50,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const userRole = role === "COMPANY" ? "Empresa" : "Candidato(a)";
 
   return (
-    <div className="min-h-screen bg-[#050510] flex">
+    <div className="min-h-screen bg-bg flex">
       <Sidebar
         links={links}
         activePath={pathname || ""}
@@ -57,8 +58,19 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         userRole={userRole}
         userImage={session?.user?.image || undefined}
       />
-      <main className="flex-1 lg:pl-[260px] pb-16 lg:pb-0 min-h-screen transition-all duration-300 relative overflow-hidden">
-        {children}
+      <main className="flex-1 lg:pl-[260px] pb-16 lg:pb-0 min-h-screen transition-all duration-300 relative">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={pathname}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="w-full h-full"
+          >
+            {children}
+          </motion.div>
+        </AnimatePresence>
       </main>
     </div>
   );

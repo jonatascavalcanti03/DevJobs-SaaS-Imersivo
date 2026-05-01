@@ -85,16 +85,16 @@ export default function RegisterPage() {
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#06B6D4] via-[#6366F1] to-[#8B5CF6]" />
 
       <div className="text-center mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+        <h1 className="text-2xl sm:text-3xl font-bold text-text-primary mb-2">
           Crie sua conta
         </h1>
-        <p className="text-[#94A3B8] text-sm">
+        <p className="text-text-secondary text-sm">
           Junte-se à maior plataforma tech do Brasil
         </p>
       </div>
 
       {/* Role Toggle */}
-      <div className="flex p-1 bg-white/5 rounded-xl mb-8 relative">
+      <div className="flex p-1 bg-surface rounded-xl mb-8 relative">
         <div
           className={`absolute inset-y-1 w-[calc(50%-4px)] bg-[#6366F1] rounded-lg transition-all duration-300 ease-out ${
             role === "CANDIDATE" ? "left-1" : "left-[calc(50%+2px)]"
@@ -105,7 +105,7 @@ export default function RegisterPage() {
           id="toggle-candidate"
           onClick={() => setRole("CANDIDATE")}
           className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg relative z-10 transition-colors ${
-            role === "CANDIDATE" ? "text-white" : "text-[#94A3B8] hover:text-white"
+            role === "CANDIDATE" ? "text-text-primary" : "text-text-secondary hover:text-text-primary"
           }`}
         >
           <User className="w-4 h-4" /> Sou Candidato
@@ -115,7 +115,7 @@ export default function RegisterPage() {
           id="toggle-company"
           onClick={() => setRole("COMPANY")}
           className={`flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded-lg relative z-10 transition-colors ${
-            role === "COMPANY" ? "text-white" : "text-[#94A3B8] hover:text-white"
+            role === "COMPANY" ? "text-text-primary" : "text-text-secondary hover:text-text-primary"
           }`}
         >
           <Building2 className="w-4 h-4" /> Sou Empresa
@@ -140,7 +140,7 @@ export default function RegisterPage() {
               className="space-y-5"
             >
               <div>
-                <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">
+                <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">
                   Nome completo
                 </label>
                 <div className="relative group">
@@ -153,13 +153,13 @@ export default function RegisterPage() {
                     onChange={(e) => setCandName(e.target.value)}
                     required
                     minLength={2}
-                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                    className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                     placeholder="João Silva"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">
+                <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">
                   Email
                 </label>
                 <div className="relative group">
@@ -171,13 +171,13 @@ export default function RegisterPage() {
                     value={candEmail}
                     onChange={(e) => setCandEmail(e.target.value)}
                     required
-                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                    className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                     placeholder="joao@email.com"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">
+                <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">
                   Senha
                 </label>
                 <div className="relative group">
@@ -190,7 +190,7 @@ export default function RegisterPage() {
                     onChange={(e) => setCandPassword(e.target.value)}
                     required
                     minLength={6}
-                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                    className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                     placeholder="Mínimo 6 caracteres"
                   />
                 </div>
@@ -214,7 +214,7 @@ export default function RegisterPage() {
               className="space-y-5"
             >
               <div>
-                <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">
+                <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">
                   Nome da Empresa
                 </label>
                 <div className="relative group">
@@ -227,13 +227,13 @@ export default function RegisterPage() {
                     onChange={(e) => setCompName(e.target.value)}
                     required
                     minLength={2}
-                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                    className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                     placeholder="Tech Corp Brasil"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">
+                <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">
                   Email Corporativo
                 </label>
                 <div className="relative group">
@@ -245,13 +245,13 @@ export default function RegisterPage() {
                     value={compEmail}
                     onChange={(e) => setCompEmail(e.target.value)}
                     required
-                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                    className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                     placeholder="vagas@empresa.com"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#94A3B8] mb-1.5 ml-1">
+                <label className="block text-sm font-medium text-text-secondary mb-1.5 ml-1">
                   Senha
                 </label>
                 <div className="relative group">
@@ -264,7 +264,7 @@ export default function RegisterPage() {
                     onChange={(e) => setCompPassword(e.target.value)}
                     required
                     minLength={6}
-                    className="block w-full pl-11 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
+                    className="block w-full pl-11 pr-4 py-3 bg-surface border border-border rounded-xl text-text-primary placeholder-[#64748B] focus:bg-white/10 focus:border-[#6366F1]/50 focus:ring-1 focus:ring-[#6366F1]/50 transition-all outline-none"
                     placeholder="Mínimo 6 caracteres"
                   />
                 </div>
@@ -282,13 +282,13 @@ export default function RegisterPage() {
               onChange={(e) => setAgreed(e.target.checked)}
               className="peer sr-only"
             />
-            <div className="w-5 h-5 rounded border-2 border-white/20 peer-checked:bg-[#6366F1] peer-checked:border-[#6366F1] transition-colors flex items-center justify-center">
+            <div className="w-5 h-5 rounded border-2 border-border peer-checked:bg-[#6366F1] peer-checked:border-[#6366F1] transition-colors flex items-center justify-center">
               <CheckCircle2
-                className={`w-3.5 h-3.5 text-white ${agreed ? "opacity-100" : "opacity-0"} transition-opacity`}
+                className={`w-3.5 h-3.5 text-text-primary ${agreed ? "opacity-100" : "opacity-0"} transition-opacity`}
               />
             </div>
           </div>
-          <span className="text-sm text-[#94A3B8] group-hover:text-white transition-colors">
+          <span className="text-sm text-text-secondary group-hover:text-text-primary transition-colors">
             Li e concordo com os{" "}
             <a href="#" className="text-[#6366F1] hover:underline">
               Termos de Uso
@@ -307,8 +307,8 @@ export default function RegisterPage() {
           disabled={!agreed || loading}
           className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold shadow-lg transition-all mt-6 ${
             agreed && !loading
-              ? "bg-gradient-to-r from-[#06B6D4] to-[#6366F1] text-white shadow-[#6366F1]/25 hover:shadow-[#6366F1]/40 hover:scale-[1.02] active:scale-[0.98]"
-              : "bg-white/5 text-[#64748B] cursor-not-allowed"
+              ? "bg-gradient-to-r from-[#06B6D4] to-[#6366F1] text-text-primary shadow-[#6366F1]/25 hover:shadow-[#6366F1]/40 hover:scale-[1.02] active:scale-[0.98]"
+              : "bg-surface text-[#64748B] cursor-not-allowed"
           }`}
         >
           {loading ? (
@@ -321,11 +321,11 @@ export default function RegisterPage() {
         </button>
       </form>
 
-      <p className="mt-8 text-center text-sm text-[#94A3B8]">
+      <p className="mt-8 text-center text-sm text-text-secondary">
         Já tem uma conta?{" "}
         <a
           href="/login"
-          className="text-white font-medium hover:text-[#06B6D4] transition-colors"
+          className="text-text-primary font-medium hover:text-[#06B6D4] transition-colors"
         >
           Faça login
         </a>
