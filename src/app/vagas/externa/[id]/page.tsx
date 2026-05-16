@@ -319,10 +319,10 @@ export default function ExternalJobDetailsPage() {
               </div>
             </div>
 
-            {/* Why Match.js Badge */}
+            {/* Why DevJobs Badge */}
             <div className="p-6 rounded-3xl bg-gradient-to-br from-[#6366F1]/10 to-transparent border border-[#6366F1]/20">
               <h4 className="font-bold text-[#818CF8] mb-2 flex items-center gap-2">
-                <Zap className="w-4 h-4" /> Match.js PRO
+                <Zap className="w-4 h-4" /> DevJobs PRO
               </h4>
               <p className="text-xs text-text-secondary">
                 Seja um candidato PRO para ter prioridade e match de skills em vagas verificadas.

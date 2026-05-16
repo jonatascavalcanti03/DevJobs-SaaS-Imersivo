@@ -403,7 +403,7 @@ export default function SearchJobsPage() {
           ) : normalJobs.length > 0 ? (
             <div className="space-y-3">
               {premiumJobs.length > 0 && (
-                <SectionDivider icon={Building2} label="Vagas verificadas Match.js" />
+                <SectionDivider icon={Building2} label="Vagas verificadas DevJobs" />
               )}
               {normalJobs.map((job, i) => (
                 <JobCard key={job.id} job={job} index={i} />

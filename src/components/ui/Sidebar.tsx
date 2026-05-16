@@ -42,7 +42,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
             <AnimatePresence>
               {!collapsed && (
                 <motion.span initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: "auto" }} exit={{ opacity: 0, width: 0 }} className="text-lg font-bold whitespace-nowrap overflow-hidden">
-                  <span className="text-gradient">Match</span><span className="text-[#06B6D4]">.js</span>
+                  <span className="text-gradient">Dev</span><span className="text-[#06B6D4]">Jobs</span>
                 </motion.span>
               )}
             </AnimatePresence>

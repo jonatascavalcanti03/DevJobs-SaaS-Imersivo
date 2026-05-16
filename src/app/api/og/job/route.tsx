@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
 
     // Parâmetros da vaga
     const title = searchParams.get('title') || 'Vaga de Programação';
-    const company = searchParams.get('company') || 'Match.js';
+    const company = searchParams.get('company') || 'DevJobs';
     const location = searchParams.get('location') || 'Brasil';
     const salary = searchParams.get('salary') || 'A combinar';
     const type = searchParams.get('type') || 'Remoto';

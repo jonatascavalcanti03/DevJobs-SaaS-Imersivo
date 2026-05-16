@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!job) return { title: "Vaga não encontrada" };
 
   return {
-    title: `${job.title} na ${job.company} | Match.js`,
-    description: `Candidate-se para a vaga de ${job.title} na empresa ${job.company} em ${job.location}. Encontre as melhores oportunidades tech no Match.js.`,
+    title: `${job.title} na ${job.company} | DevJobs`,
+    description: `Candidate-se para a vaga de ${job.title} na empresa ${job.company} em ${job.location}. Encontre as melhores oportunidades tech no DevJobs.`,
     openGraph: {
       title: `${job.title} - ${job.company}`,
       description: `Vaga de programador em ${job.location}. Confira os detalhes e envie seu currículo!`,

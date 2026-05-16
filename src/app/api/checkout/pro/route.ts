@@ -24,7 +24,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "brl",
             product_data: {
-              name: "Plano Match.js PRO (Mensal)",
+              name: "Plano DevJobs PRO (Mensal)",
               description:
                 "Perfil destacado, candidaturas priorizadas e acesso a vagas exclusivas por 30 dias.",
             },

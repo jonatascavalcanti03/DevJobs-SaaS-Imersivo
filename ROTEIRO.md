@@ -1,4 +1,4 @@
-# 🚀 Simulação e Roteiro de Apresentação (Match.js)
+# 🚀 Simulação e Roteiro de Apresentação (DevJobs)
 
 Preparei este roteiro detalhado para você e o Pedro impressionarem os professores amanhã.
 
@@ -8,7 +8,7 @@ Preparei este roteiro detalhado para você e o Pedro impressionarem os professor
 
 ### Parte 1: Introdução e Home Page (A "Isca")
 1. **O que fazer:** Abra a página inicial `http://localhost:3000` e role para baixo devagar.
-2. **O que falar:** *"Bom dia/Boa noite. Este é o Match.js, um SaaS premium que nós construímos para resolver um problema real: a dificuldade de conectar empresas de tecnologia aos candidatos certos. Notem o design imersivo e os filtros dinâmicos na tela inicial."*
+2. **O que falar:** *"Bom dia/Boa noite. Este é o DevJobs, um SaaS premium que nós construímos para resolver um problema real: a dificuldade de conectar empresas de tecnologia aos candidatos certos. Notem o design imersivo e os filtros dinâmicos na tela inicial."*
 3. **O que fazer:** Clique nos botões de filtro (Ex: `Mobile` e `Estágio`).
 4. **O que falar:** *"A plataforma atualiza as vagas em tempo real. E reparem no selo 'Estágio de Verdade': nós focamos em valorizar quem está começando na área."*
 

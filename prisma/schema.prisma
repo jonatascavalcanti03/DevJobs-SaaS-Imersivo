@@ -1,5 +1,5 @@
 // ============================================================
-// DevJobs.br — Prisma Schema
+// DevJobs — Prisma Schema
 // Database: MySQL | ORM: Prisma
 // Security: Passwords hashed (bcrypt), email unique constraint,
 //           role-based access, soft-delete ready

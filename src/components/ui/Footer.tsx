@@ -39,8 +39,8 @@ export default function Footer() {
                 <Code2 className="w-4 h-4 text-white" />
               </div>
               <span className="text-lg font-bold">
-                <span className="text-gradient">Match</span>
-                <span className="text-text-primary">.js</span>
+                <span className="text-gradient">Dev</span>
+                <span className="text-text-primary">Jobs</span>
               </span>
             </div>
             <p className="text-sm text-[#64748B] leading-relaxed mb-4">

@@ -1,5 +1,5 @@
 /**
- * Match.js Semantic Search Engine
+ * DevJobs Semantic Search Engine
  * Expande termos de busca para incluir sinônimos e tecnologias relacionadas.
  */
 

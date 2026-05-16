@@ -25,7 +25,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               <Code2 className="w-5 h-5 text-text-primary" />
             </div>
             <span className="text-xl font-bold">
-              <span className="text-gradient">Match</span><span className="text-[#06B6D4]">.js</span>
+              <span className="text-gradient">Dev</span><span className="text-[#06B6D4]">Jobs</span>
             </span>
           </a>
 
@@ -79,7 +79,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                 <Code2 className="w-5 h-5 text-text-primary" />
               </div>
               <span className="text-xl font-bold">
-                <span className="text-gradient">Match</span><span className="text-[#06B6D4]">.js</span>
+                <span className="text-gradient">Dev</span><span className="text-[#06B6D4]">Jobs</span>
               </span>
             </a>
           </div>

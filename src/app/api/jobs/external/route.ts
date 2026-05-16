@@ -59,7 +59,7 @@ function extractTags(title: string, description: string): string[] {
   );
 }
 
-// ─── Normaliza a resposta da Adzuna para o padrão Match.js ────────────
+// ─── Normaliza a resposta da Adzuna para o padrão DevJobs ────────────
 function normalizeAdzunaJob(raw: any): AdzunaJob {
   const title = raw.title || "Desenvolvedor";
   const description = raw.description || "";

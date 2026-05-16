@@ -4,11 +4,11 @@
     <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
     <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
     <img src="https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white" alt="Prisma" />
-    <img src="https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL" />
+    <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
     <img src="https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white" alt="Stripe" />
   <br />
 
-  <h1>🚀 DevJobs.br</h1>
+  <h1>🚀 DevJobs</h1>
   <p>
     <strong>A Plataforma SaaS Premium que conecta os melhores desenvolvedores do Brasil às melhores empresas de tecnologia.</strong>
   </p>
@@ -18,7 +18,7 @@
 
 ## 📖 Sobre o Projeto
 
-O **DevJobs.br** não é apenas mais um portal de vagas. É um **SaaS (Software as a Service)** completo, construído do absoluto zero, focado em entregar uma experiência (UI/UX) de nível mundial tanto para quem busca emprego quanto para as empresas que estão recrutando.
+O **DevJobs** não é apenas mais um portal de vagas. É um **SaaS (Software as a Service)** completo, construído do absoluto zero, focado em entregar uma experiência (UI/UX) de nível mundial tanto para quem busca emprego quanto para as empresas que estão recrutando.
 
 O projeto foi arquitetado para ser rápido, fluido e monetizável, utilizando as tecnologias mais modernas do ecossistema React/Next.js e um sistema de pagamentos robusto com o **Stripe**.
 
@@ -50,7 +50,7 @@ A stack foi escolhida a dedo para garantir **alta performance, SEO, e segurança
 * **[Tailwind CSS v4](https://tailwindcss.com/):** Estilização utilitária para designs responsivos, adotando temas escuros (Dark Mode) e Efeitos de Vidro (Glassmorphism).
 * **[Framer Motion](https://www.framer.com/motion/):** Biblioteca para animações fluidas e transições de página "Soft Navigation".
 * **[Prisma ORM](https://www.prisma.io/):** Modelagem de banco de dados e tipagem automática segura.
-* **[MySQL](https://www.mysql.com/):** Banco de dados relacional robusto.
+* **[PostgreSQL](https://www.postgresql.org/):** Banco de dados relacional robusto e escalável.
 * **[NextAuth.js (v4)](https://next-auth.js.org/):** Autenticação segura via credenciais com suporte a OAuth.
 * **[Stripe API](https://stripe.com/br):** Gateway de pagamentos internacionais, assinaturas e webhooks.
 
@@ -58,7 +58,7 @@ A stack foi escolhida a dedo para garantir **alta performance, SEO, e segurança
 
 ## ⚙️ Como Executar Localmente
 
-Para rodar este projeto na sua máquina, você vai precisar do **Node.js** (v20+), **NPM/Yarn/PNPM**, e um banco de dados **MySQL** rodando.
+Para rodar este projeto na sua máquina, você vai precisar do **Node.js** (v20+), **NPM/Yarn/PNPM**, e um banco de dados **PostgreSQL** rodando.
 
 ### 1. Clone o repositório
 ```bash
@@ -75,8 +75,8 @@ npm install
 Crie um arquivo `.env` na raiz do projeto e preencha com as suas chaves:
 
 ```env
-# URL do seu Banco de Dados MySQL
-DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+# URL do seu Banco de Dados PostgreSQL
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
 
 # Segredo de Autenticação (Gere um com: openssl rand -base64 32)
 NEXTAUTH_SECRET="seu-segredo-aqui"
@@ -106,7 +106,7 @@ Pronto! Acesse o projeto em: `http://localhost:3000`
 
 ## 🎨 UI & Design System
 
-A interface do DevJobs.br foi desenhada para **surpreender**. As escolhas de paleta de cores trazem um aspecto noturno e elegante (`#0B1121`, `#0F172A`), com destaques em azul turquesa (`#06B6D4`) e roxo (`#6366F1`). 
+A interface do DevJobs foi desenhada para **surpreender**. As escolhas de paleta de cores trazem um aspecto noturno e elegante (`#0B1121`, `#0F172A`), com destaques em azul turquesa (`#06B6D4`) e roxo (`#6366F1`). 
 
 Foi implementado um uso intensivo de **Bordas Brilhantes (Glow Borders)** em CSS puro e **Cards com desfoque (Backdrop Blur)** para dar sensação de profundidade e tecnologia de ponta.
 
