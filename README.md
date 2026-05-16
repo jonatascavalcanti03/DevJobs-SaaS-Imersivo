@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/badge/Stripe-626CD9?style=for-the-badge&logo=Stripe&logoColor=white" alt="Stripe" />
   <br />
 
-  <h1>🚀 DevJobs</h1>
+  <h1 translate="no">🚀 DevJobs</h1>
   <p>
     <strong>A Plataforma SaaS Premium que conecta os melhores desenvolvedores do Brasil às melhores empresas de tecnologia.</strong>
   </p>
