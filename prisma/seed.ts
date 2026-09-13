@@ -29,6 +29,12 @@ const candidateData = [
   ['Camila Ferreira', 'camila@devjobs.br', 'Product Designer', 'Figma, UX Research, Design Systems'],
 ];
 
+const accessAccounts = [
+  { name: 'Usuário DevJobs', email: 'usuario@devjobs.br', password: 'DevJobs@2026', role: 'CANDIDATE' as const },
+  { name: 'Recrutador DevJobs', email: 'recrutador@devjobs.br', password: 'Recrutador@2026', role: 'COMPANY' as const, companyName: 'DevJobs Demo' },
+  { name: 'Administrador Mestre', email: 'mestre@devjobs.br', password: 'Mestre@2026', role: 'ADMIN' as const },
+];
+
 const jobData = [
   ['Desenvolvedor Frontend Sênior', 'React, Next.js, TailwindCSS', 'SENIOR', 'REMOTE', 10000, 15000],
   ['Engenheiro de Software Backend', 'Node.js, PostgreSQL, Docker', 'MID', 'HYBRID', 8000, 12000],
@@ -45,6 +51,31 @@ const jobData = [
 async function main() {
   console.log('Criando dados demonstrativos do DevJobs...');
   const password = await bcrypt.hash('123456', 10);
+
+  for (const account of accessAccounts) {
+    const hashedPassword = await bcrypt.hash(account.password, 10);
+    await prisma.user.upsert({
+      where: { email: account.email },
+      update: {
+        name: account.name,
+        password: hashedPassword,
+        role: account.role,
+        companyName: account.companyName,
+        emailVerified: new Date(),
+        isActive: true,
+        isBanned: false,
+      },
+      create: {
+        name: account.name,
+        email: account.email,
+        password: hashedPassword,
+        role: account.role,
+        companyName: account.companyName,
+        emailVerified: new Date(),
+      },
+    });
+  }
+
   const companies = [];
   const candidates = [];
 
