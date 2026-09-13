@@ -1,13 +1,16 @@
 'use client';
 
 import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport } from 'ai';
 import { Send, Bot, User, Loader2 } from 'lucide-react';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 export function DevJobsChat() {
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: '/api/chat',
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({ api: '/api/chat' }),
   });
+  const [input, setInput] = useState('');
+  const isLoading = status === 'submitted' || status === 'streaming';
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -52,7 +55,9 @@ export function DevJobsChat() {
                 ? 'bg-blue-600 text-white rounded-tr-none' 
                 : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-tl-none'
             }`}>
-              {m.content}
+              {m.parts?.map((part, index) =>
+                part.type === 'text' ? <span key={index}>{part.text}</span> : null,
+              )}
             </div>
 
             {m.role === 'user' && (
@@ -77,11 +82,19 @@ export function DevJobsChat() {
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950">
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (!input.trim() || isLoading) return;
+          void sendMessage({ text: input.trim() });
+          setInput('');
+        }}
+        className="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950"
+      >
         <div className="relative flex items-center">
           <input
             value={input}
-            onChange={handleInputChange}
+            onChange={(event) => setInput(event.target.value)}
             placeholder="Digite sua mensagem..."
             className="w-full pl-4 pr-12 py-3 bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all dark:text-white"
           />
