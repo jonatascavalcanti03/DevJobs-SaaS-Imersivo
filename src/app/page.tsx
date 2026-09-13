@@ -17,6 +17,18 @@ const FILTERS = ["Todos", "Remoto", "Híbrido", "Presencial"];
 const LEVEL_FILTERS = ["Qualquer Nível", "Estágio", "Júnior", "Pleno", "Sênior", "Lead"];
 const TECH_FILTERS = ["Todas Techs", "React", "Node", "Python", "Java", "Mobile"];
 
+const DEMO_JOBS: JobData[] = [
+  { id: "demo-1", title: "Desenvolvedor Frontend Sênior", company: "Tech Corp Brasil", companyLogo: "https://images.unsplash.com/photo-1549923746-c502d488b3ea?w=150&h=150&fit=crop", location: "Remoto", type: "REMOTE", level: "SENIOR", salaryMin: 10000, salaryMax: 15000, tags: ["React", "Next.js", "TailwindCSS"], isPremium: true, createdAt: new Date().toISOString() },
+  { id: "demo-2", title: "Engenheiro de Software Backend", company: "InnovaTech", companyLogo: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=150&h=150&fit=crop", location: "São Paulo (SP)", type: "HYBRID", level: "MID", salaryMin: 8000, salaryMax: 12000, tags: ["Node", "PostgreSQL", "Docker"], isPremium: true, createdAt: new Date().toISOString() },
+  { id: "demo-3", title: "Engenheiro de Dados", company: "Nuvem Labs", location: "Remoto", type: "REMOTE", level: "SENIOR", salaryMin: 12000, salaryMax: 18000, tags: ["Python", "AWS", "SQL"], isPremium: false, createdAt: new Date().toISOString() },
+  { id: "demo-4", title: "Desenvolvedor Mobile React Native", company: "Fintech Aurora", location: "Belo Horizonte (MG)", type: "ONSITE", level: "MID", salaryMin: 7000, salaryMax: 11000, tags: ["Mobile", "React Native", "TypeScript"], isPremium: false, createdAt: new Date().toISOString() },
+  { id: "demo-5", title: "Desenvolvedor Java Júnior", company: "HealthCode", location: "São Paulo (SP)", type: "HYBRID", level: "JUNIOR", salaryMin: 4500, salaryMax: 6500, tags: ["Java", "Spring Boot", "PostgreSQL"], isPremium: false, createdAt: new Date().toISOString() },
+  { id: "demo-6", title: "DevOps Engineer", company: "Orbit Systems", location: "Remoto", type: "REMOTE", level: "SENIOR", salaryMin: 11000, salaryMax: 17000, tags: ["AWS", "Kubernetes", "Terraform"], isPremium: false, createdAt: new Date().toISOString() },
+  { id: "demo-7", title: "Estágio em Desenvolvimento Web", company: "Pixel Studio", location: "Remoto", type: "REMOTE", level: "INTERN", salaryMin: 1500, salaryMax: 2200, tags: ["React", "JavaScript", "CSS"], isPremium: false, createdAt: new Date().toISOString() },
+  { id: "demo-8", title: "Estágio em QA e Automação", company: "LogiFlow", location: "Curitiba (PR)", type: "HYBRID", level: "INTERN", salaryMin: 1400, salaryMax: 2000, tags: ["Cypress", "Playwright", "Git"], isPremium: false, createdAt: new Date().toISOString() },
+  { id: "demo-9", title: "Estágio em Produto e Tecnologia", company: "EducaTech", location: "São Paulo (SP)", type: "ONSITE", level: "INTERN", salaryMin: 1600, salaryMax: 2400, tags: ["Figma", "UX", "JavaScript"], isPremium: false, createdAt: new Date().toISOString() },
+];
+
 // ─── Page Component ──────────────────────────────────────────
 
 export default function HomePage() {
@@ -56,9 +68,14 @@ export default function HomePage() {
           
           setJobs(parsedJobs.filter((j: any) => j.level !== "INTERN").slice(0, 6));
           setInternships(parsedJobs.filter((j: any) => j.level === "INTERN").slice(0, 4));
+        } else {
+          setJobs(DEMO_JOBS.filter((job) => job.level !== "INTERN").slice(0, 6));
+          setInternships(DEMO_JOBS.filter((job) => job.level === "INTERN").slice(0, 4));
         }
       } catch (error) {
-        console.error("Erro ao buscar vagas:", error);
+        console.error("Erro ao buscar vagas; exibindo dados demonstrativos:", error);
+        setJobs(DEMO_JOBS.filter((job) => job.level !== "INTERN").slice(0, 6));
+        setInternships(DEMO_JOBS.filter((job) => job.level === "INTERN").slice(0, 4));
       } finally {
         setLoadingJobs(false);
       }
