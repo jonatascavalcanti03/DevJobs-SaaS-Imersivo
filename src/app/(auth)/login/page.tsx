@@ -29,8 +29,12 @@ export default function LoginPage() {
         throw new Error("E-mail ou senha incorretos.");
       }
 
-      // Aguarda a sessão atualizada antes de proteger a próxima rota.
-      const session = await getSession();
+      // O cookie pode levar um instante para ficar disponível no cliente.
+      let session = await getSession();
+      for (let attempt = 0; !session?.user && attempt < 3; attempt += 1) {
+        await new Promise((resolve) => setTimeout(resolve, 250));
+        session = await getSession();
+      }
 
       if (!session?.user) {
         throw new Error("Não foi possível iniciar a sessão. Tente novamente.");
