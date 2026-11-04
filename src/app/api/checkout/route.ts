@@ -56,7 +56,7 @@ export async function POST(req: Request) {
           price_data: {
             currency: "brl",
             product_data: {
-              name: `${planData.label} (${periodLabel}) — DevJobs`,
+              name: `${planData.label} (${periodLabel}) — TechLink`,
               description,
             },
             unit_amount: unitAmount,

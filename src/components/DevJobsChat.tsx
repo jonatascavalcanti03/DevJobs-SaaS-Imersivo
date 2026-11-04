@@ -5,7 +5,7 @@ import { DefaultChatTransport } from 'ai';
 import { Send, Bot, User, Loader2 } from 'lucide-react';
 import { useRef, useEffect, useState } from 'react';
 
-export function DevJobsChat() {
+export function TechLinkChat() {
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({ api: '/api/chat' }),
   });
@@ -26,7 +26,7 @@ export function DevJobsChat() {
           <Bot size={18} />
         </div>
         <div>
-          <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Assistente DevJobs</h2>
+          <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Assistente TechLink</h2>
           <p className="text-xs text-zinc-500">Online e pronto para ajudar</p>
         </div>
       </div>

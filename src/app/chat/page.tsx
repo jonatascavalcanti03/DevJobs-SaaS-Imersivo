@@ -5,7 +5,7 @@ export default function ChatPage() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-100 dark:bg-zinc-950 p-4">
       <div className="w-full max-w-md text-center">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2">DevJobs AI</h1>
+          <h1 className="text-3xl font-bold text-zinc-900 dark:text-white mb-2">TechLink AI</h1>
           <p className="text-zinc-500 dark:text-zinc-400">
             Assistente virtual inteligente para encontrar vagas.
           </p>
@@ -19,7 +19,7 @@ export default function ChatPage() {
               <Bot size={18} />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Assistente DevJobs</h2>
+              <h2 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Assistente TechLink</h2>
               <p className="text-xs text-amber-500 font-medium">⏸ Temporariamente inativo</p>
             </div>
           </div>
