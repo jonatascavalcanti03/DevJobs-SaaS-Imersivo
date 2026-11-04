@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Lock, ArrowRight } from "lucide-react";
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -29,18 +29,9 @@ export default function LoginPage() {
         throw new Error("E-mail ou senha incorretos.");
       }
 
-      // O cookie pode levar um instante para ficar disponível no cliente.
-      let session = await getSession();
-      for (let attempt = 0; !session?.user && attempt < 3; attempt += 1) {
-        await new Promise((resolve) => setTimeout(resolve, 250));
-        session = await getSession();
-      }
-
-      if (!session?.user) {
-        throw new Error("Não foi possível iniciar a sessão. Tente novamente.");
-      }
-
-      router.replace(session.user.role === "COMPANY" ? "/empresa" : "/candidato");
+      // A rota protegida lê a sessão e direciona cada perfil para sua área.
+      // Evitamos consultar a sessão novamente antes que o cookie seja propagado.
+      router.replace("/candidato");
     } catch (err: any) {
       setError(err.message);
       toast.error(err.message || "Erro ao fazer login");
