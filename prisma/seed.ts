@@ -30,8 +30,8 @@ const candidateData = [
 ];
 
 const accessAccounts = [
-  { name: 'Usuário TechLink', email: 'usuario@devjobs.br', password: 'DevJobs@2026', role: 'CANDIDATE' as const },
-  { name: 'Recrutador TechLink', email: 'recrutador@devjobs.br', password: 'Recrutador@2026', role: 'COMPANY' as const, companyName: 'TechLink Demo' },
+  { name: 'Candidato TechLink', email: 'candidato.teste@techlink.dev', password: 'TechLinkCandidato@2026', role: 'CANDIDATE' as const },
+  { name: 'Empresa TechLink', email: 'empresa.teste@techlink.dev', password: 'TechLinkEmpresa@2026', role: 'COMPANY' as const, companyName: 'TechLink' },
   { name: 'Administrador Mestre', email: 'mestre@devjobs.br', password: 'Mestre@2026', role: 'ADMIN' as const },
 ];
 
@@ -49,7 +49,7 @@ const jobData = [
 ] as const;
 
 async function main() {
-  console.log('Criando dados demonstrativos do DevJobs...');
+  console.log('Criando dados demonstrativos do TechLink...');
   const password = await bcrypt.hash('123456', 10);
 
   for (const account of accessAccounts) {
