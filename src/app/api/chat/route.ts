@@ -20,7 +20,7 @@
 export async function POST() {
   return Response.json(
     {
-      message: 'O assistente DevJobs está temporariamente inativo para manutenção e melhorias. Volte em breve!',
+      message: 'O assistente TechLink está temporariamente inativo para manutenção e melhorias. Volte em breve!',
       status: 'maintenance',
     },
     { status: 503 }
@@ -36,10 +36,10 @@ export async function POST() {
 //     const result = streamText({
 //       model: openai('gpt-4o-mini'),
 //       messages,
-//       system: "Você é um assistente virtual do DevJobs...",
+//       system: "Você é um assistente virtual do TechLink...",
 //       tools: {
 //         searchJobs: tool({
-//           description: 'Busca vagas de emprego reais no banco de dados do DevJobs.',
+//           description: 'Busca vagas de emprego reais no banco de dados do TechLink.',
 //           parameters: z.object({
 //             query: z.string().optional().describe('Termo de busca para a vaga'),
 //           }),

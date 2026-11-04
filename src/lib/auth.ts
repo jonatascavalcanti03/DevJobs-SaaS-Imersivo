@@ -19,8 +19,9 @@ export const authOptions: AuthOptions = {
           throw new Error("Dados inválidos");
         }
 
+        const email = credentials.email.trim().toLowerCase();
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email },
         });
 
         if (!user || !user.password) {

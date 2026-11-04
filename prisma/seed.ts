@@ -30,8 +30,8 @@ const candidateData = [
 ];
 
 const accessAccounts = [
-  { name: 'Usuário DevJobs', email: 'usuario@devjobs.br', password: 'DevJobs@2026', role: 'CANDIDATE' as const },
-  { name: 'Recrutador DevJobs', email: 'recrutador@devjobs.br', password: 'Recrutador@2026', role: 'COMPANY' as const, companyName: 'DevJobs Demo' },
+  { name: 'Usuário TechLink', email: 'usuario@devjobs.br', password: 'DevJobs@2026', role: 'CANDIDATE' as const },
+  { name: 'Recrutador TechLink', email: 'recrutador@devjobs.br', password: 'Recrutador@2026', role: 'COMPANY' as const, companyName: 'TechLink Demo' },
   { name: 'Administrador Mestre', email: 'mestre@devjobs.br', password: 'Mestre@2026', role: 'ADMIN' as const },
 ];
 

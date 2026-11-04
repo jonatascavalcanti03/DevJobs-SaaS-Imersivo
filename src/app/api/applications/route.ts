@@ -4,27 +4,43 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 // ─── Calcula match score real entre skills do candidato e tags da vaga ──
+function normalizeMatchTerm(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\\u0300-\\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function parseMatchTerms(value: string | null): string[] {
+  if (!value) return [];
+
+  try {
+    const parsed = JSON.parse(value);
+    if (Array.isArray(parsed)) {
+      return parsed
+        .filter((term): term is string => typeof term === "string")
+        .map(normalizeMatchTerm)
+        .filter(Boolean);
+    }
+  } catch {
+    // Compatibilidade com dados antigos salvos como texto separado por vírgulas.
+  }
+
+  return value.split(",").map(normalizeMatchTerm).filter(Boolean);
+}
+
 function calcMatchScore(candidateSkills: string | null, jobTags: string): number {
-  if (!candidateSkills) return 40;
+  const skills = parseMatchTerms(candidateSkills);
+  const tags = parseMatchTerms(jobTags);
 
-  let skills: string[] = [];
-  let tags: string[] = [];
-
-  try { skills = JSON.parse(candidateSkills).map((s: string) => s.toLowerCase().trim()); } catch {
-    skills = candidateSkills.split(",").map((s) => s.toLowerCase().trim());
-  }
-  try { tags = JSON.parse(jobTags).map((t: string) => t.toLowerCase().trim()); } catch {
-    tags = jobTags.split(",").map((t) => t.toLowerCase().trim());
-  }
-
-  if (!tags.length) return 50;
+  if (!skills.length || !tags.length) return 0;
 
   const matches = tags.filter((tag) =>
-    skills.some((skill) => skill.includes(tag) || tag.includes(skill))
+    skills.some((skill) => skill === tag || skill.includes(tag) || tag.includes(skill))
   ).length;
 
-  const raw = Math.round((matches / tags.length) * 100);
-  return Math.min(99, Math.max(30, raw));
+  return Math.round((matches / tags.length) * 100);
 }
 
 export async function POST(req: Request) {
