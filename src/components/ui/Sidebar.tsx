@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Code2, ChevronLeft, LogOut, type LucideIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
@@ -24,6 +25,7 @@ interface SidebarProps {
 
 export default function Sidebar({ links, activePath, userName, userRole, userImage }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -109,7 +111,7 @@ export default function Sidebar({ links, activePath, userName, userRole, userIma
 
         {/* Logout */}
         <div className="px-3 py-4 border-t border-border">
-          <button onClick={() => signOut({ callbackUrl: '/' })} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#64748B] hover:text-red-400 hover:bg-red-500/5 transition-all ${collapsed ? "justify-center" : ""}`}>
+          <button onClick={async () => { await signOut({ redirect: false }); router.replace("/login"); }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[#64748B] hover:text-red-400 hover:bg-red-500/5 transition-all ${collapsed ? "justify-center" : ""}`}>
             <LogOut className="w-5 h-5 flex-shrink-0" />
             {!collapsed && <span>Sair</span>}
           </button>
