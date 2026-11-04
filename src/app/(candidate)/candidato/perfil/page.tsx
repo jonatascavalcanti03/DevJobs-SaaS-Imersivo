@@ -104,25 +104,46 @@ export default function CandidateProfilePage() {
     setSkills(skills.filter(s => s !== skillToRemove));
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      if (file.type !== "application/pdf") {
-        alert("Apenas arquivos PDF são aceitos.");
-        return;
-      }
-      if (file.size > 2 * 1024 * 1024) {
-        alert("O arquivo não pode ter mais de 2MB.");
-        return;
-      }
-      
-      setResumeFileName(file.name);
-      
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setResumeBase64(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      toast.error("Apenas arquivos PDF são aceitos.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("O currículo não pode ter mais de 5MB.");
+      return;
+    }
+
+    setResumeFileName(file.name);
+    setSaving(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const response = await fetch("/api/user/resume/parse", { method: "POST", body: formData });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.message || "Não foi possível analisar o currículo.");
+
+      const profile = data.profile || {};
+      if (profile.name) setName(profile.name);
+      if (profile.title) setTitle(profile.title);
+      if (profile.bio) setBio(profile.bio);
+      if (profile.linkedin) setLinkedin(profile.linkedin);
+      if (profile.github) setGithub(profile.github);
+      if (profile.portfolio) setPortfolio(profile.portfolio);
+      if (Array.isArray(profile.skills) && profile.skills.length) setSkills(profile.skills);
+      await update();
+      toast.success("Currículo analisado e perfil preenchido. Revise os dados antes de salvar.");
+    } catch (error) {
+      setResumeFileName("");
+      toast.error(error instanceof Error ? error.message : "Erro ao analisar o currículo.");
+    } finally {
+      setSaving(false);
+      e.target.value = "";
     }
   };
 
